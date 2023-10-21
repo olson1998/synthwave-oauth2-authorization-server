@@ -1,0 +1,12 @@
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
+
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.repository.UserAffiliationDataSourceRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class UserAffiliationDataSourceRepositoryProxy implements UserAffiliationDataSourceRepository {
+
+    private final UserAffiliationJpaRepository userAffiliationJpaRepository;
+}

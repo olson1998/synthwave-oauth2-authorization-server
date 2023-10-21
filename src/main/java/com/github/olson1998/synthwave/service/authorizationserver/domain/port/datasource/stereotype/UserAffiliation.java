@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype;
 
 import io.hypersistence.tsid.TSID;
 

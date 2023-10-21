@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserDetails;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;

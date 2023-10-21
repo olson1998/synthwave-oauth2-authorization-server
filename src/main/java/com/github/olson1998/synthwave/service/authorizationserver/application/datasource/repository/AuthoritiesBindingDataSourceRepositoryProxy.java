@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class AuthorityBindingDataSourceRepositoryProxy implements AuthoritiesBindingDataSourceRepository {
+public class AuthoritiesBindingDataSourceRepositoryProxy implements AuthoritiesBindingDataSourceRepository {
 
     private final AuthoritiesBindingJpaRepository authorityBindingJpaRepository;
 

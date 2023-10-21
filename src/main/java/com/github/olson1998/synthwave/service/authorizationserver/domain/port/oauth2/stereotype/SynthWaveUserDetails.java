@@ -16,5 +16,5 @@ public interface SynthWaveUserDetails extends UserDetails {
 
     String getRole();
 
-    void grantAuthorities(Collection<GrantedAuthority> grantedAuthorities);
+    void grantAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities);
 }

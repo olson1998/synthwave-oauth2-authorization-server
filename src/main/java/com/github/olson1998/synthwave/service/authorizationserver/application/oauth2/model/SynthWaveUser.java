@@ -71,7 +71,7 @@ public class SynthWaveUser implements SynthWaveUserDetails {
     }
 
     @Override
-    public void grantAuthorities(Collection<GrantedAuthority> grantedAuthorities) {
+    public void grantAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
         authorities.addAll(grantedAuthorities);
     }
 

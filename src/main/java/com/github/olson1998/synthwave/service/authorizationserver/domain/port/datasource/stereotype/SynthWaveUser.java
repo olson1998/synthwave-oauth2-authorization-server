@@ -3,15 +3,11 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 import io.hypersistence.tsid.TSID;
 import org.joda.time.Period;
 
-public interface UserIdentifiers {
+public interface SynthWaveUser {
 
     TSID getId();
 
-    String getClientId();
-
     String getUsername();
-
-    String getEmailAddress();
 
     boolean isEnabled();
 

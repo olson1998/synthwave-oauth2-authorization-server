@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 
 import java.util.Optional;
 
-public interface UserDataSourceRepository {
+public interface SynthWaveUserDataSourceRepository {
 
     Optional<SynthWaveUserDetails> getSynthWaveUserByUsername(String username);
 }

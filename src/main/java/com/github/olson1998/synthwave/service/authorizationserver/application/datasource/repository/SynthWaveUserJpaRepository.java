@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.SynthWaveUserData;
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface UserJpaRepository extends JpaRepository<UserData, TSID> {
+interface SynthWaveUserJpaRepository extends JpaRepository<SynthWaveUserData, TSID> {
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser(
@@ -24,7 +24,7 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
     password,
     CASE WHEN (COUNT(ban.id) > 0) THEN true ELSE false END
     )
-    FROM UserData user
+    FROM SynthWaveUserData user
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON user.id=affiliation.userId
     LEFT OUTER JOIN UserPasswordData password

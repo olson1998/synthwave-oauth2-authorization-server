@@ -23,9 +23,9 @@ public class SynthWaveUserDetailsService implements SynthWaveUserDetailsReposito
     }
 
     private UserDetails appendGrantedAuthorities(SynthWaveUserDetails synthWaveUserDetails){
-        var username = synthWaveUserDetails.getUsername();
+        var role = synthWaveUserDetails.getRole();
         var grantedAuthorities =
-                authorityDataSourceRepository.getSimpleGrantedAuthoritiesAndAllChildAuthoritiesByParentValue(username);
+                authorityDataSourceRepository.getSimpleGrantedAuthoritiesAndAllChildAuthoritiesByParentValue(role);
         synthWaveUserDetails.grantAuthorities(grantedAuthorities);
         return synthWaveUserDetails;
     }

@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
 import io.hypersistence.tsid.TSID;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -20,6 +21,8 @@ public interface SynthWaveRegisteredClientProperties {
     Instant getPasswordExpireTime();
 
     SynthWaveClientRegisteredClientSettings getRegisteredClientSettings();
+
+    TokenSettings getTokenSettings();
 
     Set<String> getRedirectUris();
 

@@ -16,6 +16,7 @@ public class SynthWaveRegisteredClientPropertiesMapper {
     public RegisteredClient map(SynthWaveRegisteredClientProperties props){
         var registeredClientSettings = props.getRegisteredClientSettings();
         var clientSettings = finishBuildingClientSettings(registeredClientSettings.fabricateClientSettingsBuilder());
+        var tokenSettings = props.getTokenSettings();
         var registeredClientBuilder = RegisteredClient.withId(props.getClientId())
                 .scopes(strings -> strings.addAll(List.of(OPENID, PROFILE)))
                 .clientName(props.getUsername())
@@ -24,6 +25,7 @@ public class SynthWaveRegisteredClientPropertiesMapper {
                 .redirectUris(strings -> strings.addAll(props.getRedirectUris()))
                 .postLogoutRedirectUris(strings -> strings.addAll(props.getPostLogoutRedirectUris()))
                 .clientSettings(clientSettings)
+                .tokenSettings(tokenSettings)
                 .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(registeredClientSettings.getClientAuthenticationMethods()))
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(registeredClientSettings.getAuthorizationGrantTypes()));
         Optional.ofNullable(props.getPasswordExpireTime()).ifPresent(registeredClientBuilder::clientSecretExpiresAt);

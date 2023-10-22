@@ -19,13 +19,27 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     user.username,
     password.id,
     password.value,
-    password.expirePeriod
+    password.expirePeriod,
+    registeredClient.type,
+    tokenSettings.authorizationCodeExpirePeriod,
+    tokenSettings.accessTokenExpirePeriod,
+    tokenSettings.accessTokenFormat,
+    tokenSettings.deviceCodeExpirePeriod,
+    tokenSettings.reuseRefreshToken,
+    tokenSettings.refreshTokenExpirePeriod,
+    tokenSettings.idTokenSignatureAlgorithm
     )
     FROM SynthWaveRegisteredClientData registeredClient
     LEFT OUTER JOIN SynthWaveUserData user
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId
+    LEFT OUTER JOIN UserAffiliationData affiliation
+    ON registeredClient.userId=affiliation.userId
+    LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
+    ON affiliation.affiliation.companyCode=tokenSettings.affiliation.companyCode
+    AND affiliation.affiliation.division=tokenSettings.affiliation.division
+    AND affiliation.affiliation.role=tokenSettings.affiliation.role
     WHERE registeredClient.id=:registeredClientId
     AND password.latestVersion=true
     """)
@@ -38,13 +52,27 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     user.username,
     password.id,
     password.value,
-    password.expirePeriod
+    password.expirePeriod,
+    registeredClient.type,
+    tokenSettings.authorizationCodeExpirePeriod,
+    tokenSettings.accessTokenExpirePeriod,
+    tokenSettings.accessTokenFormat,
+    tokenSettings.deviceCodeExpirePeriod,
+    tokenSettings.reuseRefreshToken,
+    tokenSettings.refreshTokenExpirePeriod,
+    tokenSettings.idTokenSignatureAlgorithm
     )
     FROM SynthWaveRegisteredClientData registeredClient
     LEFT OUTER JOIN SynthWaveUserData user
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId
+    LEFT OUTER JOIN UserAffiliationData affiliation
+    ON registeredClient.userId=affiliation.userId
+    LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
+    ON affiliation.affiliation.companyCode=tokenSettings.affiliation.companyCode
+    AND affiliation.affiliation.division=tokenSettings.affiliation.division
+    AND affiliation.affiliation.role=tokenSettings.affiliation.role
     WHERE registeredClient.clientId=:clientId
     AND password.latestVersion=true
     """)

@@ -6,11 +6,16 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import lombok.ToString;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
@@ -33,6 +38,8 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
 
     private final SynthWaveClientRegisteredClientSettings registeredClientSettings;
 
+    private final TokenSettings tokenSettings;
+
     private final Set<String> redirectUris;
 
     private final Set<String> postLogoutRedirectUris;
@@ -43,13 +50,29 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
                                                    TSID passwordId,
                                                    String passwordValue,
                                                    Period passwordExpirePeriod,
-                                                   SynthWaveClientRegisteredClientSettings registeredClientSettings) {
+                                                   SynthWaveClientRegisteredClientSettings registeredClientSettings,
+                                                   Period authorizationCodeExpirePeriod,
+                                                   Period accessTokenExpirePeriod,
+                                                   OAuth2TokenFormat accessTokenFormat,
+                                                   Period deviceCodeExpirePeriod,
+                                                   boolean reuseRefreshToken,
+                                                   Period refreshTokenExpirePeriod,
+                                                   SignatureAlgorithm idTokenSignatureAlgorithm) {
         this.registeredClientId = registeredClientId;
         this.clientId = clientId;
         this.username = username;
         this.passwordValue = passwordValue;
         this.passwordExpireTime = resolvePasswordExpireInstant(passwordId, passwordExpirePeriod);
         this.registeredClientSettings = registeredClientSettings;
+        this.tokenSettings = resolveTokenSettings(
+                authorizationCodeExpirePeriod,
+                accessTokenExpirePeriod,
+                accessTokenFormat,
+                deviceCodeExpirePeriod,
+                reuseRefreshToken,
+                refreshTokenExpirePeriod,
+                idTokenSignatureAlgorithm
+        );
         this.redirectUris = new HashSet<>();
         this.postLogoutRedirectUris = new HashSet<>();
     }
@@ -66,16 +89,42 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
         });
     }
 
+    private TokenSettings resolveTokenSettings(Period authorizationCodeExpirePeriod,
+                                               Period accessTokenExpirePeriod,
+                                               OAuth2TokenFormat oAuth2TokenFormat,
+                                               Period deviceCodeExpirePeriod,
+                                               boolean reuseRefreshToken,
+                                               Period refreshTokenExpirePeriod,
+                                               SignatureAlgorithm idTokenSignatureAlgorithm){
+        return TokenSettings.builder()
+                .authorizationCodeTimeToLive(mapToDuration(authorizationCodeExpirePeriod))
+                .accessTokenTimeToLive(mapToDuration(accessTokenExpirePeriod))
+                .accessTokenFormat(oAuth2TokenFormat)
+                .deviceCodeTimeToLive(mapToDuration(deviceCodeExpirePeriod))
+                .reuseRefreshTokens(reuseRefreshToken)
+                .refreshTokenTimeToLive(mapToDuration(refreshTokenExpirePeriod))
+                .idTokenSignatureAlgorithm(idTokenSignatureAlgorithm)
+                .build();
+    }
+
     private Instant resolvePasswordExpireInstant(TSID passwordId, Period passwordExpirePeriod){
         return Optional.ofNullable(passwordExpirePeriod)
-                .map(period -> countPasswordExpireInstant(passwordId, period))
+                .map(period -> countExpireInstant(passwordId, period))
                 .orElse(null);
     }
 
-    private Instant countPasswordExpireInstant(TSID passwordId, Period passwordExpirePeriod){
-        var passwordCreationInstant = passwordId.getInstant();
-        var passwordCreationDateTime = new DateTime(passwordCreationInstant.toEpochMilli());
-        var expireDate =passwordCreationDateTime.plus(passwordExpirePeriod);
+    private Instant countExpireInstant(TSID tsid, Period expirePeriod){
+        var creationInstant = tsid.getInstant();
+        var creationDateTime = new DateTime(creationInstant.toEpochMilli());
+        var expireDate = creationDateTime.plus(expirePeriod);
         return Instant.ofEpochMilli(expireDate.getMillis());
+    }
+
+    private Duration mapToDuration(Period period){
+        return Optional.ofNullable(period)
+                .map(p -> {
+                    var expireMilis = p.getMillis();
+                    return Duration.ofMillis(expireMilis);
+                }).orElse(null);
     }
 }

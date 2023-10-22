@@ -15,9 +15,9 @@ interface SynthWaveUserJpaRepository extends JpaRepository<SynthWaveUserData, TS
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser(
     user.id,
-    affiliation.companyCode,
-    affiliation.division,
-    affiliation.role,
+    affiliation.affiliation.companyCode,
+    affiliation.affiliation.division,
+    affiliation.affiliation.role,
     user.username,
     user.enabled,
     user.expirePeriod,

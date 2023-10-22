@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationValues;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -14,6 +15,9 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.springframework.data.domain.Persistable;
 
+import java.io.Serializable;
+import java.util.Optional;
+
 @Getter
 @Setter
 @ToString
@@ -22,7 +26,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "USRAFF")
-public class UserAffiliationData implements Persistable<TSID>, UserAffiliation {
+public class UserAffiliationData implements Persistable<TSID>, UserAffiliation, Serializable {
 
     @Id
     @Tsid
@@ -31,14 +35,7 @@ public class UserAffiliationData implements Persistable<TSID>, UserAffiliation {
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
 
-    @Column(name = "CONO")
-    private String companyCode;
-
-    @Column(name = "DIVI")
-    private String division;
-
-    @Column(name = "ROLE")
-    private String role;
+    private UserAffiliationValues affiliation;
 
     @Override
     public TSID getId() {
@@ -48,5 +45,26 @@ public class UserAffiliationData implements Persistable<TSID>, UserAffiliation {
     @Override
     public boolean isNew() {
         return true;
+    }
+
+    @Override
+    public String getCompanyCode() {
+        return Optional.ofNullable(affiliation)
+                .map(UserAffiliationValues::getCompanyCode)
+                .orElse(null);
+    }
+
+    @Override
+    public String getDivision() {
+        return Optional.ofNullable(affiliation)
+                .map(UserAffiliationValues::getDivision)
+                .orElse(null);
+    }
+
+    @Override
+    public String getRole() {
+        return Optional.ofNullable(affiliation)
+                .map(UserAffiliationValues::getRole)
+                .orElse(null);
     }
 }

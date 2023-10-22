@@ -1,13 +1,11 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RegisteredClientType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -30,6 +28,10 @@ public class SynthWaveRegisteredClientData implements SynthWaveRegisteredClient,
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID id;
+
+    @Column(name = "RCTYPE", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private RegisteredClientType type;
 
     @Column(name = "UID", nullable = false)
     @JdbcType(BigIntJdbcType.class)

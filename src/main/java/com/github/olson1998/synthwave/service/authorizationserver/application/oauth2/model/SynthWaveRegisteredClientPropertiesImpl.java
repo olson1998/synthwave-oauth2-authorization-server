@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveClientRegisteredClientSettings;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
 import io.hypersistence.tsid.TSID;
@@ -28,6 +29,10 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
 
     private final TSID registeredClientId;
 
+    private final String companyCode;
+
+    private final String division;
+
     private final String clientId;
 
     private final String username;
@@ -45,6 +50,8 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
     private final Set<String> postLogoutRedirectUris;
 
     public SynthWaveRegisteredClientPropertiesImpl(TSID registeredClientId,
+                                                   String companyCode,
+                                                   String division,
                                                    String clientId,
                                                    String username,
                                                    TSID passwordId,
@@ -59,6 +66,8 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
                                                    Period refreshTokenExpirePeriod,
                                                    SignatureAlgorithm idTokenSignatureAlgorithm) {
         this.registeredClientId = registeredClientId;
+        this.companyCode = companyCode;
+        this.division = division;
         this.clientId = clientId;
         this.username = username;
         this.passwordValue = passwordValue;

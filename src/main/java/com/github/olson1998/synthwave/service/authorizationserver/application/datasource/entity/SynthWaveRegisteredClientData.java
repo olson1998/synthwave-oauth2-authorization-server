@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RegisteredClientType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.SynthWaveRegisteredClientValues;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -20,7 +20,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "RCLTDT")
-public class SynthWaveRegisteredClientData implements SynthWaveRegisteredClient, Persistable<TSID> {
+public class SynthWaveRegisteredClientData implements SynthWaveRegisteredClientValues, Persistable<TSID> {
 
     @Id
     @Tsid

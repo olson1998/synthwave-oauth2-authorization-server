@@ -35,7 +35,7 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
 
-    private UserAffiliationValues affiliation;
+    private UserAffiliationValues values;
 
     @Override
     public TSID getId() {
@@ -49,14 +49,14 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
 
     @Override
     public String getCompanyCode() {
-        return Optional.ofNullable(affiliation)
+        return Optional.ofNullable(values)
                 .map(UserAffiliationValues::getCompanyCode)
                 .orElse(null);
     }
 
     @Override
     public String getDivision() {
-        return Optional.ofNullable(affiliation)
+        return Optional.ofNullable(values)
                 .map(UserAffiliationValues::getDivision)
                 .orElse(null);
     }

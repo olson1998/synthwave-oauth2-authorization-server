@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClientInstance;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -14,6 +15,8 @@ import static org.springframework.security.oauth2.core.oidc.OidcScopes.PROFILE;
 public class SynthWaveRegisteredClientPropertiesMapper {
 
     public RegisteredClient map(SynthWaveRegisteredClientProperties props){
+        var code = props.getCompanyCode();
+        var divi = props.getDivision();
         var registeredClientSettings = props.getRegisteredClientSettings();
         var clientSettings = finishBuildingClientSettings(registeredClientSettings.fabricateClientSettingsBuilder());
         var tokenSettings = props.getTokenSettings();
@@ -29,7 +32,11 @@ public class SynthWaveRegisteredClientPropertiesMapper {
                 .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(registeredClientSettings.getClientAuthenticationMethods()))
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(registeredClientSettings.getAuthorizationGrantTypes()));
         Optional.ofNullable(props.getPasswordExpireTime()).ifPresent(registeredClientBuilder::clientSecretExpiresAt);
-        return registeredClientBuilder.build();
+        return new SynthWaveRegisteredClientInstance(
+                code,
+                divi,
+                registeredClientBuilder.build()
+        );
     }
 
     private ClientSettings finishBuildingClientSettings(ClientSettings.Builder builder){

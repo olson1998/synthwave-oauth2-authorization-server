@@ -15,6 +15,8 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
     registeredClient.id,
+    affiliation.values.companyCode,
+    affiliation.values.division,
     registeredClient.clientId,
     user.username,
     password.id,
@@ -37,9 +39,8 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
-    ON affiliation.affiliation.companyCode=tokenSettings.affiliation.companyCode
-    AND affiliation.affiliation.division=tokenSettings.affiliation.division
-    AND affiliation.affiliation.role=tokenSettings.affiliation.role
+    ON affiliation.values.companyCode=tokenSettings.affiliation.companyCode
+    AND affiliation.values.division=tokenSettings.affiliation.division
     WHERE registeredClient.id=:registeredClientId
     AND password.latestVersion=true
     """)
@@ -48,6 +49,8 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
     registeredClient.id,
+    affiliation.values.companyCode,
+    affiliation.values.division,
     registeredClient.clientId,
     user.username,
     password.id,
@@ -70,9 +73,8 @@ interface SynthWaveRegisteredClientJpaRepository extends JpaRepository<SynthWave
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
-    ON affiliation.affiliation.companyCode=tokenSettings.affiliation.companyCode
-    AND affiliation.affiliation.division=tokenSettings.affiliation.division
-    AND affiliation.affiliation.role=tokenSettings.affiliation.role
+    ON affiliation.values.companyCode=tokenSettings.affiliation.companyCode
+    AND affiliation.values.division=tokenSettings.affiliation.division
     WHERE registeredClient.clientId=:clientId
     AND password.latestVersion=true
     """)

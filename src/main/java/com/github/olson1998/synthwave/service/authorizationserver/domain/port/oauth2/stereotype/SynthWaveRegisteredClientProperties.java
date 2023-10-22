@@ -12,6 +12,10 @@ public interface SynthWaveRegisteredClientProperties {
 
     TSID getRegisteredClientId();
 
+    String getCompanyCode();
+
+    String getDivision();
+
     String getClientId();
 
     String getUsername();

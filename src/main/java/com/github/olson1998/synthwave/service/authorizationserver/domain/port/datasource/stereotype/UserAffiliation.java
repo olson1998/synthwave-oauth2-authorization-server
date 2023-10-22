@@ -10,6 +10,4 @@ public interface UserAffiliation {
 
     String getDivision();
 
-    String getRole();
-
 }

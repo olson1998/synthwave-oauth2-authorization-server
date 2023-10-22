@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "USRAFF")
-public class UserAffiliationData implements Persistable<TSID>, UserAffiliation, Serializable {
+public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -61,10 +61,4 @@ public class UserAffiliationData implements Persistable<TSID>, UserAffiliation, 
                 .orElse(null);
     }
 
-    @Override
-    public String getRole() {
-        return Optional.ofNullable(affiliation)
-                .map(UserAffiliationValues::getRole)
-                .orElse(null);
-    }
 }

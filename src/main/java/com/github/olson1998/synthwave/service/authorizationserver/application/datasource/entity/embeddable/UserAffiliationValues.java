@@ -23,6 +23,4 @@ public class UserAffiliationValues implements Serializable {
     @Column(name = "DIVI")
     private String division;
 
-    @Column(name = "ROLE")
-    private String role;
 }

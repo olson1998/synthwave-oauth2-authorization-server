@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "PSSDTA")
-public class UserPasswordData implements Persistable<TSID>, Password {
+public class UserPasswordData implements Password, Persistable<TSID> {
 
     @Id
     @Tsid

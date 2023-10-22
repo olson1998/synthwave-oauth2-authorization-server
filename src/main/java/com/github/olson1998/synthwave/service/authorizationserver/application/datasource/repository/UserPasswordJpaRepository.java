@@ -7,8 +7,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 interface UserPasswordJpaRepository extends JpaRepository<UserPasswordData, TSID> {
+
+    @Query("SELECT password.id FROM UserPasswordData password WHERE password.latestVersion=true AND password.userId=:userId")
+    Optional<TSID> selectLatestPasswordIdByUserId(TSID userId);
 
     @Modifying
     @Query("UPDATE UserPasswordData password SET password.latestVersion=false WHERE password.id=:passwordId")

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAccountLock;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Ban;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "BANDTA")
-public class UserBanData implements Persistable<TSID>, UserAccountLock {
+public class UserBanData implements Ban, Persistable<TSID> {
 
     @Id
     @Tsid

@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -11,6 +12,7 @@ import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -20,7 +22,7 @@ import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 
 @Entity
 @Table(name = "RCLTDT")
-public class SynthWaveRegisteredClientData {
+public class SynthWaveRegisteredClientData implements SynthWaveRegisteredClient, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -37,4 +39,8 @@ public class SynthWaveRegisteredClientData {
     @Column(name = "RCLTNM", nullable = false)
     private String clientId;
 
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

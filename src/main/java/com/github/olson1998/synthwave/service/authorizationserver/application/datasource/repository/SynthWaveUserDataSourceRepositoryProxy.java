@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserDataSourceRepositoryProxy implements SynthWaveUserDataSourceRepository {
+public class SynthWaveUserDataSourceRepositoryProxy implements SynthWaveUserDataSourceRepository {
 
     private final SynthWaveUserJpaRepository userJpaRepository;
 

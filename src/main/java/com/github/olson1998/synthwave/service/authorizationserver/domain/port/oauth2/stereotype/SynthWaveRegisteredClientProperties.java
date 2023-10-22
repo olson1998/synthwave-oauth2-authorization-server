@@ -19,9 +19,12 @@ public interface SynthWaveRegisteredClientProperties {
 
     Instant getPasswordExpireTime();
 
+    SynthWaveClientRegisteredClientSettings getRegisteredClientSettings();
+
     Set<String> getRedirectUris();
 
     Set<String> getPostLogoutRedirectUris();
 
     void appendUnresolvedUris(Collection<RedirectUri> redirectUris);
+
 }

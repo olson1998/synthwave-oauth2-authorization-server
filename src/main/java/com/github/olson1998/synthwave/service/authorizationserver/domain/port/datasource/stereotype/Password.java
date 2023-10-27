@@ -15,5 +15,5 @@ public interface Password {
 
     Optional<Period> getOptionalExpirePeriod();
 
-    boolean isLatestVersion();
+    Boolean getLatestVersion();
 }

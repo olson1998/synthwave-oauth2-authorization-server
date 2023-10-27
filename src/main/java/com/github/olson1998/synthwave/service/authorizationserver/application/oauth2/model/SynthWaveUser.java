@@ -56,7 +56,7 @@ public class SynthWaveUser implements SynthWaveUserDetails {
         this.authorities = new HashSet<>();
         this.accountNonExpired =
                 isExpired(userId.getInstant(), accountExpirePeriod);
-        this.credentialsNonExpired = passwordData.isLatestVersion() ||
+        this.credentialsNonExpired = passwordData.getLatestVersion() ||
                  isPasswordExpired(passwordData);
     }
 

@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
 @ToString
 @RequiredArgsConstructor
 public class SynthWaveRegisteredClientInstance extends SynthWaveRegisteredClient {
@@ -24,6 +23,16 @@ public class SynthWaveRegisteredClientInstance extends SynthWaveRegisteredClient
     private final String division;
 
     private final RegisteredClient registeredClient;
+
+    @Override
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    @Override
+    public String getDivision() {
+        return division;
+    }
 
     @Override
     public String getId() {

@@ -28,6 +28,11 @@
             <groupId>com.github.olson1998.synthwave.support</groupId>
             <artifactId>synthwave-spring-data-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.olson1998.synthwave.support</groupId>
+            <artifactId>synthwave-jackson-databind-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- Utils -->
         <dependency>
             <groupId>org.bouncycastle</groupId>

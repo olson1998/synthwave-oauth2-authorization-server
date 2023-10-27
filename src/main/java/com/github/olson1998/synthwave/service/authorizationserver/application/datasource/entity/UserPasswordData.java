@@ -50,7 +50,7 @@ public class UserPasswordData implements Password, Persistable<TSID> {
     private Period expirePeriod;
 
     @Column(name = "PSSVER", nullable = false)
-    private boolean latestVersion;
+    private Boolean latestVersion;
 
     public UserPasswordData(TSID userId, String value, Period expirePeriod, boolean latestVersion) {
         this.userId = userId;

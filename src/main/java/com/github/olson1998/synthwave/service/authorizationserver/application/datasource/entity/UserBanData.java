@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Ban;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserBan;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "BANDTA")
-public class UserBanData implements Ban, Persistable<TSID> {
+public class UserBanData implements UserBan, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -42,7 +42,7 @@ public class UserBanData implements Ban, Persistable<TSID> {
     @Column(name = "BANTMP", nullable = false)
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimeWithTimeZoneJdbcType.class)
-    private MutableDateTime userBanTimestamp;
+    private MutableDateTime timestamp;
 
     @Override
     public boolean isNew() {

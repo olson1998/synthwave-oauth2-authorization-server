@@ -1,0 +1,34 @@
+package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
+
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.AuthorityDataSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RedirectUrisDataSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.SynthWaveRegisteredClientDataSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.SynthWaveUserDataSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveUserDetailsRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveRegisteredClientService;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveUserDetailsService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OAuth2RepositoriesConfig {
+
+    @Bean
+    public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(RedirectUrisDataSourceRepositoryProxy redirectUrisDataSourceRepositoryProxy,
+                                                                                   SynthWaveRegisteredClientDataSourceRepositoryProxy synthWaveRegisteredClientDataSourceRepositoryProxy){
+        return new SynthWaveRegisteredClientService(
+                redirectUrisDataSourceRepositoryProxy,
+                synthWaveRegisteredClientDataSourceRepositoryProxy
+        );
+    }
+
+    @Bean
+    public SynthWaveUserDetailsRepository synthWaveUserDetailsRepository(SynthWaveUserDataSourceRepositoryProxy synthWaveUserDataSourceRepositoryProxy,
+                                                                         AuthorityDataSourceRepositoryProxy authorityDataSourceRepositoryProxy){
+        return new SynthWaveUserDetailsService(
+                synthWaveUserDataSourceRepositoryProxy,
+                authorityDataSourceRepositoryProxy
+        );
+    }
+}

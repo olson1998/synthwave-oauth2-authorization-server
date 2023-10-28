@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClient;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -15,8 +15,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @ToString
+@EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
-public class SynthWaveRegisteredClientInstance extends SynthWaveRegisteredClient {
+public class SynthWaveOAuth2RegisteredClient extends SynthWaveRegisteredClient {
 
     private final String companyCode;
 
@@ -99,17 +100,4 @@ public class SynthWaveRegisteredClientInstance extends SynthWaveRegisteredClient
         return registeredClient.getTokenSettings();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        SynthWaveRegisteredClientInstance that = (SynthWaveRegisteredClientInstance) o;
-        return companyCode.equals(that.companyCode) && division.equals(that.division) && registeredClient.equals(that.registeredClient);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), companyCode, division, registeredClient);
-    }
 }

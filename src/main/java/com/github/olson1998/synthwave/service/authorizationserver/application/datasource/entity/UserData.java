@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.SynthWaveUser;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "USRIDN")
-public class SynthWaveUserData implements SynthWaveUser, Persistable<TSID> {
+public class UserData implements UserProperties, Persistable<TSID> {
 
     @Id
     @Tsid

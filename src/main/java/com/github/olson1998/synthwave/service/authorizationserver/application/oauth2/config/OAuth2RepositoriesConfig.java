@@ -2,8 +2,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.AuthorityDataSourceRepositoryProxy;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RedirectUrisDataSourceRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.SynthWaveRegisteredClientDataSourceRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.SynthWaveUserDataSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RegisteredClientPropertiesSourceRepositoryProxy;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.UserPropertiesDataSourceRepositoryProxy;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveUserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveRegisteredClientService;
@@ -16,7 +16,7 @@ public class OAuth2RepositoriesConfig {
 
     @Bean
     public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(RedirectUrisDataSourceRepositoryProxy redirectUrisDataSourceRepositoryProxy,
-                                                                                   SynthWaveRegisteredClientDataSourceRepositoryProxy synthWaveRegisteredClientDataSourceRepositoryProxy){
+                                                                                   RegisteredClientPropertiesSourceRepositoryProxy synthWaveRegisteredClientDataSourceRepositoryProxy){
         return new SynthWaveRegisteredClientService(
                 redirectUrisDataSourceRepositoryProxy,
                 synthWaveRegisteredClientDataSourceRepositoryProxy
@@ -24,7 +24,7 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
-    public SynthWaveUserDetailsRepository synthWaveUserDetailsRepository(SynthWaveUserDataSourceRepositoryProxy synthWaveUserDataSourceRepositoryProxy,
+    public SynthWaveUserDetailsRepository synthWaveUserDetailsRepository(UserPropertiesDataSourceRepositoryProxy synthWaveUserDataSourceRepositoryProxy,
                                                                          AuthorityDataSourceRepositoryProxy authorityDataSourceRepositoryProxy){
         return new SynthWaveUserDetailsService(
                 synthWaveUserDataSourceRepositoryProxy,

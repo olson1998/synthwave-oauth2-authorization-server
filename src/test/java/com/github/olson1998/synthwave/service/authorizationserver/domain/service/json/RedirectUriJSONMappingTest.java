@@ -1,16 +1,15 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.RedirectUriJson;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 
-class RedirectUriJSONMappingTest extends AuthorizationServerObjectMappingTest<RedirectUri> {
+class RedirectUriJSONMappingTest extends AuthorizationServerObjectMappingTest<RedirectURI> {
 
     protected RedirectUriJSONMappingTest() {
-        super(RedirectUri.class);
+        super(RedirectURI.class);
     }
 
     @Override
-    protected RedirectUri testSerializableObject() {
+    protected RedirectURI testSerializableObject() {
         return new RedirectUriJson(
                 RedirectUriJson.Type.POST_LOGIN,
                 "http://test/path/to/test"

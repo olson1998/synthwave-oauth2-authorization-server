@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
@@ -32,6 +32,6 @@ public interface SynthWaveRegisteredClientProperties {
 
     Set<String> getPostLogoutRedirectUris();
 
-    void appendUnresolvedUris(Collection<RedirectUri> redirectUris);
+    void appendUnresolvedUris(Collection<RedirectURI> redirectUris);
 
 }

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectUriScope;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectUrisValue;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -22,7 +22,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 
 @Entity
 @Table(name = "REDURI")
-public class RedirectUrisData implements RedirectUri, Persistable<RedirectUrisValue> {
+public class RedirectUrisData implements RedirectURI, Persistable<RedirectUrisValue> {
 
     @EmbeddedId
     private RedirectUrisValue redirect;
@@ -35,7 +35,7 @@ public class RedirectUrisData implements RedirectUri, Persistable<RedirectUrisVa
         this.redirect = new RedirectUrisValue(RedirectUriScope.valueOf(scope), redirectUri);
     }
 
-    public RedirectUrisData(RedirectUri redirectUri) {
+    public RedirectUrisData(RedirectURI redirectUri) {
         RedirectUriScope scope = null;
         if(redirectUri.isPostLogin()){
             scope = POST_LOGIN;

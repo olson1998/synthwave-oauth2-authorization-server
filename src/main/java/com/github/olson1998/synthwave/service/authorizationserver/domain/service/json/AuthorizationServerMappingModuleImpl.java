@@ -19,8 +19,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addSerializer(Authority.class, new AuthorityStdSerializer());
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
         mappings.addSerializer(Password.class, new PasswordStdSerializer());
-        mappings.addDeserializer(RedirectUri.class, new RedirectUriStdDeserializer());
-        mappings.addSerializer(RedirectUri.class, new RedirectUriStdSerializer());
+        mappings.addDeserializer(RedirectURI.class, new RedirectURIStdDeserializer());
+        mappings.addSerializer(RedirectURI.class, new RedirectURIStdSerializer());
         mappings.addDeserializer(UserAffiliation.class, new UserAffiliationStdDeserializer());
         mappings.addSerializer(UserAffiliation.class, new UserAffiliationStdSerializer());
         this.module = mappings;

@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectUri;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveClientRegisteredClientSettings;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
 import io.hypersistence.tsid.TSID;
@@ -10,8 +9,6 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
@@ -87,7 +84,7 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
     }
 
     @Override
-    public void appendUnresolvedUris(@NonNull Collection<RedirectUri> redirectUrisCollection) {
+    public void appendUnresolvedUris(@NonNull Collection<RedirectURI> redirectUrisCollection) {
         redirectUrisCollection.forEach(redirectUri -> {
             var uri = redirectUri.getRedirectUri();
             if(redirectUri.isPostLogin()){

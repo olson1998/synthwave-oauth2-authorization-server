@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AuthorityDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.SynthWaveUserDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveUserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @RequiredArgsConstructor
 public class SynthWaveUserDetailsService implements SynthWaveUserDetailsRepository {
 
-    private final SynthWaveUserDataSourceRepository userDataSourceRepository;
+    private final UserPropertiesSourceRepository userDataSourceRepository;
 
     private final AuthorityDataSourceRepository authorityDataSourceRepository;
 

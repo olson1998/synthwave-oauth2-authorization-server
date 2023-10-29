@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.model.exception;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.exception;
 
 public class UnknownRedirectURITypeException extends RuntimeException {
 

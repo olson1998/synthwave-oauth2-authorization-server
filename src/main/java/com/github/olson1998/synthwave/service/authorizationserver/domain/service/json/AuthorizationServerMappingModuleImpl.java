@@ -13,10 +13,6 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
 
     public AuthorizationServerMappingModuleImpl() {
         var mappings= new SimpleModule();
-        mappings.addDeserializer(AuthoritiesBinding.class, new AuthoritiesBindingsStdDeserializer());
-        mappings.addSerializer(AuthoritiesBinding.class, new AuthoritiesBindingsStdSerializer());
-        mappings.addDeserializer(Authority.class, new AuthorityStdDeserializer());
-        mappings.addSerializer(Authority.class, new AuthorityStdSerializer());
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
         mappings.addSerializer(Password.class, new PasswordStdSerializer());
         mappings.addDeserializer(RedirectURI.class, new RedirectURIStdDeserializer());

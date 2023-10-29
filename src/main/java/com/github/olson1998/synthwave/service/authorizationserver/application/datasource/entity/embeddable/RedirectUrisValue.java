@@ -21,11 +21,11 @@ public class RedirectUrisValue implements Serializable {
 
     private static final long serialVersionUID = -7539401279039610339L;
 
-    @Column(name = "URISCP")
+    @Column(name = "URISCP", nullable = false)
     @Enumerated(EnumType.STRING)
     private RedirectUriScope scope;
 
-    @Column(name = "URIVAL")
+    @Column(name = "URIVAL", nullable = false)
     private String uri;
 
     public RedirectUrisValue(@NonNull RedirectURI redirectUri) {

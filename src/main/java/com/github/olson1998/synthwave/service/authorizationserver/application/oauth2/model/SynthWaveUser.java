@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 @Getter
 public class SynthWaveUser implements SynthWaveUserDetails {

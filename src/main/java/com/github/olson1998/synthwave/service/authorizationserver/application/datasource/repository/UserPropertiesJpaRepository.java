@@ -15,9 +15,8 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser(
     user.id,
-    affiliation.affiliation.companyCode,
-    affiliation.affiliation.division,
-    affiliation.affiliation.role,
+    affiliation.properties.companyCode,
+    affiliation.properties.division,
     user.username,
     user.enabled,
     user.expirePeriod,

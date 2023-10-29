@@ -5,12 +5,10 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.AuthoritiesBindingsJson;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthoritiesBinding;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.AuthoritiesBindingsJson.AUTHORITIES_BINDINGS_CHILD_AUTHORITY_JSON_FIELD;
 import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.AuthoritiesBindingsJson.AUTHORITIES_BINDINGS_PARENT_AUTHORITY_JSON_FIELD;
 
 class AuthoritiesBindingsStdDeserializer extends AbstractObjectStdDeserializer<AuthoritiesBinding> {

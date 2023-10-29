@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface RegisteredClientDataJpaRepository extends JpaRepository<RegisteredClientData, TSID> {
+interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientData, TSID> {
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
@@ -49,8 +49,8 @@ interface RegisteredClientDataJpaRepository extends JpaRepository<RegisteredClie
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
     registeredClient.id,
-    affiliation.values.companyCode,
-    affiliation.values.division,
+    affiliation.properties.companyCode,
+    affiliation.properties.division,
     registeredClient.clientId,
     user.username,
     password.id,
@@ -73,8 +73,8 @@ interface RegisteredClientDataJpaRepository extends JpaRepository<RegisteredClie
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
-    ON affiliation.values.companyCode=tokenSettings.affiliation.companyCode
-    AND affiliation.values.division=tokenSettings.affiliation.division
+    ON affiliation.properties.companyCode=tokenSettings.properties.companyCode
+    AND affiliation.properties.division=tokenSettings.properties.division
     WHERE registeredClient.clientId=:clientId
     AND password.latestVersion=true
     """)

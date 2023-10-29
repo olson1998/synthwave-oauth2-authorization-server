@@ -14,7 +14,4 @@ public interface SynthWaveUserDetails extends UserDetails {
 
     String getDivision();
 
-    String getRole();
-
-    void grantAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities);
 }

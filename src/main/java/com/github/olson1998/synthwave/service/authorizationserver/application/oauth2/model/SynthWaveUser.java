@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 @Getter
@@ -19,8 +20,6 @@ public class SynthWaveUser implements SynthWaveUserDetails {
     private final String companyCode;
 
     private final String division;
-
-    private final String role;
 
     private final String username;
 
@@ -34,12 +33,9 @@ public class SynthWaveUser implements SynthWaveUserDetails {
 
     private final boolean credentialsNonExpired;
 
-    private final Collection<GrantedAuthority> authorities;
-
     public SynthWaveUser(TSID userId,
                          String companyCode,
                          String division,
-                         String role,
                          String username,
                          boolean enabled,
                          Period accountExpirePeriod,
@@ -48,16 +44,19 @@ public class SynthWaveUser implements SynthWaveUserDetails {
         this.userId = userId;
         this.companyCode = companyCode;
         this.division = division;
-        this.role = role;
         this.username = username;
         this.enabled = enabled;
         this.passwordData = passwordData;
         this.accountNonLocked = accountNonLocked;
-        this.authorities = new HashSet<>();
         this.accountNonExpired =
                 isExpired(userId.getInstant(), accountExpirePeriod);
         this.credentialsNonExpired = passwordData.getLatestVersion() ||
                  isPasswordExpired(passwordData);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -68,11 +67,6 @@ public class SynthWaveUser implements SynthWaveUserDetails {
     @Override
     public String getUsername() {
         return username;
-    }
-
-    @Override
-    public void grantAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
-        authorities.addAll(grantedAuthorities);
     }
 
     private boolean isPasswordExpired(Password password){

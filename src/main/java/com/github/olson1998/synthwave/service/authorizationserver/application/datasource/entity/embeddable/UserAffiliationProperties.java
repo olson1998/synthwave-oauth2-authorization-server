@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class UserAffiliationValues implements Serializable {
+public class UserAffiliationProperties implements Serializable {
 
     private static final long serialVersionUID = 4785745455719475260L;
     @Column(name = "CONO")

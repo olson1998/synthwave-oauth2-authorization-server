@@ -3,7 +3,6 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Authority;
 
 import java.io.IOException;
 

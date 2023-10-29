@@ -12,9 +12,9 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class RegisteredClientPropertiesSourceRepositoryProxy implements RegisteredClientPropertiesSourceRepository {
+public class RegisteredClientDataSourceRepositoryProxy implements RegisteredClientPropertiesSourceRepository {
 
-    private final RegisteredClientDataJpaRepository registeredClientDataJpaRepository;
+    private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 
     @Override
     public Optional<SynthWaveRegisteredClientProperties> getSynthWaveRegisteredClientPropsByClientId(String clientId) {

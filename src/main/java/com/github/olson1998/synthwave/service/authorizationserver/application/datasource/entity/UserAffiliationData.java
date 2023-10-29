@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationValues;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -15,7 +15,6 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.springframework.data.domain.Persistable;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 @Getter
@@ -35,7 +34,7 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
 
-    private UserAffiliationValues values;
+    private UserAffiliationProperties properties;
 
     @Override
     public TSID getId() {
@@ -49,15 +48,15 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
 
     @Override
     public String getCompanyCode() {
-        return Optional.ofNullable(values)
-                .map(UserAffiliationValues::getCompanyCode)
+        return Optional.ofNullable(properties)
+                .map(UserAffiliationProperties::getCompanyCode)
                 .orElse(null);
     }
 
     @Override
     public String getDivision() {
-        return Optional.ofNullable(values)
-                .map(UserAffiliationValues::getDivision)
+        return Optional.ofNullable(properties)
+                .map(UserAffiliationProperties::getDivision)
                 .orElse(null);
     }
 

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
-public interface OAuth2AuthorizationProperties {
+public interface AuthorizationProperties {
 
     String getId();
 
@@ -11,4 +11,7 @@ public interface OAuth2AuthorizationProperties {
     String getPrincipal();
 
     AuthorizationGrantType getAuthorizationGrantType();
+
+    String getAttributesJSON();
+
 }

@@ -1,13 +1,11 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.OAuth2TokenDesc;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.OAuth2TokenProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.TokenProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.*;
-import org.springframework.security.oauth2.core.AbstractOAuth2Token;
-import org.springframework.security.oauth2.core.OAuth2Token;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -19,13 +17,13 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-public class OAuth2TokenData implements OAuth2TokenProperties {
+public class OAuth2TokenData implements TokenProperties {
 
     @EmbeddedId
     private OAuth2TokenDesc description;
 
     @Column(name = "TKNVAL",nullable = false)
-    private String token;
+    private String value;
 
     @Column(name = "TKNIAT")
     private Instant issuedAt;
@@ -33,14 +31,17 @@ public class OAuth2TokenData implements OAuth2TokenProperties {
     @Column(name = "TKNEAT")
     private Instant expiresAt;
 
-    public OAuth2TokenData(@NonNull String authorizationId,@NonNull OAuth2Token oAuth2Token) {
+    @Column(name = "ADPROP")
+    private String additionalPropertiesJSON;
+
+    public OAuth2TokenData(@NonNull TokenProperties tokenProperties) {
         this.description = new OAuth2TokenDesc(
-                authorizationId,
-                oAuth2Token.getClass()
+                tokenProperties.getAuthorizationId(),
+                tokenProperties.getTokenClass()
         );
-        this.token = oAuth2Token.getTokenValue();
-        this.issuedAt = oAuth2Token.getIssuedAt();
-        this.expiresAt = oAuth2Token.getExpiresAt();
+        this.value = tokenProperties.getValue();
+        this.issuedAt = tokenProperties.getIssuedAt();
+        this.expiresAt = tokenProperties.getExpiresAt();
     }
 
     @Override
@@ -55,5 +56,10 @@ public class OAuth2TokenData implements OAuth2TokenProperties {
         return Optional.ofNullable(description)
                 .map(OAuth2TokenDesc::getTokenClass)
                 .orElse(null);
+    }
+
+    @Override
+    public Optional<String> getOptionalAdditionalPropertiesJSON() {
+        return Optional.ofNullable(additionalPropertiesJSON);
     }
 }

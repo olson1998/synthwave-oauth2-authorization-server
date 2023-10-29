@@ -1,11 +1,15 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.OAuth2AuthorizationPropertiesImpl;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.TokenProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2AuthorizationMapper;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2TokenMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2TokenMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.oauth2.core.*;
@@ -13,11 +17,8 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class OAuth2AuthorizationMapperImpl implements OAuth2AuthorizationMapper {
@@ -25,6 +26,8 @@ public class OAuth2AuthorizationMapperImpl implements OAuth2AuthorizationMapper 
     private final ObjectMapper objectMapper;
 
     private final OAuth2TokenMapper oAuth2TokenMapper;
+
+    private final RegisteredClientMapper registeredClientMapper;
 
     private static final Set<Class<? extends OAuth2Token>> OAUTH2_TOKENS = Set.of(
             Jwt.class,
@@ -51,13 +54,18 @@ public class OAuth2AuthorizationMapperImpl implements OAuth2AuthorizationMapper 
     }
 
     @Override
-    public OAuth2Authorization map(AuthorizationProperties properties, Collection<TokenProperties> tokenPropertiesCollection) {
-        var clientId = properties.getRegisteredClientId();
-        var registeredClient = RegisteredClient.withId(clientId).build();
+    public OAuth2Authorization map(@NonNull RegisteredClientConfig registeredClientConfig,
+                                   @NonNull AuthorizationProperties properties,
+                                   @NonNull Collection<TokenProperties> tokenPropertiesCollection) {
+        var registeredClient = registeredClientMapper.map(registeredClientConfig);
         var tokens = oAuth2TokenMapper.read(tokenPropertiesCollection);
+        var attributes = Optional.ofNullable(properties.getAttributesJSON())
+                .map(json -> deserializeJSON(json, new TypeReference<Map<String, Object>>() {
+                })).orElseGet(Collections::emptyMap);
         var oauth2Authorization = OAuth2Authorization.withRegisteredClient(registeredClient)
                 .id(properties.getId())
                 .principalName(properties.getPrincipal())
+                .attributes(authorizationAttributes -> authorizationAttributes.putAll(attributes))
                 .authorizationGrantType(properties.getAuthorizationGrantType());
         tokens.resolveOptionalAccessToken().ifPresent(oauth2Authorization::accessToken);
         tokens.resolveOptionalRefreshToken().ifPresent(oauth2Authorization::refreshToken);
@@ -82,5 +90,10 @@ public class OAuth2AuthorizationMapperImpl implements OAuth2AuthorizationMapper 
     @SneakyThrows
     private String serializePOJO(Object pojo){
         return objectMapper.writeValueAsString(pojo);
+    }
+
+    @SneakyThrows
+    private <T> T deserializeJSON(String json, TypeReference<T> typeReference){
+        return objectMapper.readValue(json, typeReference);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultRegisteredClient;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -11,13 +11,12 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.Set;
 
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @RequiredArgsConstructor
-public class SynthWaveOAuth2RegisteredClient extends SynthWaveRegisteredClient {
+public class SynthWaveOAuth2RegisteredClient extends DefaultRegisteredClient {
 
     private final String companyCode;
 

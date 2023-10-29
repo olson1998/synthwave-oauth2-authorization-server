@@ -78,5 +78,5 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     WHERE registeredClient.clientId=:clientId
     AND password.latestVersion=true
     """)
-    Optional<SynthWaveRegisteredClientPropertiesImpl> selectSynthWaveRegisteredClientByClientId(String clientId);
+    Optional<SynthWaveRegisteredClientPropertiesImpl> selectRegisteredClientConfigByClientId(String clientId);
 }

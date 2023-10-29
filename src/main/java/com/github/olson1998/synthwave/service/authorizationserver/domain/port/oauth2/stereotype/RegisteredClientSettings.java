@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 
 import java.util.Set;
 
-public interface SynthWaveClientRegisteredClientSettings {
+public interface RegisteredClientSettings {
 
     boolean isHuman();
 

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveClientRegisteredClientSettings;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSettings;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import static org.springframework.security.oauth2.core.ClientAuthenticationMetho
 @Getter
 @ToString
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum RegisteredClientType implements SynthWaveClientRegisteredClientSettings {
+public enum RegisteredClientType implements RegisteredClientSettings {
 
     HUMAN(true, false, Set.of(AUTHORIZATION_CODE, JWT_BEARER, REFRESH_TOKEN), Set.of(CLIENT_SECRET_POST, CLIENT_SECRET_BASIC, NONE)
     ),

@@ -2,7 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-public interface SynthWaveClient {
+public abstract class DefaultRegisteredClient extends RegisteredClient {
 
-    RegisteredClient buildRegisteredClient();
+    public abstract String getCompanyCode();
+
+    public abstract String getDivision();
 }

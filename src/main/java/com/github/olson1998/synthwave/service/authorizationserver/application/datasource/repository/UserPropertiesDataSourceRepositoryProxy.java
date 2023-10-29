@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserDetails;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class UserPropertiesDataSourceRepositoryProxy implements UserPropertiesSo
     }
 
     @Override
-    public Optional<SynthWaveUserDetails> getSynthWaveUserByUsername(String username) {
+    public Optional<DefaultUserDetails> getSynthWaveUserByUsername(String username) {
         return userJpaRepository.selectSynthWaveUserByUsername(username)
-                .map(SynthWaveUserDetails.class::cast);
+                .map(DefaultUserDetails.class::cast);
     }
 }

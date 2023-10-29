@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientProperites;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,15 +17,15 @@ public class RegisteredClientDataSourceRepositoryProxy implements RegisteredClie
     private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 
     @Override
-    public Optional<SynthWaveRegisteredClientProperties> getSynthWaveRegisteredClientPropsByClientId(String clientId) {
-        return registeredClientDataJpaRepository.selectSynthWaveRegisteredClientByClientId(clientId)
-                .map(SynthWaveRegisteredClientProperties.class::cast);
+    public Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String clientId) {
+        return registeredClientDataJpaRepository.selectRegisteredClientConfigByClientId(clientId)
+                .map(RegisteredClientConfig.class::cast);
     }
 
     @Override
-    public Optional<SynthWaveRegisteredClientProperties> getSynthWaveRegisteredClientPropsByRegisteredClientId(TSID registeredClientId) {
+    public Optional<RegisteredClientConfig> getSynthWaveRegisteredClientPropsByRegisteredClientId(TSID registeredClientId) {
         return registeredClientDataJpaRepository.selectSynthWaveRegisteredClientByRegisteredClientId(registeredClientId)
-                .map(SynthWaveRegisteredClientProperties.class::cast);
+                .map(RegisteredClientConfig.class::cast);
     }
 
     @Override

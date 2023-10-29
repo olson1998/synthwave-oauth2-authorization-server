@@ -2,5 +2,5 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface SynthWaveUserDetailsRepository extends UserDetailsService {
+public interface UserDetailsRepository extends UserDetailsService {
 }

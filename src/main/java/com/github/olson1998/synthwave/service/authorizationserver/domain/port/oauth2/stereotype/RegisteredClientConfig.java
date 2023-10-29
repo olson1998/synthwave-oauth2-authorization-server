@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Set;
 
-public interface SynthWaveRegisteredClientProperties {
+public interface RegisteredClientConfig {
 
     TSID getRegisteredClientId();
 
@@ -24,7 +24,7 @@ public interface SynthWaveRegisteredClientProperties {
 
     Instant getPasswordExpireTime();
 
-    SynthWaveClientRegisteredClientSettings getRegisteredClientSettings();
+    RegisteredClientSettings getRegisteredClientSettings();
 
     TokenSettings getTokenSettings();
 
@@ -32,6 +32,6 @@ public interface SynthWaveRegisteredClientProperties {
 
     Set<String> getPostLogoutRedirectUris();
 
-    void appendUnresolvedUris(Collection<RedirectURI> redirectUris);
+    RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris);
 
 }

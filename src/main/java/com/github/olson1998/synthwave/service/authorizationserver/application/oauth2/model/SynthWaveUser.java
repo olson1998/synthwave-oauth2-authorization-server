@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserDetails;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
 import org.joda.time.Period;
@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Getter
-public class SynthWaveUser implements SynthWaveUserDetails {
+public class SynthWaveUser implements DefaultUserDetails {
 
     private final TSID userId;
 

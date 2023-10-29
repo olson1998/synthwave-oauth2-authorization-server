@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveJwtCustomizer;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.JwtCustomizer;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveOAuth2JwtCustomizer;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -24,7 +24,7 @@ import java.util.UUID;
 public class JWTConfig {
 
     @Bean
-    public SynthWaveJwtCustomizer synthWaveJwtCustomizer(){
+    public JwtCustomizer synthWaveJwtCustomizer(){
         return new SynthWaveOAuth2JwtCustomizer();
     }
 
@@ -55,9 +55,9 @@ public class JWTConfig {
 
     @Bean
     public JwtGenerator jwtGenerator(JwtEncoder jwtEncoder,
-                                     SynthWaveJwtCustomizer synthWaveJwtCustomizer){
+                                     JwtCustomizer jwtCustomizer){
         var generator = new JwtGenerator(jwtEncoder);
-        generator.setJwtCustomizer(synthWaveJwtCustomizer);
+        generator.setJwtCustomizer(jwtCustomizer);
         return generator;
     }
 

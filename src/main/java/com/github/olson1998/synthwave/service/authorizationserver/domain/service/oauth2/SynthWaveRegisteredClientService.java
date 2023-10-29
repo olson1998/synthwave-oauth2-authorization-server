@@ -7,8 +7,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClientRepository {
+public class SynthWaveRegisteredClientService implements RegisteredClientRepository {
+
+    private final RegisteredClientMapper registeredClientMapper;
 
     private final RedirectUrisDataSourceRepository redirectUrisDataSourceRepository;
 
     private final UserPropertiesSourceRepository userPropertiesSourceRepository;
 
     private final RegisteredClientPropertiesSourceRepository registeredClientPropertiesSourceRepository;
-
-    private final SynthWaveRegisteredClientPropertiesMapper synthWaveRegisteredClientPropertiesMapper =
-            new SynthWaveRegisteredClientPropertiesMapper();
 
     @Override
     public void save(@NonNull RegisteredClient registeredClient) {
@@ -58,23 +58,17 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
         var longId = Long.getLong(id);
         var tsid = TSID.from(longId);
         return registeredClientPropertiesSourceRepository.getSynthWaveRegisteredClientPropsByRegisteredClientId(tsid)
-                .map(this::mapRedirectUris)
-                .map(synthWaveRegisteredClientPropertiesMapper::map)
+                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                .map(registeredClientMapper::map)
                 .orElse(null);
     }
 
     @Override
     public RegisteredClient findByClientId(String clientId) {
-        return registeredClientPropertiesSourceRepository.getSynthWaveRegisteredClientPropsByClientId(clientId)
-                .map(this::mapRedirectUris)
-                .map(synthWaveRegisteredClientPropertiesMapper::map)
+        return registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(clientId)
+                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                .map(registeredClientMapper::map)
                 .orElse(null);
-    }
-
-    private SynthWaveRegisteredClientProperties mapRedirectUris(SynthWaveRegisteredClientProperties synthWaveRegisteredClientProperties) {
-        var redirectUris = redirectUrisDataSourceRepository.getAllRedirectUris();
-        synthWaveRegisteredClientProperties.appendUnresolvedUris(redirectUris);
-        return synthWaveRegisteredClientProperties;
     }
 
     private Set<RedirectURI> concatRedirectUris(Set<String> redirectUris, Set<String> postLogoutRedirectUris){

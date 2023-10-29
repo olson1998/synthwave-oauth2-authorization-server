@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveClientRegisteredClientSettings;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveRegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSettings;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,7 +22,7 @@ import java.util.Set;
 
 @Getter
 @ToString
-public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegisteredClientProperties {
+public class SynthWaveRegisteredClientPropertiesImpl implements RegisteredClientConfig {
 
     private final TSID registeredClientId;
 
@@ -38,7 +38,7 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
 
     private final Instant passwordExpireTime;
 
-    private final SynthWaveClientRegisteredClientSettings registeredClientSettings;
+    private final RegisteredClientSettings registeredClientSettings;
 
     private final TokenSettings tokenSettings;
 
@@ -54,7 +54,7 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
                                                    TSID passwordId,
                                                    String passwordValue,
                                                    Period passwordExpirePeriod,
-                                                   SynthWaveClientRegisteredClientSettings registeredClientSettings,
+                                                   RegisteredClientSettings registeredClientSettings,
                                                    Period authorizationCodeExpirePeriod,
                                                    Period accessTokenExpirePeriod,
                                                    OAuth2TokenFormat accessTokenFormat,
@@ -84,7 +84,12 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
     }
 
     @Override
-    public void appendUnresolvedUris(@NonNull Collection<RedirectURI> redirectUrisCollection) {
+    public RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris) {
+        appendUnresolvedUris(redirectUris);
+        return this;
+    }
+
+    private void appendUnresolvedUris(@NonNull Collection<RedirectURI> redirectUrisCollection) {
         redirectUrisCollection.forEach(redirectUri -> {
             var uri = redirectUri.getRedirectUri();
             if(redirectUri.isPostLogin()){
@@ -133,4 +138,5 @@ public class SynthWaveRegisteredClientPropertiesImpl implements SynthWaveRegiste
                     return Duration.ofMillis(expireMilis);
                 }).orElse(null);
     }
+
 }

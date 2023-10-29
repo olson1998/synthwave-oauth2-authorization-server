@@ -6,7 +6,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.OAuth2TokenPropertiesImpl;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.OAuth2TokensImpl;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.TokenProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2TokenMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2TokenMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2Tokens;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

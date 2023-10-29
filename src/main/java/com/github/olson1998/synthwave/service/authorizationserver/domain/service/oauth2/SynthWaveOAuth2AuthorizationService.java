@@ -2,10 +2,12 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2AuthorizationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2TokenDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveOAuth2AuthorizationService;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2AuthorizationMapper;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2TokenMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2TokenMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +18,19 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 
 @Slf4j
 @RequiredArgsConstructor
-public class SynthWaveDefaultOAuth2AuthorizationService implements SynthWaveOAuth2AuthorizationService {
+public class SynthWaveOAuth2AuthorizationService implements OAuth2AuthorizationRepository {
 
     private final OAuth2TokenMapper oAuth2TokenMapper;
 
     private final OAuth2AuthorizationMapper oAuth2AuthorizationMapper;
 
+    private final OAuth2TokenDataSourceRepository oAuth2TokenDataSourceRepository;
+
+    private final RedirectUrisDataSourceRepository redirectUrisDataSourceRepository;
+
     private final OAuth2AuthorizationDataSourceRepository oAuth2AuthorizationDataSourceRepository;
 
-    private final OAuth2TokenDataSourceRepository oAuth2TokenDataSourceRepository;
+    private final RegisteredClientPropertiesSourceRepository registeredClientPropertiesSourceRepository;
 
     @Override
     public void save(@NonNull OAuth2Authorization authorization) {
@@ -76,6 +82,9 @@ public class SynthWaveDefaultOAuth2AuthorizationService implements SynthWaveOAut
     private OAuth2Authorization mapToOAuth2Authorization(AuthorizationProperties authorizationProperties){
         var authorizationId = authorizationProperties.getId();
         var tokens = oAuth2TokenDataSourceRepository.getTokensByAuthorizationId(authorizationId);
-        return oAuth2AuthorizationMapper.map(authorizationProperties, tokens);
+        var registeredClientConfig = registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(authorizationProperties.getRegisteredClientId())
+                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                .orElseThrow();
+        return oAuth2AuthorizationMapper.map(registeredClientConfig, authorizationProperties, tokens);
     }
 }

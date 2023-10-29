@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserPasswordDataSourceRepositoryProxy implements UserPasswordDataSourceRepository {
+public class UserPasswordJpaRepositoryProxy implements UserPasswordDataSourceRepository {
 
     private final UserPasswordJpaRepository userPasswordJpaRepository;
 }

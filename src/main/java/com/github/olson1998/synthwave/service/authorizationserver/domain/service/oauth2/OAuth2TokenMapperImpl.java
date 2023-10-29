@@ -14,6 +14,7 @@ import lombok.SneakyThrows;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode;
 
 import java.util.*;
@@ -22,15 +23,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OAuth2TokenMapperImpl implements OAuth2TokenMapper {
 
-    public static final String JWT_HEADERS_PROP = "headers";
-
-    public static final String JWT_CLAIMS_PROP = "claims";
-
     public static final String ACCESS_TOKEN_TYPE_PROP = "type";
 
     public static final String ACCESS_TOKEN_SCOPES_PROP = "scopes";
 
     public static final String OIDC_ID_TOKEN_CLAIMS_PROPS = "claims";
+
+    private final JwtDecoder jwtDecoder;
 
     private final ObjectMapper objectMapper;
 
@@ -52,17 +51,8 @@ public class OAuth2TokenMapperImpl implements OAuth2TokenMapper {
     public OAuth2Token read(@NonNull TokenProperties tokenProperties) {
         var clazz = tokenProperties.getTokenClass();
         if(clazz.equals(Jwt.class)){
-            var jwtPropsJson = tokenProperties.getOptionalAdditionalPropertiesJSON()
-                    .orElseThrow();
-            var jwtProps = deserializeJSON(jwtPropsJson, new TypeReference<Map<String, Map<String, Object>>>() {
-            });
-            return new Jwt(
-                    tokenProperties.getValue(),
-                    tokenProperties.getIssuedAt(),
-                    tokenProperties.getExpiresAt(),
-                    jwtProps.get(JWT_HEADERS_PROP),
-                    jwtProps.get(JWT_CLAIMS_PROP)
-            );
+            var jwt = tokenProperties.getValue();
+            return jwtDecoder.decode(jwt);
         } else if (clazz.equals(OAuth2AccessToken.class)) {
             var jwtPropsJson = tokenProperties.getOptionalAdditionalPropertiesJSON()
                     .orElseThrow();
@@ -116,12 +106,7 @@ public class OAuth2TokenMapperImpl implements OAuth2TokenMapper {
 
     private TokenProperties mapToken(String authorizationId, OAuth2Token oAuth2Token){
         Object additionalProps = null;
-        if(oAuth2Token instanceof Jwt jwt){
-            var props = new HashMap<String, Map<String, Object>>();
-            props.put(JWT_HEADERS_PROP, jwt.getHeaders());
-            props.put(JWT_CLAIMS_PROP, jwt.getClaims());
-            additionalProps = props;
-        } else if (oAuth2Token instanceof OAuth2AccessToken oAuth2AccessToken) {
+        if (oAuth2Token instanceof OAuth2AccessToken oAuth2AccessToken) {
             additionalProps = new OAuth2AccessTokenPayload(
                     oAuth2AccessToken.getTokenType(),
                     oAuth2AccessToken.getScopes()

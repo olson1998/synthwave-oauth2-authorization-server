@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class RegisteredClientDataSourceRepositoryProxy implements RegisteredClientPropertiesSourceRepository {
+public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPropertiesSourceRepository {
 
     private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 

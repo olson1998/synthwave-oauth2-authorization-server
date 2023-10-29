@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserBanDataSourceRepositoryProxy {
+public class UserBanJpaRepositoryProxy {
 
     private final UserBanJpaRepository userBanJpaRepository;
 }

@@ -1,31 +1,68 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RedirectUrisDataSourceRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RegisteredClientDataSourceRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.UserPropertiesDataSourceRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveRegisteredClientService;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.SynthWaveUserDetailsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2TokenDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 
 @Configuration
 public class OAuth2RepositoriesConfig {
 
     @Bean
-    public RegisteredClientRepository synthWaveRegisteredClientRepository(UserPropertiesDataSourceRepositoryProxy userPropertiesSourceRepository,
-                                                                          RedirectUrisDataSourceRepositoryProxy redirectUrisDataSourceRepositoryProxy,
-                                                                          RegisteredClientDataSourceRepositoryProxy synthWaveRegisteredClientDataSourceRepositoryProxy){
+    public OAuth2TokenMapper oAuth2TokenMapper(JwtDecoder jwtDecoder,
+                                               ObjectMapper objectMapper){
+        return new OAuth2TokenMapperImpl(jwtDecoder, objectMapper);
+    }
+
+    @Bean
+    public RegisteredClientMapper registeredClientMapper(){
+        return new RegisteredClientMapperImpl();
+    }
+
+    @Bean
+    public OAuth2AuthorizationMapper oAuth2AuthorizationMapper(ObjectMapper objectMapper,
+                                                               OAuth2TokenMapper oAuth2TokenMapper,
+                                                               RegisteredClientMapper registeredClientMapper){
+        return new OAuth2AuthorizationMapperImpl(objectMapper, oAuth2TokenMapper, registeredClientMapper);
+    }
+
+    @Bean
+    public RegisteredClientRepository synthWaveRegisteredClientRepository(RegisteredClientMapper registeredClientMapper,
+                                                                          UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
+                                                                          RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
+                                                                          RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy){
         return new SynthWaveRegisteredClientService(
-                redirectUrisDataSourceRepositoryProxy,
+                registeredClientMapper,
+                redirectURIsJpaRepositoryProxy,
                 userPropertiesSourceRepository,
-                synthWaveRegisteredClientDataSourceRepositoryProxy
+                synthWaveRegisteredClientJpaRepositoryProxy
         );
     }
 
     @Bean
-    public UserDetailsRepository synthWaveUserDetailsRepository(UserPropertiesDataSourceRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
+    public UserDetailsRepository synthWaveUserDetailsRepository(UserPropertiesJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
         return new SynthWaveUserDetailsService(synthWaveUserDataSourceRepositoryProxy);
+    }
+
+    @Bean
+    public OAuth2AuthorizationRepository oAuth2AuthorizationRepository(OAuth2TokenMapper oAuth2TokenMapper,
+                                                                       OAuth2AuthorizationMapper oAuth2AuthorizationMapper,
+                                                                       OAuth2TokenJpaRepositoryProxy oAuth2TokenJpaRepositoryProxy,
+                                                                       RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
+                                                                       OAuth2AuthorizationJpaRepositoryProxy oAuth2AuthorizationJpaRepositoryProxy,
+                                                                       RegisteredClientJpaRepositoryProxy registeredClientJpaRepositoryProxy){
+        return new SynthWaveOAuth2AuthorizationService(
+                oAuth2TokenMapper,
+                oAuth2AuthorizationMapper,
+                oAuth2TokenJpaRepositoryProxy,
+                redirectURIsJpaRepositoryProxy,
+                oAuth2AuthorizationJpaRepositoryProxy,
+                registeredClientJpaRepositoryProxy
+        );
     }
 }

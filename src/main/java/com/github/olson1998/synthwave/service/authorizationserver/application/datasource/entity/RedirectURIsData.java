@@ -22,20 +22,20 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 
 @Entity
 @Table(name = "REDURI")
-public class RedirectUrisData implements RedirectURI, Persistable<RedirectUrisValue> {
+public class RedirectURIsData implements RedirectURI, Persistable<RedirectUrisValue> {
 
     @EmbeddedId
     private RedirectUrisValue redirect;
 
-    public RedirectUrisData(RedirectUriScope scope, String redirectUri) {
+    public RedirectURIsData(RedirectUriScope scope, String redirectUri) {
         this.redirect = new RedirectUrisValue(scope, redirectUri);
     }
 
-    public RedirectUrisData(String scope, String redirectUri) {
+    public RedirectURIsData(String scope, String redirectUri) {
         this.redirect = new RedirectUrisValue(RedirectUriScope.valueOf(scope), redirectUri);
     }
 
-    public RedirectUrisData(RedirectURI redirectUri) {
+    public RedirectURIsData(@NonNull RedirectURI redirectUri) {
         RedirectUriScope scope = null;
         if(redirectUri.isPostLogin()){
             scope = POST_LOGIN;

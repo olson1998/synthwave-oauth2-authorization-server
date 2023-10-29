@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectUrisData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIsData;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectUrisValue;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
@@ -12,9 +12,9 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor
-public class RedirectUrisDataSourceRepositoryProxy implements RedirectUrisDataSourceRepository {
+public class RedirectURIsJpaRepositoryProxy implements RedirectUrisDataSourceRepository {
 
-    private final RedirectUrisJpaRepository redirectUrisJpaRepository;
+    private final RedirectURIsJpaRepository redirectUrisJpaRepository;
 
     @Override
     public Collection<RedirectURI> getAllRedirectUris() {
@@ -37,7 +37,7 @@ public class RedirectUrisDataSourceRepositoryProxy implements RedirectUrisDataSo
     @Override
     public void saveAll(@NonNull Collection<RedirectURI> redirectUris) {
         var data = redirectUris.stream()
-                .map(RedirectUrisData::new)
+                .map(RedirectURIsData::new)
                 .toList();
         redirectUrisJpaRepository.saveAll(data);
     }

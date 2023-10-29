@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.JwtCustomizer;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultRegisteredClient;
+import lombok.NonNull;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
 public class SynthWaveOAuth2JwtCustomizer implements JwtCustomizer {
@@ -11,7 +12,7 @@ public class SynthWaveOAuth2JwtCustomizer implements JwtCustomizer {
     public static final String DIVISION_CLAIM = "divi";
 
     @Override
-    public void customize(JwtEncodingContext context) {
+    public void customize(@NonNull JwtEncodingContext context) {
         if(context.getRegisteredClient() instanceof DefaultRegisteredClient defaultRegisteredClient){
             context.getClaims()
                     .claim(COMPANY_CODE_CLAIM, defaultRegisteredClient.getCompanyCode())

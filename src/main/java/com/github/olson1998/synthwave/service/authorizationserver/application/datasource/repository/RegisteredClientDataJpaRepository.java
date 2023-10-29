@@ -32,7 +32,7 @@ interface RegisteredClientDataJpaRepository extends JpaRepository<RegisteredClie
     tokenSettings.idTokenSignatureAlgorithm
     )
     FROM RegisteredClientData registeredClient
-    LEFT OUTER JOIN SynthWaveUserData user
+    LEFT OUTER JOIN UserData user
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId
@@ -66,7 +66,7 @@ interface RegisteredClientDataJpaRepository extends JpaRepository<RegisteredClie
     tokenSettings.idTokenSignatureAlgorithm
     )
     FROM RegisteredClientData registeredClient
-    LEFT OUTER JOIN SynthWaveUserData user
+    LEFT OUTER JOIN UserData user
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId

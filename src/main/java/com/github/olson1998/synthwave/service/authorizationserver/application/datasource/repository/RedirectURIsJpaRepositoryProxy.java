@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIsData;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectUrisValue;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor
-public class RedirectURIsJpaRepositoryProxy implements RedirectUrisDataSourceRepository {
+public class RedirectURIsJpaRepositoryProxy implements RedirectURIsDataSourceRepository {
 
     private final RedirectURIsJpaRepository redirectUrisJpaRepository;
 

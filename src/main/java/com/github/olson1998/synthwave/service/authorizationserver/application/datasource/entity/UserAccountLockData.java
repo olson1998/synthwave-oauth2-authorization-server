@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserBan;
-import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAccountLock;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -13,8 +12,6 @@ import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
-import org.hibernate.type.descriptor.jdbc.TimeWithTimeZoneJdbcType;
-import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
 @Getter
@@ -24,25 +21,20 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "BANDTA")
-public class UserBanData implements UserBan, Persistable<TSID> {
+@Table(name = "ACCLOC")
+public class UserAccountLockData implements UserAccountLock, Persistable<TSID> {
 
     @Id
     @Tsid
-    @Column(name = "BANID")
+    @Column(name = "LOCKID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID id;
 
-    @Column(name = "UID")
+    @Column(name = "UID", unique = true)
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
-
-    @Column(name = "BANTMP", nullable = false)
-    @JavaType(MutableDateTimeJavaType.class)
-    @JdbcType(TimeWithTimeZoneJdbcType.class)
-    private MutableDateTime timestamp;
 
     @Override
     public boolean isNew() {

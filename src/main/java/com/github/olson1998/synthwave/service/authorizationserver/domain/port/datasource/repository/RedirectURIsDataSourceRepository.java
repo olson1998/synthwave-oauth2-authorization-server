@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 
 import java.util.Collection;
 
-public interface RedirectUrisDataSourceRepository {
+public interface RedirectURIsDataSourceRepository {
 
     Collection<RedirectURI> getAllRedirectUris();
 

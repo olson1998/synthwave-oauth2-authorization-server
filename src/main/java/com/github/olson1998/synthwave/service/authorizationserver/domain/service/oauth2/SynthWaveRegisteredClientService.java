@@ -3,13 +3,12 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientProps;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class SynthWaveRegisteredClientService implements RegisteredClientReposit
 
     private final RegisteredClientMapper registeredClientMapper;
 
-    private final RedirectUrisDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
 
     private final UserPropertiesSourceRepository userPropertiesSourceRepository;
 
@@ -47,7 +46,7 @@ public class SynthWaveRegisteredClientService implements RegisteredClientReposit
         var id = Long.parseLong(registeredClient.getId());
         var userProps = userPropertiesSourceRepository.getUserPropertiesByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
-        var registeredClientProps = new RegisteredClientProps(TSID.from(id), userProps.getId(), clientId);
+        var registeredClientProps = new RegisteredClientProps(TSID.from(id), userProps.getId(), clientId );
         var concatRedirectUri = concatRedirectUris(redirectUris, postLogoutRedirectUris);
         registeredClientPropertiesSourceRepository.save(registeredClientProps);
         redirectUrisDataSourceRepository.saveAll(redirectUrisDataSourceRepository.getAllNotPresentRedirectUris(concatRedirectUri));
@@ -57,7 +56,7 @@ public class SynthWaveRegisteredClientService implements RegisteredClientReposit
     public RegisteredClient findById(String id) {
         var longId = Long.getLong(id);
         var tsid = TSID.from(longId);
-        return registeredClientPropertiesSourceRepository.getSynthWaveRegisteredClientPropsByRegisteredClientId(tsid)
+        return registeredClientPropertiesSourceRepository.getRegisteredClientConfigByRegisteredClientId(tsid)
                 .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
                 .map(registeredClientMapper::map)
                 .orElse(null);

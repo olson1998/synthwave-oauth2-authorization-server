@@ -17,10 +17,10 @@ import java.io.Serializable;
 public class UserAffiliationProperties implements Serializable {
 
     private static final long serialVersionUID = 4785745455719475260L;
-    @Column(name = "CONO")
+    @Column(name = "CODE", length = 10, nullable = false)
     private String companyCode;
 
-    @Column(name = "DIVI")
+    @Column(name = "DIVI", length = 3, nullable = false)
     private String division;
 
 }

@@ -5,7 +5,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -17,7 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-public class OAuth2TokenData implements TokenProperties {
+@Table(name = "O2TOKN")
+public class OAuth2TokenData implements TokenProperties, Persistable<OAuth2TokenDesc> {
 
     @EmbeddedId
     private OAuth2TokenDesc description;
@@ -61,5 +64,15 @@ public class OAuth2TokenData implements TokenProperties {
     @Override
     public Optional<String> getOptionalAdditionalPropertiesJSON() {
         return Optional.ofNullable(additionalPropertiesJSON);
+    }
+
+    @Override
+    public OAuth2TokenDesc getId() {
+        return description;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 }

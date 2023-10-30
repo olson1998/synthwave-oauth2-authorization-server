@@ -27,7 +27,7 @@ public class OAuth2TokenDesc implements Serializable {
     @Column(name = "AUTHID", nullable = false)
     private String authorizationId;
 
-    @Column(name = "AUHCLS", nullable = false)
+    @Column(name = "JVCLASS", nullable = false)
     @JavaType(ClassJavaType.class)
     @JdbcType(VarcharJdbcType.class)
     private Class<?> tokenClass;

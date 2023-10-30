@@ -29,10 +29,6 @@ public class RegisteredClientData implements RegisteredClientProperites, Persist
     @JavaType(TSIDJavaType.class)
     private TSID id;
 
-    @Column(name = "RCTYPE", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private RegisteredClientType type;
-
     @Column(name = "UID", nullable = false)
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
@@ -41,7 +37,11 @@ public class RegisteredClientData implements RegisteredClientProperites, Persist
     @Column(name = "RCLTNM", nullable = false)
     private String clientId;
 
-    public RegisteredClientData(RegisteredClientProperites registeredClientProperites) {
+    @Column(name = "RCTYPE", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private RegisteredClientType type;
+
+    public RegisteredClientData(@NonNull RegisteredClientProperites registeredClientProperites) {
         this.id = registeredClientProperites.getId();
         this.type = null;
         this.userId = registeredClientProperites.getUserId();

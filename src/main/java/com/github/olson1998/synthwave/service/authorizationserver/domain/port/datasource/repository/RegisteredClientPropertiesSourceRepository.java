@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface RegisteredClientPropertiesSourceRepository {
 
-    Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String clientId);
+    Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String username);
 
-    Optional<RegisteredClientConfig> getSynthWaveRegisteredClientPropsByRegisteredClientId(TSID registeredClientId);
+    Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId);
 
     void save(RegisteredClientProperites registeredClientProperites);
 }

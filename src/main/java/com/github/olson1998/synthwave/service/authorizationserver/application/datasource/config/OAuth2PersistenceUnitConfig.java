@@ -5,12 +5,18 @@ import com.github.olson1998.synthwave.support.migration.service.MigrationService
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+@EnableJpaRepositories(
+        basePackages = "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository",
+        entityManagerFactoryRef = "oauth2PersistenceUnitEntityManagerFactory",
+        transactionManagerRef = "oauth2PersistenceUnitPlatformTransactionManager"
+)
 @Configuration
 @RequiredArgsConstructor
 public class OAuth2PersistenceUnitConfig extends AbstractPersistenceUnitConfig {

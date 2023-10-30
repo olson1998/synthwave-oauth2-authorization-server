@@ -21,15 +21,15 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
     user.enabled,
     user.expirePeriod,
     password,
-    CASE WHEN (COUNT(ban.id) > 0) THEN true ELSE false END
+    CASE WHEN (COUNT(lock.id) > 0) THEN true ELSE false END
     )
     FROM UserData user
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON user.id=affiliation.userId
     LEFT OUTER JOIN UserPasswordData password
     ON user.id=password.userId
-    LEFT OUTER JOIN UserBanData ban
-    ON user.id=ban.userId
+    LEFT OUTER JOIN UserAccountLockData lock
+    ON user.id=lock.userId
     WHERE
     user.username=:username AND password.latestVersion=true
     """)

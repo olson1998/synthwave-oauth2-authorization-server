@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,11 +55,11 @@ public class OAuth2PersistenceUnitProperties implements PersistenceUnitPropertie
 
         private boolean autoMigrationEnabled = true;
 
-        private String changelog;
+        private String changelog = "classpath:db.changelog/_changlog-oauth2.xml";
 
         @Override
         public Map<String, String> getCustomVariables() {
-            return null;
+            return Collections.emptyMap();
         }
     }
 
@@ -85,7 +86,7 @@ public class OAuth2PersistenceUnitProperties implements PersistenceUnitPropertie
 
         private String persistenceUnitName = "oauth2-datasource";
 
-        private final String[] packagesToScan = {};
+        private final String[] packagesToScan = {"com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity"};
 
         private final JpaDialectValue jpaDialectValue = JpaDialectValue.HIBERNATE;
 

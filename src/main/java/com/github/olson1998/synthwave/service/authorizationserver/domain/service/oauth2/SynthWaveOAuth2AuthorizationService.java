@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2AuthorizationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2TokenDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationRepository;
@@ -26,7 +26,7 @@ public class SynthWaveOAuth2AuthorizationService implements OAuth2AuthorizationR
 
     private final OAuth2TokenDataSourceRepository oAuth2TokenDataSourceRepository;
 
-    private final RedirectUrisDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
 
     private final OAuth2AuthorizationDataSourceRepository oAuth2AuthorizationDataSourceRepository;
 

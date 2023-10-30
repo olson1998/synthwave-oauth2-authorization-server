@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData" author="{server.hostname}">
+        <createTable tableName="USRDTA">
+            <column name="UID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USRNME" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="USRENB" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USREXP" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserAffiliationData" author="{server.hostname}">
+        <createTable tableName="USRAFF">
+            <column name="UID" type="bigint">
+                <constraints foreignKeyName="AFFUID" referencedTableName="USRDTA" referencedColumnNames="UID" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CODE" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIVI" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="AFFPRP" tableName="USRAFF" columnNames="CODE,DIVI"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserPasswordData" author="{server.hostname}">
+        <createTable tableName="PSSDTA">
+            <column name="PSSID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="UID" type="bigint">
+                <constraints foreignKeyName="PSSUID" referencedTableName="USRDTA" referencedColumnNames="UID" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="PSSVAL" type="varchar(4095)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PSEXPD" type="varchar(255)"/>
+            <column name="PSSVER" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserAccountLockData" author="{server.hostname}">
+        <createTable tableName="ACCLOC">
+            <column name="LOCKID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="UID" type="bigint">
+                <constraints foreignKeyName="ACCUID" referencedTableName="USRDTA" referencedColumnNames="UID" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData" author="{server.hostname}">
+        <createTable tableName="RCLTDT">
+            <column name="RCLTID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="UID" type="bigint">
+                <constraints foreignKeyName="RCTUID" referencedTableName="USRDTA" referencedColumnNames="UID" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="RCLTNM" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="RCTYPE" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.AffiliationBasedTokenSettingsData" author="{server.hostname}">
+        <createTable tableName="AFFTSG">
+            <column name="CODE" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIVI" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPAC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPAT" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCTKF" type="varchar(14)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPDC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RRFTKN" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPRT" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ITKALG" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="TKSAFF" tableName="USRAFF" columnNames="CODE,DIVI"/>
+    </changeSet>
+    <changeSet id="org.springframework.security.oauth2.core.AuthorizationGrantType" author="{server.hostname}">
+        <createTable tableName="O2AUGT">
+            <column name="AUGTVL" type="varchar(80)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="O2AUGT" columnNames="AUGTVL"/>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">authorization_code</column>
+        </insert>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">refresh_token</column>
+        </insert>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">client_credentials</column>
+        </insert>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">password</column>
+        </insert>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">urn:ietf:params:oauth:grant-type:jwt-bearer</column>
+        </insert>
+        <insert tableName="O2AUGT">
+            <column name="AUGTVL">urn:ietf:params:oauth:grant-type:device_code</column>
+        </insert>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.OAuth2AuthorizationData" author="{server.hostname}">
+        <createTable tableName="OA2ADT">
+            <column name="AUTHID" type="varchar(511)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="PRNCPL" type="varchar(511)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CID" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AGRNTP" type="varchar(255)">
+                <constraints foreignKeyName="AUTHGT" referencedTableName="O2AUGT" referencedColumnNames="AUGTVL" nullable="false"/>
+            </column>
+            <column name="ATTRBS" type="varchar(2047)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectUriScope" author="{server.hostname}">
+        <createTable tableName="URISCP">
+            <column name="SCPVAL" type="varchar(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="RURISC" tableName="URISCP" columnNames="SCPVAL"/>
+        <insert tableName="URISCP">
+            <column name="SCPVAL">POST_LOGIN</column>
+        </insert>
+        <insert tableName="URISCP">
+            <column name="SCPVAL">POST_LOGOUT</column>
+        </insert>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIsData" author="{server.hostname}">
+        <createTable tableName="REDURI">
+            <column name="URISCP" type="varchar(10)">
+                <constraints foreignKeyName="RUISCP" referencedTableName="URISCP" referencedColumnNames="SCPVAL" nullable="false"/>
+            </column>
+            <column name="URIVAL" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="RURIVL" tableName="REDURI" columnNames="URISCP,URIVAL"/>
+    </changeSet>
+    <changeSet id="org.springframework.security.oauth2.core.OAuth2Token" author="{hostname}">
+        <createTable tableName="O2TKCL">
+            <column name="JVCLASS" type="varchar(80)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="TKNJVC" tableName="O2TKCL" columnNames="JVCLASS"/>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.jwt.Jwt</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.core.OAuth2AccessToken</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationCode</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.core.OAuth2DeviceCode</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.core.OAuth2UserCode</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.core.OAuth2RefreshToken</column>
+        </insert>
+        <insert tableName="O2TKCL">
+            <column name="JVCLASS">org.springframework.security.oauth2.core.oidc.OidcIdToken</column>
+        </insert>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.OAuth2TokenData" author="{server.hostname}">
+        <createTable tableName="O2TOKN">
+            <column name="AUTHID" type="varchar(511)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="JVCLASS" type="varchar(511)">
+                <constraints foreignKeyName="O2TKNC" referencedTableName="O2TKCL" referencedColumnNames="JVCLASS" nullable="false"/>
+            </column>
+            <column name="TKNVAL" type="varchar(2047)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TKNIAT" type="timestamptz"/>
+            <column name="TKNEAT" type="timestamptz"/>
+            <column name="ADPROP" type="varchar(2047)"/>
+        </createTable>
+        <addUniqueConstraint constraintName="O2TKND" tableName="O2TOKN" columnNames="AUTHID,JVCLASS"/>
+    </changeSet>
+</databaseChangeLog>

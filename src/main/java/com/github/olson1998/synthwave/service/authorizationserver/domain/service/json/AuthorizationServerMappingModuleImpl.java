@@ -25,6 +25,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(OAuth2AccessTokenPayload.class, new OAuth2AccessTokenPayloadStdDeserializer());
         mappings.addSerializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdSerializer());
         mappings.addDeserializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdDeserializer());
+        mappings.addSerializer(UserAccountLock.class, new UserAccountLockStdSerializer());
+        mappings.addDeserializer(UserAccountLock.class, new UserAccountLockStdDeserializer());
         this.module = mappings;
     }
 }

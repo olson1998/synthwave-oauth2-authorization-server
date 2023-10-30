@@ -2,8 +2,6 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2TokenDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectUrisDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
 import org.springframework.context.annotation.Bean;

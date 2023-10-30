@@ -23,7 +23,7 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPrope
     }
 
     @Override
-    public Optional<RegisteredClientConfig> getSynthWaveRegisteredClientPropsByRegisteredClientId(TSID registeredClientId) {
+    public Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId) {
         return registeredClientDataJpaRepository.selectSynthWaveRegisteredClientByRegisteredClientId(registeredClientId)
                 .map(RegisteredClientConfig.class::cast);
     }

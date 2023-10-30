@@ -30,8 +30,8 @@ public class JWTConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException {
-        var keyPairGen = KeyPairGenerator.getInstance("S256");
-        keyPairGen.initialize(256);
+        var keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(2048);
         var keys = keyPairGen.generateKeyPair();
         var publicKey = (RSAPublicKey) keys.getPublic();
         var privateKey = keys.getPrivate();

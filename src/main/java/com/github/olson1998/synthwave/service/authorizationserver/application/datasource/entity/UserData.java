@@ -24,7 +24,7 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "USRIDN")
+@Table(name = "USRDTA")
 public class UserData implements UserProperties, Persistable<TSID> {
 
     @Id
@@ -34,7 +34,7 @@ public class UserData implements UserProperties, Persistable<TSID> {
     @JdbcType(BigIntJdbcType.class)
     private TSID id;
 
-    @Column(name = "USRNM", unique = true, nullable = false)
+    @Column(name = "USRNME", unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(name = "USRENB", nullable = false)

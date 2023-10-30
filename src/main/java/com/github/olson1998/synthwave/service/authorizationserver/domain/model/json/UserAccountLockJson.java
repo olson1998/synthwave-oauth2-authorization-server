@@ -1,18 +1,17 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserBan;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAccountLock;
 import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.joda.time.MutableDateTime;
 
 @Getter
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class UserBanJson implements UserBan {
+public class UserAccountLockJson implements UserAccountLock {
 
     public static final String USER_BAN_ID_JSON_FIELD = "banid";
 
@@ -24,5 +23,4 @@ public class UserBanJson implements UserBan {
 
     private final TSID userId;
 
-    private final MutableDateTime timestamp;
 }

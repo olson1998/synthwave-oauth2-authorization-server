@@ -4,9 +4,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
 
-public interface SynthWaveUserProperties {
+public interface UserSchema {
 
-    UserProperties getUserProperties();
+    UserProperties getProperties();
 
     UserAffiliation getAffiliation();
 

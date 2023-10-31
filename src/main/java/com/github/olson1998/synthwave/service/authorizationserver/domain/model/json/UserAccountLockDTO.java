@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class UserAccountLockJson implements UserAccountLock {
+public class UserAccountLockDTO implements UserAccountLock {
 
     public static final String USER_BAN_ID_JSON_FIELD = "banid";
 

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationJson;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationJson.*;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationDTO.*;
 
 class UserAffiliationStdDeserializer extends AbstractObjectStdDeserializer<UserAffiliation> {
 
@@ -24,7 +24,7 @@ class UserAffiliationStdDeserializer extends AbstractObjectStdDeserializer<UserA
         var userId = readJsonProperty(USER_AFFILIATION_USER_ID_JSON_FIELD, objectNode, objectCodec, TSID.class, true);
         var code = readJsonProperty(USER_AFFILIATION_CODE_JSON_FIELD, objectNode, objectCodec, String.class, true);
         var divi = readJsonProperty(USER_AFFILIATION_DIVI_JSON_FIELD, objectNode, objectCodec, String.class, true);
-        return new UserAffiliationJson(
+        return new UserAffiliationDTO(
                 userId,
                 code,
                 divi

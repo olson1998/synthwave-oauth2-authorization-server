@@ -7,7 +7,7 @@ import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdSerializer
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationJson.*;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationDTO.*;
 
 class UserAffiliationStdSerializer extends AbstractObjectStdSerializer<UserAffiliation> {
 

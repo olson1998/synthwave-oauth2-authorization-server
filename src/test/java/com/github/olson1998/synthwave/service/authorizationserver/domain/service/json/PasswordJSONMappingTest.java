@@ -1,9 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordJson;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
 import io.hypersistence.tsid.TSID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -29,7 +28,7 @@ class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<Passw
 
     @Override
     protected Password testSerializableObject() {
-        return new PasswordJson(
+        return new PasswordDTO(
                 TSID.fast(),
                 TSID.fast(),
                 "pass",

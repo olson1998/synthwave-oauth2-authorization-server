@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordJson;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
@@ -13,7 +13,7 @@ import org.joda.time.Period;
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordJson.*;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordDTO.*;
 
 class PasswordStdDeserializer extends AbstractObjectStdDeserializer<Password> {
 
@@ -28,7 +28,7 @@ class PasswordStdDeserializer extends AbstractObjectStdDeserializer<Password> {
         var value = readJsonProperty(PASSWORD_VALUE_JSON_FILED, objectNode, objectCodec, String.class, true);
         var expirePeriod = readJsonProperty(PASSWORD_EXPIRE_PERIOD_JSON_FILED, objectNode, objectCodec, Period.class);
         var latestVersion = readJsonProperty(PASSWORD_LATEST_VER_JSON_FIELD, objectNode, objectCodec, Boolean.class);
-        return new PasswordJson(
+        return new PasswordDTO(
                 id,
                 userId,
                 value,

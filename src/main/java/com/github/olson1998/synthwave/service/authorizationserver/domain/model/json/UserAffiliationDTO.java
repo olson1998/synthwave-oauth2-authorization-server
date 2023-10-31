@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class UserAffiliationJson implements UserAffiliation {
+public class UserAffiliationDTO implements UserAffiliation {
 
     public static final String USER_AFFILIATION_USER_ID_JSON_FIELD = "uid";
 

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationJson;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import io.hypersistence.tsid.TSID;
 
@@ -12,7 +12,7 @@ class UserAffiliationJSONMappingTest extends AuthorizationServerObjectMappingTes
 
     @Override
     protected UserAffiliation testSerializableObject() {
-        return new UserAffiliationJson(TSID.fast(), "SAMPLEFABRIC", "MNUWRO01");
+        return new UserAffiliationDTO(TSID.fast(), "SAMPLEFABRIC", "MNUWRO01");
     }
 
     @Override

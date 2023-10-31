@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserSchema;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,9 +13,15 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class SynthWaveUserPropsJSON implements SynthWaveUserProperties {
+public class UserSchemaDTO implements UserSchema {
 
-    private final UserProperties userProperties;
+    public static final String USER_SCHEMA_USER_JSON_FIELD = "user";
+
+    public static final String USER_SCHEMA_AFFILIATION_JSON_FIELD = "aff";
+
+    public static final String USER_SCHEMA_PASSWORD_JSON_FIELD = "pass";
+
+    private final UserProperties properties;
 
     private final UserAffiliation affiliation;
 

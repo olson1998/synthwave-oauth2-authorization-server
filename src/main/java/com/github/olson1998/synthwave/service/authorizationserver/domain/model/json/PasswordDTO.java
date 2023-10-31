@@ -14,7 +14,7 @@ import java.util.Optional;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class PasswordJson implements Password {
+public class PasswordDTO implements Password {
 
     public static final String PASSWORD_ID_JSON_FIELD = "id";
 

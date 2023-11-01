@@ -36,6 +36,14 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
 
     private UserAffiliationProperties properties;
 
+    public UserAffiliationData(@NonNull UserAffiliation userAffiliation) {
+        this.userId = userAffiliation.getUserId();
+        this.properties = new UserAffiliationProperties(
+                userAffiliation.getCompanyCode(),
+                userAffiliation.getDivision()
+        );
+    }
+
     @Override
     public TSID getId() {
         return userId;

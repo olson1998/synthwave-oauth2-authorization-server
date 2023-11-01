@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 
 @Slf4j
 @RequiredArgsConstructor
-public class SynthWaveOAuth2AuthorizationService implements OAuth2AuthorizationRepository {
+public class OAuth2AuthorizationServiceInstance implements OAuth2AuthorizationRepository {
 
     private final OAuth2TokenMapper oAuth2TokenMapper;
 

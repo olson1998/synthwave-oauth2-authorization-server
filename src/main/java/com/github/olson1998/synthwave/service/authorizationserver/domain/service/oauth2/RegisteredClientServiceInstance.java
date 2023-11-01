@@ -5,7 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientProps;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class SynthWaveRegisteredClientService implements RegisteredClientRepository {
+public class RegisteredClientServiceInstance implements RegisteredClientRepository {
 
     private final RegisteredClientMapper registeredClientMapper;
 
     private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
 
-    private final UserPropertiesSourceRepository userPropertiesSourceRepository;
+    private final UserPropertiesDataSourceRepository userPropertiesDataSourceRepository;
 
     private final RegisteredClientPropertiesSourceRepository registeredClientPropertiesSourceRepository;
 
@@ -44,7 +44,7 @@ public class SynthWaveRegisteredClientService implements RegisteredClientReposit
         var redirectUris = registeredClient.getRedirectUris();
         var postLogoutRedirectUris = registeredClient.getPostLogoutRedirectUris();
         var id = Long.parseLong(registeredClient.getId());
-        var userProps = userPropertiesSourceRepository.getUserPropertiesByUsername(username)
+        var userProps = userPropertiesDataSourceRepository.getUserPropertiesByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
         var registeredClientProps = new RegisteredClientProps(TSID.from(id), userProps.getId(), clientId );
         var concatRedirectUri = concatRedirectUris(redirectUris, postLogoutRedirectUris);

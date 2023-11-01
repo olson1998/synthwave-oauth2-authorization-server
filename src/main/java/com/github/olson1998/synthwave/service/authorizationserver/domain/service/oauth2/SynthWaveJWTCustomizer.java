@@ -5,7 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import lombok.NonNull;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
-public class SynthWaveOAuth2JwtCustomizer implements JwtCustomizer {
+public class SynthWaveJWTCustomizer implements JwtCustomizer {
 
     public static final String COMPANY_CODE_CLAIM = "code";
 

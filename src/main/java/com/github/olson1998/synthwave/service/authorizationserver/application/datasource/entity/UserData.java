@@ -45,6 +45,13 @@ public class UserData implements UserProperties, Persistable<TSID> {
     @JdbcType(VarcharJdbcType.class)
     private Period expirePeriod;
 
+    public UserData(@NonNull UserProperties userProperties) {
+        this.id = userProperties.getId();
+        this.username = userProperties.getUsername();
+        this.enabled = userProperties.isEnabled();
+        this.expirePeriod = userProperties.getExpirePeriod();
+    }
+
     @Override
     public boolean isNew() {
         return true;

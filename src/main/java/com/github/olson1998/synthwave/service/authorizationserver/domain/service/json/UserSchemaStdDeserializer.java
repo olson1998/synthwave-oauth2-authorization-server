@@ -26,6 +26,10 @@ class UserSchemaStdDeserializer extends AbstractObjectStdDeserializer<UserSchema
         var user= readJsonProperty(USER_SCHEMA_USER_JSON_FIELD, objectNode, objectCodec, UserProperties.class, true);
         var password = readJsonProperty(USER_SCHEMA_PASSWORD_JSON_FIELD, objectNode, objectCodec, Password.class, true);
         var affiliation = readJsonProperty(USER_SCHEMA_AFFILIATION_JSON_FIELD, objectNode, objectCodec, UserAffiliation.class, true);
-        return new UserSchemaDTO(user, affiliation, password);
+        return new UserSchemaDTO(
+                user,
+                affiliation,
+                password
+        );
     }
 }

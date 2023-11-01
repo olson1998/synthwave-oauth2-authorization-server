@@ -1,0 +1,15 @@
+[
+  {
+    "user": {
+      "name": "admin"
+    },
+    "aff": {
+      "code": "MNUWRO01",
+      "divi": "MNU"
+    },
+    "pass": {
+      "value": "pass",
+      "expprd": "30 days"
+    }
+  }
+]

@@ -35,6 +35,9 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
     """)
     Optional<SynthWaveUser> selectSynthWaveUserByUsername(String username);
 
+    @Query("SELECT CASE WHEN COUNT(user.id) >0 THEN true ELSE false END FROM UserData user WHERE user.username=:username")
+    boolean selectExistsUserWithUsername(String username);
+
     @Query("SELECT user FROM UserData user WHERE user.username=:username")
     Optional<UserData> selectUserByUsername(String username);
 }

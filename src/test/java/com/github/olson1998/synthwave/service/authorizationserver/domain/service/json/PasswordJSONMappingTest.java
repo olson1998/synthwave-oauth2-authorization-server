@@ -1,17 +1,17 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import io.hypersistence.tsid.TSID;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThatIOException;
 
-class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<Password> {
+class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<PasswordEntity> {
 
     PasswordJSONMappingTest() {
-        super(Password.class);
+        super(PasswordEntity.class);
     }
 
     @ParameterizedTest
@@ -19,16 +19,16 @@ class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<Passw
     void shouldThrowIOExceptionIfEntityMissGivenField(String field){
         assertThatIOException().isThrownBy(()->{
            if(field.equals("uid")){
-               objectMapper.readValue("{\"value\":\"abc\"}", Password.class);
+               objectMapper.readValue("{\"value\":\"abc\"}", PasswordEntity.class);
            }else if (field.equals("value")){
-               objectMapper.readValue("{\"uid\":%s}".formatted(TSID.fast().toLong()), Password.class);
+               objectMapper.readValue("{\"uid\":%s}".formatted(TSID.fast().toLong()), PasswordEntity.class);
            }
         });
     }
 
     @Override
-    protected Password testSerializableObject() {
-        return new PasswordDTO(
+    protected PasswordEntity testSerializableObject() {
+        return new PasswordEntityDTO(
                 TSID.fast(),
                 TSID.fast(),
                 "pass",

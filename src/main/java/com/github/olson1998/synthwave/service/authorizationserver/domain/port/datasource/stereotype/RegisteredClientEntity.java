@@ -2,10 +2,11 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import io.hypersistence.tsid.TSID;
 
-public interface UserAccountLock {
+public interface RegisteredClientEntity {
 
     TSID getId();
 
     TSID getUserId();
 
+    String getClientId();
 }

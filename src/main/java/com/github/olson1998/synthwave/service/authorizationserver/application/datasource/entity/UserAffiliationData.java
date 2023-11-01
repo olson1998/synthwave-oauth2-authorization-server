@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliationEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "USRAFF")
-public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
+public class UserAffiliationData implements UserAffiliationEntity, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -36,11 +36,11 @@ public class UserAffiliationData implements UserAffiliation, Persistable<TSID> {
 
     private UserAffiliationProperties properties;
 
-    public UserAffiliationData(@NonNull UserAffiliation userAffiliation) {
-        this.userId = userAffiliation.getUserId();
+    public UserAffiliationData(@NonNull UserAffiliationEntity userAffiliationEntity) {
+        this.userId = userAffiliationEntity.getUserId();
         this.properties = new UserAffiliationProperties(
-                userAffiliation.getCompanyCode(),
-                userAffiliation.getDivision()
+                userAffiliationEntity.getCompanyCode(),
+                userAffiliationEntity.getDivision()
         );
     }
 

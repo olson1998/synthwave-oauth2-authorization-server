@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAccountLock;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAccountLockEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -22,7 +22,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "ACCLOC")
-public class UserAccountLockData implements UserAccountLock, Persistable<TSID> {
+public class UserAccountLockData implements UserAccountLockEntity, Persistable<TSID> {
 
     @Id
     @Tsid

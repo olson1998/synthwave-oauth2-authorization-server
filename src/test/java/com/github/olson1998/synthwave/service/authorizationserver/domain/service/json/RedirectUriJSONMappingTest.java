@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLoginRedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLogoutRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserPasswordData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +13,8 @@ public class UserPasswordJpaRepositoryProxy implements UserPasswordDataSourceRep
     private final UserPasswordJpaRepository userPasswordJpaRepository;
 
     @Override
-    public void save(Password password) {
-        var data = new UserPasswordData(password);
+    public void save(PasswordEntity passwordEntity) {
+        var data = new UserPasswordData(passwordEntity);
         userPasswordJpaRepository.save(data);
     }
 }

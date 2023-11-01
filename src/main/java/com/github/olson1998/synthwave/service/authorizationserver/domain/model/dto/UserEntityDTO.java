@@ -1,6 +1,6 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.model.json;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import io.hypersistence.tsid.TSID;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import org.joda.time.Period;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class UserPropertiesDTO implements UserProperties {
+public class UserEntityDTO implements UserEntity {
 
     public static final String USER_ID_JSON_FIELD = "id";
 

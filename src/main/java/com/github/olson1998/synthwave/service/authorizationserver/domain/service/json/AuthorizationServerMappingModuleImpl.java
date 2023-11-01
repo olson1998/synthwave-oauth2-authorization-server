@@ -16,22 +16,22 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
 
     public AuthorizationServerMappingModuleImpl() {
         var mappings= new SimpleModule();
-        mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
-        mappings.addSerializer(Password.class, new PasswordStdSerializer());
+        mappings.addDeserializer(PasswordEntity.class, new PasswordEntityStdDeserializer());
+        mappings.addSerializer(PasswordEntity.class, new PasswordEntityStdSerializer());
         mappings.addDeserializer(RedirectURI.class, new RedirectURIStdDeserializer());
         mappings.addSerializer(RedirectURI.class, new RedirectURIStdSerializer());
-        mappings.addDeserializer(UserAffiliation.class, new UserAffiliationStdDeserializer());
-        mappings.addSerializer(UserAffiliation.class, new UserAffiliationStdSerializer());
+        mappings.addDeserializer(UserAffiliationEntity.class, new UserAffiliationEntityStdDeserializer());
+        mappings.addSerializer(UserAffiliationEntity.class, new UserAffiliationEntityStdSerializer());
         mappings.addSerializer(OAuth2AccessTokenPayload.class, new OAuth2AccessTokenPayloadStdSerializer());
         mappings.addDeserializer(OAuth2AccessTokenPayload.class, new OAuth2AccessTokenPayloadStdDeserializer());
         mappings.addSerializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdSerializer());
         mappings.addDeserializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdDeserializer());
-        mappings.addSerializer(UserAccountLock.class, new UserAccountLockStdSerializer());
-        mappings.addDeserializer(UserAccountLock.class, new UserAccountLockStdDeserializer());
+        mappings.addSerializer(UserAccountLockEntity.class, new UserAccountLockEntityStdSerializer());
+        mappings.addDeserializer(UserAccountLockEntity.class, new UserAccountLockEntityStdDeserializer());
         mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
         mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
-        mappings.addSerializer(UserProperties.class, new UserPropertiesStdSerializer());
-        mappings.addDeserializer(UserProperties.class, new UserPropertiesStdDeserializer());
+        mappings.addSerializer(UserEntity.class, new UserEntityStdSerializer());
+        mappings.addDeserializer(UserEntity.class, new UserEntityStdDeserializer());
         this.module = mappings;
     }
 }

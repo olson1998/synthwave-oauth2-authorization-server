@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class SynthWaveUser implements DefaultUserDetails {
 
     private final String username;
 
-    private final Password passwordData;
+    private final PasswordEntity passwordEntityData;
 
     private final boolean enabled;
 
@@ -38,19 +38,19 @@ public class SynthWaveUser implements DefaultUserDetails {
                          String username,
                          boolean enabled,
                          Period accountExpirePeriod,
-                         Password passwordData,
+                         PasswordEntity passwordEntityData,
                          boolean accountNonLocked) {
         this.userId = userId;
         this.companyCode = companyCode;
         this.division = division;
         this.username = username;
         this.enabled = enabled;
-        this.passwordData = passwordData;
+        this.passwordEntityData = passwordEntityData;
         this.accountNonLocked = accountNonLocked;
         this.accountNonExpired =
                 isExpired(userId.getInstant(), accountExpirePeriod);
-        this.credentialsNonExpired = passwordData.getLatestVersion() ||
-                 isPasswordExpired(passwordData);
+        this.credentialsNonExpired = passwordEntityData.getLatestVersion() ||
+                 isPasswordExpired(passwordEntityData);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SynthWaveUser implements DefaultUserDetails {
 
     @Override
     public String getPassword() {
-        return passwordData.getValue();
+        return passwordEntityData.getValue();
     }
 
     @Override
@@ -68,9 +68,9 @@ public class SynthWaveUser implements DefaultUserDetails {
         return username;
     }
 
-    private boolean isPasswordExpired(Password password){
-        var issueInstant = password.getId().getInstant();
-        return password.getOptionalExpirePeriod()
+    private boolean isPasswordExpired(PasswordEntity passwordEntity){
+        var issueInstant = passwordEntity.getId().getInstant();
+        return passwordEntity.getOptionalExpirePeriod()
                 .map(period -> isExpired(issueInstant, period))
                 .orElse(false);
     }

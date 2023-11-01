@@ -1,8 +1,8 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.model.json;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserSchema;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -21,10 +21,10 @@ public class UserSchemaDTO implements UserSchema {
 
     public static final String USER_SCHEMA_PASSWORD_JSON_FIELD = "pass";
 
-    private final UserProperties properties;
-
-    private final UserAffiliation affiliation;
+    private final UserProperties user;
 
     private final Password password;
+
+    private final UserAffiliation affiliation;
 
 }

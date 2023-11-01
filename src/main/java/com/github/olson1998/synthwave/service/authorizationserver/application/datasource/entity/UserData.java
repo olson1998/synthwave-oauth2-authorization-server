@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "USRDTA")
-public class UserData implements UserProperties, Persistable<TSID> {
+public class UserData implements UserEntity, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -45,11 +45,11 @@ public class UserData implements UserProperties, Persistable<TSID> {
     @JdbcType(VarcharJdbcType.class)
     private Period expirePeriod;
 
-    public UserData(@NonNull UserProperties userProperties) {
-        this.id = userProperties.getId();
-        this.username = userProperties.getUsername();
-        this.enabled = userProperties.isEnabled();
-        this.expirePeriod = userProperties.getExpirePeriod();
+    public UserData(@NonNull UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.username = userEntity.getUsername();
+        this.enabled = userEntity.isEnabled();
+        this.expirePeriod = userEntity.getExpirePeriod();
     }
 
     @Override

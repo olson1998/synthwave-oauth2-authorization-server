@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientProps;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLoginRedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLogoutRedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
@@ -46,7 +46,7 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
         var id = Long.parseLong(registeredClient.getId());
         var userProps = userPropertiesDataSourceRepository.getUserPropertiesByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
-        var registeredClientProps = new RegisteredClientProps(TSID.from(id), userProps.getId(), clientId );
+        var registeredClientProps = new SynthWaveRegisteredClient(TSID.from(id), userProps.getId(), clientId );
         var concatRedirectUri = concatRedirectUris(redirectUris, postLogoutRedirectUris);
         registeredClientPropertiesSourceRepository.save(registeredClientProps);
         redirectUrisDataSourceRepository.saveAll(redirectUrisDataSourceRepository.getAllNotPresentRedirectUris(concatRedirectUri));

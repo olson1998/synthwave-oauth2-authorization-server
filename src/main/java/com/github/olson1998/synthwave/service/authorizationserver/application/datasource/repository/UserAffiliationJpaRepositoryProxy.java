@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserAffiliationData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +13,8 @@ public class UserAffiliationJpaRepositoryProxy implements UserAffiliationDataSou
     private final UserAffiliationJpaRepository userAffiliationJpaRepository;
 
     @Override
-    public void save(UserAffiliation userAffiliation) {
-        var data = new UserAffiliationData(userAffiliation);
+    public void save(UserAffiliationEntity userAffiliationEntity) {
+        var data = new UserAffiliationData(userAffiliationEntity);
         userAffiliationJpaRepository.save(data);
     }
 }

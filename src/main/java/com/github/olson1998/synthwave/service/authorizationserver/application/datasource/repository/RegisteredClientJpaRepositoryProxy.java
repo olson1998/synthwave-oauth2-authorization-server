@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientProperites;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPrope
     }
 
     @Override
-    public void save(RegisteredClientProperites registeredClientProperites) {
-        var data = new RegisteredClientData(registeredClientProperites);
+    public void save(RegisteredClientEntity registeredClientEntity) {
+        var data = new RegisteredClientData(registeredClientEntity);
         registeredClientDataJpaRepository.save(data);
     }
 }

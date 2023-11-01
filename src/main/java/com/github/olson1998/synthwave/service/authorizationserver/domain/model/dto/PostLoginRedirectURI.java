@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import lombok.*;
@@ -7,20 +7,19 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public class PostLogoutRedirectURI implements RedirectURI {
+public class PostLoginRedirectURI implements RedirectURI {
 
-    public static final String TYPE = "POST_LOGOUT";
+    public static final String TYPE = "POST_LOGIN";
 
     private final String redirectUri;
 
     @Override
     public boolean isPostLogin() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isPostLogout() {
-        return true;
+        return false;
     }
-
 }

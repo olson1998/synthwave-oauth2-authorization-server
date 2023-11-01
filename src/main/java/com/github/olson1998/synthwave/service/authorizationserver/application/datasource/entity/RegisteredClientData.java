@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RegisteredClientType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientProperites;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -20,7 +20,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "RCLTDT")
-public class RegisteredClientData implements RegisteredClientProperites, Persistable<TSID> {
+public class RegisteredClientData implements RegisteredClientEntity, Persistable<TSID> {
 
     @Id
     @Tsid
@@ -41,11 +41,11 @@ public class RegisteredClientData implements RegisteredClientProperites, Persist
     @Enumerated(EnumType.ORDINAL)
     private RegisteredClientType type;
 
-    public RegisteredClientData(@NonNull RegisteredClientProperites registeredClientProperites) {
-        this.id = registeredClientProperites.getId();
+    public RegisteredClientData(@NonNull RegisteredClientEntity registeredClientEntity) {
+        this.id = registeredClientEntity.getId();
         this.type = null;
-        this.userId = registeredClientProperites.getUserId();
-        this.clientId = registeredClientProperites.getClientId();
+        this.userId = registeredClientEntity.getUserId();
+        this.clientId = registeredClientEntity.getClientId();
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +23,9 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
     }
 
     @Override
-    public Optional<UserProperties> getUserPropertiesByUsername(String username) {
+    public Optional<UserEntity> getUserPropertiesByUsername(String username) {
         return userJpaRepository.selectUserByUsername(username)
-                .map(UserProperties.class::cast);
+                .map(UserEntity.class::cast);
     }
 
     @Override
@@ -35,18 +35,18 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
     }
 
     @Override
-    public UserProperties save(@NonNull UserProperties userProperties) {
-        var data = new UserData(userProperties);
+    public UserEntity save(@NonNull UserEntity userEntity) {
+        var data = new UserData(userEntity);
         return userJpaRepository.save(data);
     }
 
     @Override
-    public Collection<UserProperties> saveAll(@NonNull Collection<UserProperties> userPropertiesCollection) {
-        var data = userPropertiesCollection.stream()
+    public Collection<UserEntity> saveAll(@NonNull Collection<UserEntity> userEntityCollection) {
+        var data = userEntityCollection.stream()
                 .map(UserData::new)
                 .toList();
         return userJpaRepository.saveAll(data).stream()
-                .map(UserProperties.class::cast)
+                .map(UserEntity.class::cast)
                 .toList();
     }
 }

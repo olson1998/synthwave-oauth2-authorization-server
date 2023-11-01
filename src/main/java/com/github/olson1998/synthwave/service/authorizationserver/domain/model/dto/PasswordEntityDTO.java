@@ -1,6 +1,6 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.model.json;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class PasswordDTO implements Password {
+public class PasswordEntityDTO implements PasswordEntity {
 
     public static final String PASSWORD_ID_JSON_FIELD = "id";
 
@@ -34,7 +34,7 @@ public class PasswordDTO implements Password {
 
     private final Period expirePeriod;
 
-    private final Boolean latestVersion;
+    private final boolean latestVersion;
 
     @Override
     public Optional<Period> getOptionalExpirePeriod() {

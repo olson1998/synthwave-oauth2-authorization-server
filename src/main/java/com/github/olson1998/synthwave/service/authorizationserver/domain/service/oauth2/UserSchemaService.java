@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.PasswordDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.json.UserAffiliationDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserAffiliationEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
@@ -38,7 +38,7 @@ public class UserSchemaService implements UserSchemaRepository {
         var savedUserProps = userPropertiesDataSourceRepository.save(userProps);
         var userId= savedUserProps.getId();
         var encryptedPassword = passwordEncoder.encode(passwordProps.getValue());
-        var passwordData = new PasswordDTO(
+        var passwordData = new PasswordEntityDTO(
                 null,
                 userId,
                 encryptedPassword,
@@ -46,7 +46,7 @@ public class UserSchemaService implements UserSchemaRepository {
                 true
         );
         userPasswordDataSourceRepository.save(passwordData);
-        var affiliation = new UserAffiliationDTO(
+        var affiliation = new UserAffiliationEntityDTO(
                 userId,
                 affiliationProperties.getCompanyCode(),
                 affiliationProperties.getDivision()

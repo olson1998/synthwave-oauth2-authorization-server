@@ -10,7 +10,7 @@ public interface PasswordEntity extends Password {
 
     TSID getId();
 
-    Optional<Period> getOptionalExpirePeriod();
+    TSID getUserId();
 
-    boolean isLatestVersion();
+    Boolean getLatestVersion();
 }

@@ -9,20 +9,15 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-public class UserAffiliationEntityDTO implements UserAffiliationEntity {
+@EqualsAndHashCode(callSuper = true)
+public class UserAffiliationEntityDTO extends UserAffiliationDTO implements UserAffiliationEntity {
 
     public static final String USER_AFFILIATION_USER_ID_JSON_FIELD = "uid";
 
-    public static final String USER_AFFILIATION_CODE_JSON_FIELD = "code";
-
-    public static final String USER_AFFILIATION_DIVI_JSON_FIELD = "divi";
-
     private final TSID userId;
 
-    private final String companyCode;
-
-    private final String division;
-
+    public UserAffiliationEntityDTO(TSID userId, String companyCode, String division) {
+        super(companyCode, division);
+        this.userId = userId;
+    }
 }

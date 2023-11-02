@@ -22,6 +22,15 @@ public class OAuth2PersistenceUnitProperties implements PersistenceUnitPropertie
     @Getter
     private final HikariConfig hikari = new HikariConfig();
 
+    @Getter
+    private boolean showSQL = false;
+
+    @Getter
+    private boolean formatSQL = false;
+
+    @Getter
+    private Integer batchSize;
+
     private final OAuth2DataSourceMigrationProperties migration =
             new OAuth2DataSourceMigrationProperties();
 

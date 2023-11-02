@@ -9,7 +9,7 @@
     },
     "pass": {
       "value": "pass",
-      "expprd": "30 days"
+      "expprd": "60 days"
     }
   }
 ]

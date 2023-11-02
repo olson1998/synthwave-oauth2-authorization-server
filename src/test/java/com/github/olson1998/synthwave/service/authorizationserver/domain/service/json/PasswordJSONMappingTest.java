@@ -33,7 +33,7 @@ class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<Passw
                 TSID.fast(),
                 "pass",
                 null,
-                null
+                true
         );
     }
 

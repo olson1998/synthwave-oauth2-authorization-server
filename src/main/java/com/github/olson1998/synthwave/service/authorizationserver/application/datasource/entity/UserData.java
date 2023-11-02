@@ -52,6 +52,7 @@ public class UserData implements UserEntity, Persistable<TSID> {
         this.expirePeriod = userEntity.getExpirePeriod();
     }
 
+
     @Override
     public boolean isNew() {
         return true;

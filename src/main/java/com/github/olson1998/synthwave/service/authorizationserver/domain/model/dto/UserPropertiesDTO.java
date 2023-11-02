@@ -13,6 +13,10 @@ import org.joda.time.Period;
 @AllArgsConstructor
 public class UserPropertiesDTO implements UserProperties {
 
+    public static final String USER_NAME_JSON_FIELD = "name";
+
+    public static final String USER_EXP_PERIOD_JSON_FIELD = "exprd";
+
     private final String username;
 
     private final Period expirePeriod;

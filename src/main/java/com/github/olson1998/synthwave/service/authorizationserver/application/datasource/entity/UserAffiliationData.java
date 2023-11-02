@@ -28,7 +28,6 @@ import java.util.Optional;
 public class UserAffiliationData implements UserAffiliationEntity, Persistable<TSID> {
 
     @Id
-    @Tsid
     @Column(name = "UID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)

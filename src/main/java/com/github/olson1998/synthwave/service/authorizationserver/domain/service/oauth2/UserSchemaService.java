@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserAffiliationEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
@@ -27,15 +28,21 @@ public class UserSchemaService implements UserSchemaRepository {
 
     @Override
     public boolean existsSchema(@NonNull UserSchema userSchema) {
-        return userPropertiesDataSourceRepository.existsUserWithGivenUsername(userSchema.getProperties().getUsername());
+        return userPropertiesDataSourceRepository.existsUserWithGivenUsername(userSchema.getUser().getUsername());
     }
 
     @Override
     public TSID save(@NonNull UserSchema userSchema) {
-        var userProps = userSchema.getProperties();
+        var userProps = userSchema.getUser();
         var passwordProps = userSchema.getPassword();
         var affiliationProperties = userSchema.getAffiliation();
-        var savedUserProps = userPropertiesDataSourceRepository.save(userProps);
+        var userEntity = new UserEntityDTO(
+                null,
+                userProps.getUsername(),
+                false,
+                userProps.getExpirePeriod()
+        );
+        var savedUserProps = userPropertiesDataSourceRepository.save(userEntity);
         var userId= savedUserProps.getId();
         var encryptedPassword = passwordEncoder.encode(passwordProps.getValue());
         var passwordData = new PasswordEntityDTO(

@@ -17,7 +17,7 @@ class UserSchemaStdSerializer extends AbstractObjectStdSerializer<UserSchema> {
 
     @Override
     protected void serializeObject(UserSchema userSchema, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        writeField(USER_SCHEMA_USER_JSON_FIELD, userSchema.getProperties(), jsonGenerator);
+        writeField(USER_SCHEMA_USER_JSON_FIELD, userSchema.getUser(), jsonGenerator);
         writeField(USER_SCHEMA_PASSWORD_JSON_FIELD, userSchema.getPassword(), jsonGenerator);
         writeField(USER_SCHEMA_AFFILIATION_JSON_FIELD, userSchema.getAffiliation(), jsonGenerator);
     }

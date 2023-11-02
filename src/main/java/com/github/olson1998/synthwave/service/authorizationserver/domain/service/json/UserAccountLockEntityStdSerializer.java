@@ -17,7 +17,7 @@ class UserAccountLockEntityStdSerializer extends AbstractObjectStdSerializer<Use
 
     @Override
     protected void serializeObject(UserAccountLockEntity userAccountLockEntity, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        writeField(USER_BAN_ID_JSON_FIELD, userAccountLockEntity.getId(), jsonGenerator);
-        writeField(USER_BAN_USER_ID_JSON_FIELD, userAccountLockEntity.getUserId(), jsonGenerator);
+        writeField(USER_ACCOUNT_LOCK_ID_JSON_FIELD, userAccountLockEntity.getId(), jsonGenerator);
+        writeField(USER_ACCOUNT_LOCK_USER_ID_JSON_FIELD, userAccountLockEntity.getUserId(), jsonGenerator);
     }
 }

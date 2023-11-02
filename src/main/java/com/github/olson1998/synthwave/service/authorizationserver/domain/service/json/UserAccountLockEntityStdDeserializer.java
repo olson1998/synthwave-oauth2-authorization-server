@@ -22,8 +22,8 @@ class UserAccountLockEntityStdDeserializer extends AbstractObjectStdDeserializer
 
     @Override
     protected UserAccountLockEntity deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
-        var id = readJsonProperty(USER_BAN_ID_JSON_FIELD, objectNode, objectCodec, TSID.class);
-        var userId= readJsonProperty(USER_BAN_USER_ID_JSON_FIELD, objectNode, objectCodec, TSID.class);
+        var id = readJsonProperty(USER_ACCOUNT_LOCK_ID_JSON_FIELD, objectNode, objectCodec, TSID.class);
+        var userId= readJsonProperty(USER_ACCOUNT_LOCK_USER_ID_JSON_FIELD, objectNode, objectCodec, TSID.class);
         return new UserAccountLockEntityDTO(id, userId);
     }
 }

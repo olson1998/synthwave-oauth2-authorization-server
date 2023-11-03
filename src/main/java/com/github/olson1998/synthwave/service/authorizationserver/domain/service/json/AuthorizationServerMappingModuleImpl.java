@@ -6,6 +6,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.json.AuthorizationServerMappingModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import lombok.Getter;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 

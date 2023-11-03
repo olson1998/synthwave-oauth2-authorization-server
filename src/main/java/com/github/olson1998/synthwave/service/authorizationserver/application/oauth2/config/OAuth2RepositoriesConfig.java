@@ -3,7 +3,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service.UserPropertiesService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,11 +68,11 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
-    public UserSchemaRepository userSchemaRepository(PasswordEncoder passwordEncoder,
-                                                     UserPropertiesJpaRepositoryProxy userPropertiesJpaRepositoryProxy,
-                                                     UserPasswordJpaRepositoryProxy userPasswordJpaRepositoryProxy,
-                                                     UserAffiliationJpaRepositoryProxy userAffiliationJpaRepositoryProxy){
-        return new UserSchemaService(
+    public UserPropertiesRepository userPropertiesRepository(PasswordEncoder passwordEncoder,
+                                                         UserPropertiesJpaRepositoryProxy userPropertiesJpaRepositoryProxy,
+                                                         UserPasswordJpaRepositoryProxy userPasswordJpaRepositoryProxy,
+                                                         UserAffiliationJpaRepositoryProxy userAffiliationJpaRepositoryProxy){
+        return new UserPropertiesService(
                 passwordEncoder,
                 userPropertiesJpaRepositoryProxy,
                 userPasswordJpaRepositoryProxy,

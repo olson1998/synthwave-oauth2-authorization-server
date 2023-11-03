@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,9 @@ import java.util.Optional;
 
 @Repository
 interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
+
+    @Query("SELECT user FROM UserData user WHERE user.id=:id")
+    Optional<UserData> selectUserById(@Param("id") TSID id);
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser(
@@ -41,4 +45,8 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
 
     @Query("SELECT user FROM UserData user WHERE user.username=:username")
     Optional<UserData> selectUserByUsername(@Param("username") String username);
+
+    @Modifying
+    @Query("UPDATE UserData user SET user.enabled=:enabled WHERE user.id=:id")
+    int updateUserEnabledWithGivenUserId(@Param("id") TSID id, @Param("enabled") boolean isEnabled);
 }

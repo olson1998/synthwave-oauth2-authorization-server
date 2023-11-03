@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
+import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
     }
 
     @Override
+    public Optional<UserEntity> getUserById(TSID id) {
+        return userJpaRepository.selectUserById(id)
+                .map(UserEntity.class::cast);
+    }
+
+    @Override
     public Optional<DefaultUserDetails> getSynthWaveUserByUsername(String username) {
         return userJpaRepository.selectSynthWaveUserByUsername(username)
                 .map(DefaultUserDetails.class::cast);
@@ -49,4 +56,10 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
                 .map(UserEntity.class::cast)
                 .toList();
     }
+
+    @Override
+    public int setUserEnabledForUserWithId(TSID id, boolean isEnabled) {
+        return userJpaRepository.updateUserEnabledWithGivenUserId(id, isEnabled);
+    }
+
 }

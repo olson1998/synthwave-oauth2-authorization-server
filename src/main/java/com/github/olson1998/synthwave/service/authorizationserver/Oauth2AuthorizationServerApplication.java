@@ -5,12 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
-@EnableConfigurationProperties
+
 @ComponentScan(basePackages = {
         "com.github.olson1998.synthwave.service",
         "com.github.olson1998.synthwave.support"
 })
-
+@EnableConfigurationProperties
 @SpringBootApplication
 public class Oauth2AuthorizationServerApplication {
 

@@ -1,6 +1,10 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.config;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.props;
 
-import com.github.olson1998.synthwave.support.jpa.config.*;
+import com.github.olson1998.synthwave.support.jpa.config.JpaDialectConfig;
+import com.github.olson1998.synthwave.support.jpa.config.JpaDialectValue;
+import com.github.olson1998.synthwave.support.jpa.props.EntityManagerProps;
+import com.github.olson1998.synthwave.support.jpa.props.PersistenceUnitProperties;
+import com.github.olson1998.synthwave.support.jpa.props.VendorAdapterProps;
 import com.github.olson1998.synthwave.support.migration.config.MigrationProperties;
 import com.zaxxer.hikari.HikariConfig;
 import jakarta.persistence.ValidationMode;
@@ -16,17 +20,17 @@ import java.util.Optional;
 @Setter
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "synthwave.authorizationserver.datasource")
+@ConfigurationProperties(prefix = "synthwave.service.authorizationserver.datasource")
 public class OAuth2PersistenceUnitProperties implements PersistenceUnitProperties {
 
     @Getter
     private final HikariConfig hikari = new HikariConfig();
 
     @Getter
-    private boolean showSQL = false;
+    private boolean showSql = false;
 
     @Getter
-    private boolean formatSQL = false;
+    private boolean formatSql = false;
 
     @Getter
     private Integer batchSize;

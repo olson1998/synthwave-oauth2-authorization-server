@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class RedirectURIsJpaRepositoryProxy implements RedirectURIsDataSourceRep
     public Collection<RedirectURI> getAllNotPresentRedirectUris(@NonNull Collection<RedirectURI> redirectUris) {
         var data = redirectUris.stream()
                 .map(RedirectUrisValue::new)
-                .toList();
+                .collect(Collectors.toSet());
         return redirectUrisJpaRepository.selectRedirectURIThatAreNotPresent(data).stream()
                 .map(RedirectURI.class::cast)
                 .toList();
@@ -38,8 +39,16 @@ public class RedirectURIsJpaRepositoryProxy implements RedirectURIsDataSourceRep
     public void saveAll(@NonNull Collection<RedirectURI> redirectUris) {
         var data = redirectUris.stream()
                 .map(RedirectURIsData::new)
-                .toList();
+                .collect(Collectors.toSet());
         redirectUrisJpaRepository.saveAll(data);
+    }
+
+    @Override
+    public int deleteAll(@NonNull Collection<RedirectURI> redirectURIs) {
+        var data = redirectURIs.stream()
+                .map(RedirectUrisValue::new)
+                .collect(Collectors.toSet());
+        return redirectUrisJpaRepository.deleteRedirectURIByValue(data);
     }
 
 }

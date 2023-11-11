@@ -5,11 +5,13 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.re
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
+import com.github.olson1998.synthwave.support.rest.exception.InternalServerErrorWebException;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,39 +20,43 @@ public class UserRequestPipelineService implements UserRequestPipeline {
     private final UserRequestRepository userRequestRepository;
 
     @Override
-    public Pipeline<Map<String, String>> runSavingUserPipeline(UserSchema userSchema) {
-        return Pipeline.initialJob(()-> userRequestRepository.saveUser(userSchema), error -> handleSavingUserError(error, userSchema));
+    public CompletableFuture<Map<String, String>> runSavingUserPipeline(UserSchema userSchema) {
+        return Pipeline.initialJob(()-> userRequestRepository.saveUser(userSchema), error -> handleSavingUserError(error, userSchema))
+                .toFuture();
     }
 
     @Override
-    public Pipeline<Void> runSavingActivatedUserPipeline(UserSchema userSchema) {
-        return runSavingUserPipeline(userSchema)
+    public CompletableFuture<Void> runSavingActivatedUserPipeline(UserSchema userSchema) {
+        return Pipeline.initialJob(()-> userRequestRepository.saveUser(userSchema), error -> handleSavingUserError(error, userSchema))
                 .thenRunJob(tokenMap -> tokenMap.get("activation_token"))
-                .thenRunJob(userRequestRepository::activateUser, this::handleActivationError);
+                .thenRunJob(userRequestRepository::activateUser, this::handleActivationError)
+                .toFuture();
     }
 
     @Override
-    public Pipeline<Void> activateUser(String activationToken) {
-        return Pipeline.initialJob(()-> userRequestRepository.activateUser(activationToken), this::handleActivationError);
+    public CompletableFuture<Void> runUserActivationPipeline(String activationToken) {
+        return Pipeline.initialJob(()-> userRequestRepository.activateUser(activationToken), this::handleActivationError)
+                .toFuture();
     }
 
     @Override
-    public Pipeline<Void> deactivateUser(TSID userId) {
-        return Pipeline.initialJob(()-> userRequestRepository.deactivateUser(userId), error -> handleDeactivationError(error, userId));
+    public CompletableFuture<Void> runUserDeactivationPipeline(TSID userId) {
+        return Pipeline.initialJob(()-> userRequestRepository.deactivateUser(userId), error -> handleDeactivationError(error, userId))
+                .toFuture();
     }
 
     private Map<String, String> handleSavingUserError(PipelineJobFailure pipelineJobFailure, UserSchema userSchema){
         log.error("Failed to save user: '{}', reason:", userSchema.getUser().getUsername(), pipelineJobFailure);
-        throw new IllegalStateException("Failed to run pipeline");
+        throw new InternalServerErrorWebException(pipelineJobFailure, false);
     }
 
     private Void handleActivationError(PipelineJobFailure pipelineJobFailure){
         log.error("Failed to activate user, reason:", pipelineJobFailure);
-        throw new IllegalStateException("Failed to run pipeline");
+        throw new InternalServerErrorWebException(pipelineJobFailure, false);
     }
 
     private Void handleDeactivationError(PipelineJobFailure pipelineJobFailure, TSID userID){
         log.error("Failed to deactivate user: '{}', reason:",userID, pipelineJobFailure);
-        throw new IllegalStateException("Failed to run pipeline");
+        throw new InternalServerErrorWebException(pipelineJobFailure, false);
     }
 }

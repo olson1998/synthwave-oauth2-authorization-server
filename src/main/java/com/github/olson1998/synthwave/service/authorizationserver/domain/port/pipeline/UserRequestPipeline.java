@@ -1,18 +1,22 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
-import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import io.hypersistence.tsid.TSID;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
+import static com.github.olson1998.synthwave.support.springbootstarter.async.config.ThreadPoolConfig.ASYNC_TASK_EXEC;
+
+@Async(ASYNC_TASK_EXEC)
 public interface UserRequestPipeline {
 
-    Pipeline<Map<String, String>> runSavingUserPipeline(UserSchema userSchema);
+    CompletableFuture<Map<String, String>> runSavingUserPipeline(UserSchema userSchema);
 
-    Pipeline<Void> runSavingActivatedUserPipeline(UserSchema userSchema);
+    CompletableFuture<Void> runSavingActivatedUserPipeline(UserSchema userSchema);
 
-    Pipeline<Void> activateUser(String activationToken);
+    CompletableFuture<Void> runUserActivationPipeline(String activationToken);
 
-    Pipeline<Void> deactivateUser(TSID userId);
+    CompletableFuture<Void> runUserDeactivationPipeline(TSID userId);
 }

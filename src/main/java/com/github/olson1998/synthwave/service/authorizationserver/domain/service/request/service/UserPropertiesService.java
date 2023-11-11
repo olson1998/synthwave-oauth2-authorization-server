@@ -3,7 +3,6 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserAffiliationEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.request.exception.UserExistsException;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
@@ -14,6 +13,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.re
 import com.github.olson1998.synthwave.support.jpa.exception.SelectQueryWithNoResultException;
 import com.github.olson1998.synthwave.support.jpa.exception.UnexpectedNumberOfAffectedRowsException;
 import io.hypersistence.tsid.TSID;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,12 +42,9 @@ public class UserPropertiesService implements UserPropertiesRepository {
     }
 
     @Override
-    public UserEntity saveUserSchema(UserSchema userSchema) {
+    public UserEntity saveUserSchema(@NonNull UserSchema userSchema) {
         var userProps = userSchema.getUser();
         var username = userProps.getUsername();
-        if(userPropertiesDataSourceRepository.existsUserWithGivenUsername(username)){
-            throw new UserExistsException(username);
-        }
         var passwordProps = userSchema.getPassword();
         var affiliationProperties = userSchema.getAffiliation();
         var userEntity = new UserEntityDTO(

@@ -11,4 +11,6 @@ public interface RedirectURIsDataSourceRepository {
     Collection<RedirectURI> getAllNotPresentRedirectUris(Collection<RedirectURI> redirectUris);
 
     void saveAll(Collection<RedirectURI> redirectUris);
+
+    int deleteAll(Collection<RedirectURI> redirectURIs);
 }

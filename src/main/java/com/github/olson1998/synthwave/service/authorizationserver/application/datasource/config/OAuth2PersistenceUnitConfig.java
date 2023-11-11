@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.config;
 
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.props.OAuth2PersistenceUnitProperties;
 import com.github.olson1998.synthwave.support.jpa.config.AbstractPersistenceUnitConfig;
 import com.github.olson1998.synthwave.support.migration.service.MigrationService;
 import lombok.RequiredArgsConstructor;

@@ -22,6 +22,7 @@ public class UserRequestService implements UserRequestRepository {
     @Override
     public Map<String, String> saveUser(UserSchema userSchema) {
         var user = userPropertiesRepository.saveUserSchema(userSchema);
+        log.info("Saved user: {}", user);
         var activationToken = new UserActivationToken(user);
         return Collections.singletonMap(ACTIVATION_TOKEN_FIELD, activationToken.toString());
     }

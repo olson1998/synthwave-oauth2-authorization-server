@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 @Data
 @Validated
 @Configuration
-@ConfigurationProperties(prefix = "synthwave.authorizationserver.argon2")
+@ConfigurationProperties(prefix = "synthwave.service.authorizationserver.argon2")
 public class Argon2Properties {
 
     private int hashLength =16;

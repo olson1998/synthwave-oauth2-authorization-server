@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RedirectURIsPipelineService implements RedirectURIRequestPipeline {
+public class RedirectURIPipelineService implements RedirectURIRequestPipeline {
 
     private final RedirectURIRepository redirectURIRepository;
 
@@ -31,12 +31,14 @@ public class RedirectURIsPipelineService implements RedirectURIRequestPipeline {
     }
 
     private Void saveRedirectURIs(List<RedirectURI> redirectURIs){
+        log.debug("Saving redirect URI");
         redirectURIRepository.saveAll(redirectURIs);
         return null;
     }
 
     private Void deleteRedirectURIs(List<RedirectURI> redirectURIs){
-        redirectURIRepository.saveAll(redirectURIs);
+        log.debug("Deleting redirect URI");
+        redirectURIRepository.deleteAll(redirectURIs);
         return null;
     }
 

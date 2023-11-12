@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pi
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.UserRequestPipeline;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectURIRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserRequestRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline.RedirectURIsPipelineService;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline.RedirectURIPipelineService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline.UserRequestPipelineService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +19,6 @@ public class AuthorizationServicePipelineServicesConfig {
 
     @Bean
     public RedirectURIRequestPipeline redirectURIsRequestPipeline(RedirectURIRepository redirectURIRepository){
-        return new RedirectURIsPipelineService(redirectURIRepository);
+        return new RedirectURIPipelineService(redirectURIRepository);
     }
 }

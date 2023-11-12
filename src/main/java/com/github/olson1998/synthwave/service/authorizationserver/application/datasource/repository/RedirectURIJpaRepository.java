@@ -22,6 +22,6 @@ interface RedirectURIJpaRepository extends JpaRepository<RedirectURIData, TSID> 
            OR (:divi IS NOT NULL AND bind.affiliation.division=:divi AND bind.type='DIVISION_PRIVATE')
            """)
     List<RedirectURIData> selectRedirectURIByClientIdCompanyCodeAndDivision(@Param("registeredClientId") TSID registeredClientId,
-                                                                          @Param("code") String code,
-                                                                          @Param("divi") String divi);
+                                                                            @Param("code") String code,
+                                                                            @Param("divi") String divi);
 }

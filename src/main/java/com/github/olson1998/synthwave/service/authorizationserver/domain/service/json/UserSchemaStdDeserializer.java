@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserSchemaDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
@@ -25,7 +25,7 @@ class UserSchemaStdDeserializer extends AbstractObjectStdDeserializer<UserSchema
     protected UserSchema deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException {
         var userProps = readJsonProperty(USER_SCHEMA_USER_JSON_FIELD, objectNode, objectCodec, UserProperties.class, true);
         var passwordProps = readJsonProperty(USER_SCHEMA_PASSWORD_JSON_FIELD, objectNode, objectCodec, Password.class, true);
-        var affiliationProps = readJsonProperty(USER_SCHEMA_AFFILIATION_JSON_FIELD, objectNode, objectCodec, UserAffiliation.class, true);
+        var affiliationProps = readJsonProperty(USER_SCHEMA_AFFILIATION_JSON_FIELD, objectNode, objectCodec, Affiliation.class, true);
         return new UserSchemaDTO(userProps, passwordProps, affiliationProps);
     }
 

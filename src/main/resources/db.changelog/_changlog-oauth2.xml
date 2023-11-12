@@ -17,7 +17,7 @@
             <column name="USREXP" type="varchar(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserAffiliationData" author="{server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.AffiliationData" author="{server.hostname}">
         <createTable tableName="USRAFF">
             <column name="UID" type="bigint">
                 <constraints foreignKeyName="AFFUID" referencedTableName="USRDTA" referencedColumnNames="UID" primaryKey="true" nullable="false"/>
@@ -149,7 +149,7 @@
             <column name="ATTRBS" type="varchar(2047)"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectUriScope" author="{server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIScope" author="{server.hostname}">
         <createTable tableName="URISCP">
             <column name="SCPVAL" type="varchar(11)">
                 <constraints nullable="false"/>
@@ -163,7 +163,7 @@
             <column name="SCPVAL">POST_LOGOUT</column>
         </insert>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIsData" author="{server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIData" author="{server.hostname}">
         <createTable tableName="REDURI">
             <column name="URISCP" type="varchar(10)">
                 <constraints foreignKeyName="RUISCP" referencedTableName="URISCP" referencedColumnNames="SCPVAL" nullable="false"/>

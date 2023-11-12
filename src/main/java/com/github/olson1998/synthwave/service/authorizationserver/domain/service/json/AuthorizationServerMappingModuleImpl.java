@@ -23,10 +23,10 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addSerializer(PasswordEntity.class, new PasswordEntityStdSerializer());
         mappings.addDeserializer(RedirectURI.class, new RedirectURIStdDeserializer());
         mappings.addSerializer(RedirectURI.class, new RedirectURIStdSerializer());
-        mappings.addSerializer(UserAffiliation.class, new UserAffiliationStdSerializer());
-        mappings.addDeserializer(UserAffiliation.class, new UserAffiliationStdDeserializer());
-        mappings.addDeserializer(UserAffiliationEntity.class, new UserAffiliationEntityStdDeserializer());
-        mappings.addSerializer(UserAffiliationEntity.class, new UserAffiliationEntityStdSerializer());
+        mappings.addSerializer(Affiliation.class, new UserAffiliationStdSerializer());
+        mappings.addDeserializer(Affiliation.class, new UserAffiliationStdDeserializer());
+        mappings.addDeserializer(AffiliationEntity.class, new UserAffiliationEntityStdDeserializer());
+        mappings.addSerializer(AffiliationEntity.class, new UserAffiliationEntityStdSerializer());
         mappings.addSerializer(OAuth2AccessTokenPayload.class, new OAuth2AccessTokenPayloadStdSerializer());
         mappings.addDeserializer(OAuth2AccessTokenPayload.class, new OAuth2AccessTokenPayloadStdDeserializer());
         mappings.addSerializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdSerializer());

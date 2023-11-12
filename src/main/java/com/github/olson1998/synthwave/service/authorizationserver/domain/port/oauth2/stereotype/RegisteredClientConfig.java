@@ -1,6 +1,5 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -8,7 +7,6 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 public interface RegisteredClientConfig {

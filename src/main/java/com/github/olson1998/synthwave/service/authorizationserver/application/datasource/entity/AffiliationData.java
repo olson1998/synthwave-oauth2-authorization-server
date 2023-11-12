@@ -1,10 +1,9 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserAffiliationEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AffiliationProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AffiliationEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
-import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,7 +24,7 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "USRAFF")
-public class UserAffiliationData implements UserAffiliationEntity, Persistable<TSID> {
+public class AffiliationData implements AffiliationEntity, Persistable<TSID> {
 
     @Id
     @Column(name = "UID")
@@ -33,13 +32,13 @@ public class UserAffiliationData implements UserAffiliationEntity, Persistable<T
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
 
-    private UserAffiliationProperties properties;
+    private AffiliationProperties properties;
 
-    public UserAffiliationData(@NonNull UserAffiliationEntity userAffiliationEntity) {
-        this.userId = userAffiliationEntity.getUserId();
-        this.properties = new UserAffiliationProperties(
-                userAffiliationEntity.getCompanyCode(),
-                userAffiliationEntity.getDivision()
+    public AffiliationData(@NonNull AffiliationEntity affiliationEntity) {
+        this.userId = affiliationEntity.getUserId();
+        this.properties = new AffiliationProperties(
+                affiliationEntity.getCompanyCode(),
+                affiliationEntity.getDivision()
         );
     }
 
@@ -56,14 +55,14 @@ public class UserAffiliationData implements UserAffiliationEntity, Persistable<T
     @Override
     public String getCompanyCode() {
         return Optional.ofNullable(properties)
-                .map(UserAffiliationProperties::getCompanyCode)
+                .map(AffiliationProperties::getCompanyCode)
                 .orElse(null);
     }
 
     @Override
     public String getDivision() {
         return Optional.ofNullable(properties)
-                .map(UserAffiliationProperties::getDivision)
+                .map(AffiliationProperties::getDivision)
                 .orElse(null);
     }
 

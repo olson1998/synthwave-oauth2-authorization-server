@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.UserAffiliationProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AffiliationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.mapping.OAuth2TokenFormatJavaType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AffiliationBasedTokenSettings;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
@@ -22,10 +22,10 @@ import org.springframework.security.oauth2.server.authorization.settings.OAuth2T
 
 @Entity
 @Table(name = "AFFTSG")
-public class AffiliationBasedTokenSettingsData implements AffiliationBasedTokenSettings, Persistable<UserAffiliationProperties> {
+public class AffiliationBasedTokenSettingsData implements AffiliationBasedTokenSettings, Persistable<AffiliationProperties> {
 
     @EmbeddedId
-    private UserAffiliationProperties properties;
+    private AffiliationProperties properties;
 
     @Column(name = "EXPPAC", nullable = false)
     @JavaType(PeriodJavaType.class)
@@ -60,7 +60,7 @@ public class AffiliationBasedTokenSettingsData implements AffiliationBasedTokenS
     private SignatureAlgorithm idTokenSignatureAlgorithm;
 
     @Override
-    public UserAffiliationProperties getId() {
+    public AffiliationProperties getId() {
         return properties;
     }
 

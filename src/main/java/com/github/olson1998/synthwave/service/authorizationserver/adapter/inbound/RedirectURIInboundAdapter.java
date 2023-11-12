@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.adapter.inbound;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIRequestPipeline;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;

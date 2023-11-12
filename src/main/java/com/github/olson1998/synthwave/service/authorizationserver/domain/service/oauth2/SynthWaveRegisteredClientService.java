@@ -8,7 +8,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegistrationClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
@@ -32,7 +32,7 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
 
     private final RegistrationClientRepository registrationClientRepository;
 
-    private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectURIDataSourceRepository redirectUrisDataSourceRepository;
 
     private final UserPropertiesDataSourceRepository userPropertiesDataSourceRepository;
 
@@ -70,7 +70,7 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
                 mapToAuthorizationGrantTypeBindings(registeredClientId, registeredClient.getAuthorizationGrantTypes());
         clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethods);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
-        redirectUrisDataSourceRepository.saveAll(redirectUrisDataSourceRepository.getAllNotPresentRedirectUris(concatRedirectUri));
+
     }
 
     @Override
@@ -94,7 +94,10 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
 
     private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
         var clientId = registeredClientConfig.getRegisteredClientId();
-        var redirectURI = redirectUrisDataSourceRepository.getAllRedirectUris();
+        var divi = registeredClientConfig.getDivision();
+        var code = registeredClientConfig.getCompanyCode();
+        var redirectURI =
+                redirectUrisDataSourceRepository.getRedirectURIByRegisteredClientIdCompanyCodeAndDivision(clientId, code, divi);
         var authorizationGrantTypes =
                 authorizationGrantTypeBindDataSourceRepository.getAuthorizationGrantTypesByRegisteredClientId(clientId);
         var clientAuthenticationMethods =

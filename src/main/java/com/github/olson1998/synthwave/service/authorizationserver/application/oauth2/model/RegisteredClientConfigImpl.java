@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
@@ -114,7 +114,7 @@ public class RegisteredClientConfigImpl implements RegisteredClientConfig {
 
     private void appendUnresolvedUris(@NonNull Collection<RedirectURI> redirectUrisCollection) {
         redirectUrisCollection.forEach(redirectUri -> {
-            var uri = redirectUri.getRedirectUri();
+            var uri = redirectUri.getUri();
             if(redirectUri.isPostLogin()){
                 redirectUris.add(uri);
             } else if (redirectUri.isPostLogout()) {

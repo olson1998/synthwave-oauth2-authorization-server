@@ -43,14 +43,14 @@ public class OAuth2RepositoriesConfig {
     public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(RegisteredClientMapper registeredClientMapper,
                                                                                    RegistrationClientRepository registrationClientRepository,
                                                                                    UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
-                                                                                   RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
+                                                                                   RedirectURIJpaRepositoryProxy redirectURIJpaRepositoryProxy,
                                                                                    RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy,
                                                                                    AuthorizationGrantTypeBindJpaRepositoryProxy authorizationGrantTypeBindJpaRepositoryProxy,
                                                                                    ClientAuthenticationMethodJpaRepositoryProxy clientAuthenticationMethodJpaRepositoryProxy){
         return new SynthWaveRegisteredClientService(
                 registeredClientMapper,
                 registrationClientRepository,
-                redirectURIsJpaRepositoryProxy,
+                redirectURIJpaRepositoryProxy,
                 userPropertiesSourceRepository,
                 synthWaveRegisteredClientJpaRepositoryProxy,
                 authorizationGrantTypeBindJpaRepositoryProxy,
@@ -68,14 +68,14 @@ public class OAuth2RepositoriesConfig {
     public OAuth2AuthorizationRepository oAuth2AuthorizationRepository(OAuth2TokenMapper oAuth2TokenMapper,
                                                                        OAuth2AuthorizationMapper oAuth2AuthorizationMapper,
                                                                        OAuth2TokenJpaRepositoryProxy oAuth2TokenJpaRepositoryProxy,
-                                                                       RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
+                                                                       RedirectURIJpaRepositoryProxy redirectURIJpaRepositoryProxy,
                                                                        OAuth2AuthorizationJpaRepositoryProxy oAuth2AuthorizationJpaRepositoryProxy,
                                                                        RegisteredClientJpaRepositoryProxy registeredClientJpaRepositoryProxy){
         return new OAuth2AuthorizationServiceInstance(
                 oAuth2TokenMapper,
                 oAuth2AuthorizationMapper,
                 oAuth2TokenJpaRepositoryProxy,
-                redirectURIsJpaRepositoryProxy,
+                redirectURIJpaRepositoryProxy,
                 oAuth2AuthorizationJpaRepositoryProxy,
                 registeredClientJpaRepositoryProxy
         );
@@ -85,12 +85,12 @@ public class OAuth2RepositoriesConfig {
     public UserPropertiesRepository userPropertiesRepository(PasswordEncoder passwordEncoder,
                                                          UserPropertiesJpaRepositoryProxy userPropertiesJpaRepositoryProxy,
                                                          UserPasswordJpaRepositoryProxy userPasswordJpaRepositoryProxy,
-                                                         UserAffiliationJpaRepositoryProxy userAffiliationJpaRepositoryProxy){
+                                                         AffiliationJpaRepositoryProxy affiliationJpaRepositoryProxy){
         return new UserPropertiesService(
                 passwordEncoder,
                 userPropertiesJpaRepositoryProxy,
                 userPasswordJpaRepositoryProxy,
-                userAffiliationJpaRepositoryProxy
+                affiliationJpaRepositoryProxy
         );
     }
 }

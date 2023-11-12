@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2AuthorizationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.OAuth2TokenDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationRepository;
@@ -26,7 +26,7 @@ public class OAuth2AuthorizationServiceInstance implements OAuth2AuthorizationRe
 
     private final OAuth2TokenDataSourceRepository oAuth2TokenDataSourceRepository;
 
-    private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectURIDataSourceRepository redirectUrisDataSourceRepository;
 
     private final OAuth2AuthorizationDataSourceRepository oAuth2AuthorizationDataSourceRepository;
 
@@ -82,9 +82,6 @@ public class OAuth2AuthorizationServiceInstance implements OAuth2AuthorizationRe
     private OAuth2Authorization mapToOAuth2Authorization(AuthorizationProperties authorizationProperties){
         var authorizationId = authorizationProperties.getId();
         var tokens = oAuth2TokenDataSourceRepository.getTokensByAuthorizationId(authorizationId);
-        var registeredClientConfig = registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(authorizationProperties.getRegisteredClientId())
-                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
-                .orElseThrow();
         return oAuth2AuthorizationMapper.map(registeredClientConfig, authorizationProperties, tokens);
     }
 }

@@ -1,11 +1,11 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
-public class UserAffiliationDTO implements UserAffiliation {
+public class UserAffiliationDTO implements Affiliation {
 
     public static final String USER_AFFILIATION_CODE_JSON_FIELD = "code";
 

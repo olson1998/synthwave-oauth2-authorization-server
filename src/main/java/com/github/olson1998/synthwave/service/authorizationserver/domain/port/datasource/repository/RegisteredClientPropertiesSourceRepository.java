@@ -14,5 +14,5 @@ public interface RegisteredClientPropertiesSourceRepository {
 
     Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId);
 
-    void save(RegisteredClientEntity registeredClientEntity);
+    RegisteredClientEntity save(RegisteredClientEntity registeredClientEntity);
 }

@@ -9,7 +9,6 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.service
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service.UserPropertiesService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
@@ -41,17 +40,21 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
-    public RegisteredClientRepository synthWaveRegisteredClientRepository(RegisteredClientMapper registeredClientMapper,
-                                                                          RegistrationClientRepository registrationClientRepository,
-                                                                          UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
-                                                                          RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
-                                                                          RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy){
-        return new RegisteredClientServiceInstance(
+    public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(RegisteredClientMapper registeredClientMapper,
+                                                                                   RegistrationClientRepository registrationClientRepository,
+                                                                                   UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
+                                                                                   RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
+                                                                                   RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy,
+                                                                                   AuthorizationGrantTypeBindJpaRepositoryProxy authorizationGrantTypeBindJpaRepositoryProxy,
+                                                                                   ClientAuthenticationMethodJpaRepositoryProxy clientAuthenticationMethodJpaRepositoryProxy){
+        return new SynthWaveRegisteredClientService(
                 registeredClientMapper,
                 registrationClientRepository,
                 redirectURIsJpaRepositoryProxy,
                 userPropertiesSourceRepository,
-                synthWaveRegisteredClientJpaRepositoryProxy
+                synthWaveRegisteredClientJpaRepositoryProxy,
+                authorizationGrantTypeBindJpaRepositoryProxy,
+                clientAuthenticationMethodJpaRepositoryProxy
         );
 
     }

@@ -34,8 +34,8 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPrope
     }
 
     @Override
-    public void save(RegisteredClientEntity registeredClientEntity) {
+    public RegisteredClientEntity save(RegisteredClientEntity registeredClientEntity) {
         var data = new RegisteredClientData(registeredClientEntity);
-        registeredClientDataJpaRepository.save(data);
+        return registeredClientDataJpaRepository.save(data);
     }
 }

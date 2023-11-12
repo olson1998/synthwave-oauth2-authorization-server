@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +32,10 @@ public class OAuth2FilterChainConfig {
     public SecurityFilterChain oauth2SecurityFilterChain(@NonNull HttpSecurity httpSecurity,
                                                          @NonNull JwtGenerator jwtGenerator,
                                                          @NonNull JwtAuthenticationProvider jwtAuthenticationProvider,
-                                                         @NonNull RegisteredClientRepository registeredClientRepository) throws Exception {
+                                                         @NonNull SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
         httpSecurity.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .registeredClientRepository(registeredClientRepository)
+                .registeredClientRepository(synthWaveRegisteredClientRepository)
                 .oidc(oidcConfigurer -> {
                     oidcConfigurer.clientRegistrationEndpoint(Customizer.withDefaults());
                     oidcConfigurer.userInfoEndpoint(oidcUserInfoEndpointConfigurer -> {

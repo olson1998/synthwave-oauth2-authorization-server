@@ -2,14 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAccountLock;
 import io.hypersistence.tsid.TSID;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 public class UserAccountLockDTO implements UserAccountLock {
 

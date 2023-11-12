@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JavaType;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 
 @Embeddable
 public class AuthorizationGrantTypeBind implements Serializable {

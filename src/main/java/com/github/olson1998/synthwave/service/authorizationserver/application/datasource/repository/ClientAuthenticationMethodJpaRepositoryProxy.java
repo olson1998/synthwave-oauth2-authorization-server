@@ -1,6 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.ClientAuthenticationMethodBoundData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.ClientAuthenticationMethodBindDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +20,13 @@ public class ClientAuthenticationMethodJpaRepositoryProxy implements ClientAuthe
     @Override
     public Collection<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(@NonNull TSID registeredClientId) {
         return clientAuthenticationMethodJpaRepository.selectClientAuthenticationMethodByRegisteredClientId(registeredClientId);
+    }
+
+    @Override
+    public void saveAll(@NonNull Collection<ClientAuthenticationMethodBinding> clientAuthenticationMethodBindings) {
+        var data = clientAuthenticationMethodBindings.stream()
+                .map(ClientAuthenticationMethodBoundData::new)
+                .toList();
+        clientAuthenticationMethodJpaRepository.saveAll(data);
     }
 }

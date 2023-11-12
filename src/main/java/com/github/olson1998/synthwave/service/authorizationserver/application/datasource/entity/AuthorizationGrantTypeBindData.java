@@ -25,6 +25,13 @@ public class AuthorizationGrantTypeBindData implements Persistable<Authorization
     @EmbeddedId
     private AuthorizationGrantTypeBind binding;
 
+    public AuthorizationGrantTypeBindData(AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
+        this.binding = new AuthorizationGrantTypeBind(
+                authorizationGrantTypeBinding.getRegisteredClientId(),
+                authorizationGrantTypeBinding.getAuthorizationGrantType()
+        );
+    }
+
     @Override
     public AuthorizationGrantTypeBind getId() {
         return binding;

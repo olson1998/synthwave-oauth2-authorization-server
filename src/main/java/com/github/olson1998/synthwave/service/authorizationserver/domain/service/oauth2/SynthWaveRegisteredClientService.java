@@ -1,28 +1,32 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AuthorizationGrantTypeBindDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.ClientAuthenticationMethodBindDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLoginRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLogoutRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegistrationClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class RegisteredClientServiceInstance implements RegisteredClientRepository {
+public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClientRepository {
 
     private final RegisteredClientMapper registeredClientMapper;
 
@@ -58,7 +62,14 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
         var postLogoutRedirectUris = registeredClient.getPostLogoutRedirectUris();
         var registeredClientProps = new SynthWaveRegisteredClient(userId, clientId);
         var concatRedirectUri = concatRedirectUris(redirectUris, postLogoutRedirectUris);
-        registeredClientPropertiesSourceRepository.save(registeredClientProps);
+        var registeredClientEntity = registeredClientPropertiesSourceRepository.save(registeredClientProps);
+        var registeredClientId = registeredClientEntity.getId();
+        var clientAuthenticationMethods =
+                mapToClientAuthenticationMethodBind(registeredClientId, registeredClient.getClientAuthenticationMethods());
+        var authorizationGrantTypes =
+                mapToAuthorizationGrantTypeBindings(registeredClientId, registeredClient.getAuthorizationGrantTypes());
+        clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethods);
+        authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
         redirectUrisDataSourceRepository.saveAll(redirectUrisDataSourceRepository.getAllNotPresentRedirectUris(concatRedirectUri));
     }
 
@@ -81,17 +92,6 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
                         .orElse(null));
     }
 
-    private Set<RedirectURI> concatRedirectUris(Set<String> redirectUris, Set<String> postLogoutRedirectUris){
-        var redirectUrisStream = redirectUris.stream()
-                .map(PostLoginRedirectURI::new)
-                .map(RedirectURI.class::cast);
-        var postLogoutRedirectUrisStream = postLogoutRedirectUris.stream()
-                .map(PostLogoutRedirectURI::new)
-                .map(RedirectURI.class::cast);
-        return Stream.concat(redirectUrisStream, postLogoutRedirectUrisStream)
-                .collect(Collectors.toSet());
-    }
-
     private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
         var clientId = registeredClientConfig.getRegisteredClientId();
         var redirectURI = redirectUrisDataSourceRepository.getAllRedirectUris();
@@ -103,6 +103,31 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
                 .withRedirectUris(redirectURI)
                 .withAuthorizationGrantTypes(authorizationGrantTypes)
                 .withClientAuthenticationMethods(clientAuthenticationMethods);
+    }
+
+    private Set<RedirectURI> concatRedirectUris(Set<String> redirectUris, Set<String> postLogoutRedirectUris){
+        var redirectUrisStream = redirectUris.stream()
+                .map(PostLoginRedirectURI::new)
+                .map(RedirectURI.class::cast);
+        var postLogoutRedirectUrisStream = postLogoutRedirectUris.stream()
+                .map(PostLogoutRedirectURI::new)
+                .map(RedirectURI.class::cast);
+        return Stream.concat(redirectUrisStream, postLogoutRedirectUrisStream)
+                .collect(Collectors.toSet());
+    }
+
+    private List<AuthorizationGrantTypeBinding> mapToAuthorizationGrantTypeBindings(TSID registeredClientId, Collection<AuthorizationGrantType> authorizationGrantTypes){
+        return authorizationGrantTypes.stream()
+                .map(authorizationGrantType -> new AuthorizationGrantTypeBindDTO(registeredClientId, authorizationGrantType))
+                .map(AuthorizationGrantTypeBinding.class::cast)
+                .toList();
+    }
+
+    private List<ClientAuthenticationMethodBinding> mapToClientAuthenticationMethodBind(TSID registeredClientId, Collection<ClientAuthenticationMethod> clientAuthenticationMethods){
+        return clientAuthenticationMethods.stream()
+                .map(clientAuthenticationMethod -> new ClientAuthenticationMethodBindDTO(registeredClientId, clientAuthenticationMethod))
+                .map(ClientAuthenticationMethodBinding.class::cast)
+                .toList();
     }
 
 }

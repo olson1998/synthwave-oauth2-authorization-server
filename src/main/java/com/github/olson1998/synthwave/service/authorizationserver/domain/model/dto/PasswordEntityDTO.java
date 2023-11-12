@@ -3,12 +3,14 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
 import io.hypersistence.tsid.TSID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.joda.time.Period;
 
 @Getter
 @ToString
+@EqualsAndHashCode(callSuper = true)
 public class PasswordEntityDTO extends PasswordDTO implements PasswordEntity {
 
     public static final String PASSWORD_ID_JSON_FIELD = "id";

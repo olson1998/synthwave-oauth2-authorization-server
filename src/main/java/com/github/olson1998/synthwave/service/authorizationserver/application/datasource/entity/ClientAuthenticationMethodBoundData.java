@@ -25,6 +25,13 @@ public class ClientAuthenticationMethodBoundData implements Persistable<ClientAu
     @EmbeddedId
     private ClientAuthenticationMethodBind binding;
 
+    public ClientAuthenticationMethodBoundData(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
+        this.binding = new ClientAuthenticationMethodBind(
+                clientAuthenticationMethodBinding.getRegisteredClientId(),
+                clientAuthenticationMethodBinding.getClientAuthenticationMethod()
+        );
+    }
+
     @Override
     public ClientAuthenticationMethodBind getId() {
         return binding;

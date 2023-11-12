@@ -3,9 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import lombok.*;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 public class PostLoginRedirectURI implements RedirectURI {
 

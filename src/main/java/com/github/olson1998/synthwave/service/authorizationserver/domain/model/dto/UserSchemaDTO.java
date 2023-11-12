@@ -4,14 +4,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 public class UserSchemaDTO implements UserSchema {
 

@@ -2,17 +2,12 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
 import io.hypersistence.tsid.TSID;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.joda.time.Period;
 
 import java.util.Optional;
 
-@Getter
-@ToString
-@EqualsAndHashCode
+@Data
 @AllArgsConstructor
 public class PasswordDTO implements Password {
 

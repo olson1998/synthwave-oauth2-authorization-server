@@ -29,7 +29,7 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
     CASE WHEN (COUNT(lock.id) > 0) THEN true ELSE false END
     )
     FROM UserData user
-    LEFT OUTER JOIN UserAffiliationData affiliation
+    LEFT OUTER JOIN AffiliationData affiliation
     ON user.id=affiliation.userId
     LEFT OUTER JOIN UserPasswordData password
     ON user.id=password.userId

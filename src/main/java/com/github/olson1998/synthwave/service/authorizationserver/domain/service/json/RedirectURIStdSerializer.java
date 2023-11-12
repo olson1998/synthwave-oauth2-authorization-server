@@ -22,6 +22,6 @@ class RedirectURIStdSerializer extends AbstractObjectStdSerializer<RedirectURI> 
         } else if (redirectUri.isPostLogout()) {
             writeField("type", PostLogoutRedirectURI.TYPE, jsonGenerator);
         }
-        writeField("uri", redirectUri.getRedirectUri(), jsonGenerator);
+        writeField("uri", redirectUri.getUri(), jsonGenerator);
     }
 }

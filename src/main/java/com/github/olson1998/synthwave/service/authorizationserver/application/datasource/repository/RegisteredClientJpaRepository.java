@@ -45,7 +45,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId
-    LEFT OUTER JOIN UserAffiliationData affiliation
+    LEFT OUTER JOIN AffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN RegisteredClientSettingsData settings
     ON registeredClient.id=settings.registeredClientId
@@ -82,7 +82,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     ON registeredClient.userId=user.id
     LEFT OUTER JOIN UserPasswordData password
     ON registeredClient.userId=password.userId
-    LEFT OUTER JOIN UserAffiliationData affiliation
+    LEFT OUTER JOIN AffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN RegisteredClientSettingsData settings
     ON registeredClient.id=settings.registeredClientId

@@ -1,9 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
-import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,28 +19,24 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RCLTDT")
-public class RegisteredClientData implements RegisteredClientEntity, Persistable<TSID> {
+@Table(name = "RCLTST")
+public class RegisteredClientSettingsData implements Persistable<TSID> {
 
     @Id
-    @Tsid
     @Column(name = "RCLTID")
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
-    private TSID id;
+    private TSID registeredClientId;
 
-    @Column(name = "UID", nullable = false)
-    @JdbcType(BigIntJdbcType.class)
-    @JavaType(TSIDJavaType.class)
-    private TSID userId;
+    @Column(name = "RCLRPK")
+    private boolean requireProofKey;
 
-    @Column(name = "RCLTNM", nullable = false)
-    private String clientId;
+    @Column(name = "RCLRAC")
+    private boolean requireAuthorizationConsent;
 
-    public RegisteredClientData(@NonNull RegisteredClientEntity registeredClientEntity) {
-        this.id = registeredClientEntity.getId();
-        this.userId = registeredClientEntity.getUserId();
-        this.clientId = registeredClientEntity.getClientId();
+    @Override
+    public TSID getId() {
+        return registeredClientId;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSettings;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
@@ -9,6 +8,8 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 @Getter
 @ToString
-public class SynthWaveRegisteredClientPropertiesImpl implements RegisteredClientConfig {
+public class RegisteredClientConfigImpl implements RegisteredClientConfig {
 
     private final TSID registeredClientId;
 
@@ -38,38 +39,46 @@ public class SynthWaveRegisteredClientPropertiesImpl implements RegisteredClient
 
     private final Instant passwordExpireTime;
 
-    private final RegisteredClientSettings registeredClientSettings;
-
     private final TokenSettings tokenSettings;
 
     private final Set<String> redirectUris;
 
     private final Set<String> postLogoutRedirectUris;
 
-    public SynthWaveRegisteredClientPropertiesImpl(TSID registeredClientId,
-                                                   String companyCode,
-                                                   String division,
-                                                   String clientId,
-                                                   String username,
-                                                   TSID passwordId,
-                                                   String passwordValue,
-                                                   Period passwordExpirePeriod,
-                                                   RegisteredClientSettings registeredClientSettings,
-                                                   Period authorizationCodeExpirePeriod,
-                                                   Period accessTokenExpirePeriod,
-                                                   OAuth2TokenFormat accessTokenFormat,
-                                                   Period deviceCodeExpirePeriod,
-                                                   boolean reuseRefreshToken,
-                                                   Period refreshTokenExpirePeriod,
-                                                   SignatureAlgorithm idTokenSignatureAlgorithm) {
+    private final boolean requireProofKey;
+
+    private final boolean requireAuthorizationConsent;
+
+    private final Set<AuthorizationGrantType> authorizationGrantTypes;
+
+    private final Set<ClientAuthenticationMethod> clientAuthenticationMethods;
+
+    public RegisteredClientConfigImpl(TSID registeredClientId,
+                                      String companyCode,
+                                      String division,
+                                      String clientId,
+                                      String username,
+                                      TSID passwordId,
+                                      String passwordValue,
+                                      Period passwordExpirePeriod,
+                                      Period authorizationCodeExpirePeriod,
+                                      Period accessTokenExpirePeriod,
+                                      OAuth2TokenFormat accessTokenFormat,
+                                      Period deviceCodeExpirePeriod,
+                                      boolean reuseRefreshToken,
+                                      Period refreshTokenExpirePeriod,
+                                      SignatureAlgorithm idTokenSignatureAlgorithm,
+                                      boolean requireProofKey,
+                                      boolean requireAuthorizationConsent) {
         this.registeredClientId = registeredClientId;
         this.companyCode = companyCode;
         this.division = division;
         this.clientId = clientId;
         this.username = username;
         this.passwordValue = passwordValue;
+        this.requireProofKey = requireProofKey;
+        this.requireAuthorizationConsent = requireAuthorizationConsent;
         this.passwordExpireTime = resolvePasswordExpireInstant(passwordId, passwordExpirePeriod);
-        this.registeredClientSettings = registeredClientSettings;
         this.tokenSettings = resolveTokenSettings(
                 authorizationCodeExpirePeriod,
                 accessTokenExpirePeriod,
@@ -81,11 +90,25 @@ public class SynthWaveRegisteredClientPropertiesImpl implements RegisteredClient
         );
         this.redirectUris = new HashSet<>();
         this.postLogoutRedirectUris = new HashSet<>();
+        this.authorizationGrantTypes = new HashSet<>();
+        this.clientAuthenticationMethods = new HashSet<>();
     }
 
     @Override
     public RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris) {
         appendUnresolvedUris(redirectUris);
+        return this;
+    }
+
+    @Override
+    public RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
+        this.authorizationGrantTypes.addAll(authorizationGrantTypes);
+        return this;
+    }
+
+    @Override
+    public RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
+        this.clientAuthenticationMethods.addAll(clientAuthenticationMethods);
         return this;
     }
 

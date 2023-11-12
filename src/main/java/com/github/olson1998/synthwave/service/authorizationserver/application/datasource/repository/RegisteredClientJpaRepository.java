@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +21,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     Optional<String> selectClientIdByUserId(@Param("userId") TSID userId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -30,14 +30,15 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     password.id,
     password.value,
     password.expirePeriod,
-    registeredClient.type,
     tokenSettings.authorizationCodeExpirePeriod,
     tokenSettings.accessTokenExpirePeriod,
     tokenSettings.accessTokenFormat,
     tokenSettings.deviceCodeExpirePeriod,
     tokenSettings.reuseRefreshToken,
     tokenSettings.refreshTokenExpirePeriod,
-    tokenSettings.idTokenSignatureAlgorithm
+    tokenSettings.idTokenSignatureAlgorithm,
+    settings.requireProofKey,
+    settings.requireAuthorizationConsent
     )
     FROM RegisteredClientData registeredClient
     LEFT OUTER JOIN UserData user
@@ -46,16 +47,18 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     ON registeredClient.userId=password.userId
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
+    LEFT OUTER JOIN RegisteredClientSettingsData settings
+    ON registeredClient.id=settings.registeredClientId
     LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
     ON affiliation.properties.companyCode=tokenSettings.properties.companyCode
     AND affiliation.properties.division=tokenSettings.properties.division
     WHERE registeredClient.id=:registeredClientId
     AND password.latestVersion=true
     """)
-    Optional<SynthWaveRegisteredClientPropertiesImpl> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+    Optional<RegisteredClientConfigImpl> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -64,14 +67,15 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     password.id,
     password.value,
     password.expirePeriod,
-    registeredClient.type,
     tokenSettings.authorizationCodeExpirePeriod,
     tokenSettings.accessTokenExpirePeriod,
     tokenSettings.accessTokenFormat,
     tokenSettings.deviceCodeExpirePeriod,
     tokenSettings.reuseRefreshToken,
     tokenSettings.refreshTokenExpirePeriod,
-    tokenSettings.idTokenSignatureAlgorithm
+    tokenSettings.idTokenSignatureAlgorithm,
+    settings.requireProofKey,
+    settings.requireAuthorizationConsent
     )
     FROM RegisteredClientData registeredClient
     LEFT OUTER JOIN UserData user
@@ -80,11 +84,13 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     ON registeredClient.userId=password.userId
     LEFT OUTER JOIN UserAffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
+    LEFT OUTER JOIN RegisteredClientSettingsData settings
+    ON registeredClient.id=settings.registeredClientId
     LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
     ON affiliation.properties.companyCode=tokenSettings.properties.companyCode
     AND affiliation.properties.division=tokenSettings.properties.division
     WHERE user.username=:username
     AND password.latestVersion=true
     """)
-    Optional<SynthWaveRegisteredClientPropertiesImpl> selectRegisteredClientConfigByClientId(@Param("username") String username);
+    Optional<RegisteredClientConfigImpl> selectRegisteredClientConfigByClientId(@Param("username") String username);
 }

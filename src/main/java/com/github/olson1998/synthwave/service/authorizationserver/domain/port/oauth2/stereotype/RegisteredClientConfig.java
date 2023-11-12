@@ -2,10 +2,13 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import io.hypersistence.tsid.TSID;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 public interface RegisteredClientConfig {
@@ -24,14 +27,24 @@ public interface RegisteredClientConfig {
 
     Instant getPasswordExpireTime();
 
-    RegisteredClientSettings getRegisteredClientSettings();
-
     TokenSettings getTokenSettings();
 
     Set<String> getRedirectUris();
 
     Set<String> getPostLogoutRedirectUris();
 
+    boolean isRequireProofKey();
+
+    boolean isRequireAuthorizationConsent();
+
+    Set<AuthorizationGrantType> getAuthorizationGrantTypes();
+
+    Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
+
     RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris);
+
+    RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
+
+    RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
 
 }

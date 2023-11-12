@@ -3,31 +3,23 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLoginRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PostLogoutRedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegistrationClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
-import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
 
 @RequiredArgsConstructor
 public class RegisteredClientServiceInstance implements RegisteredClientRepository {
@@ -41,6 +33,10 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
     private final UserPropertiesDataSourceRepository userPropertiesDataSourceRepository;
 
     private final RegisteredClientPropertiesSourceRepository registeredClientPropertiesSourceRepository;
+
+    private final AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository;
+
+    private final ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository;
 
     @Override
     public void save(@NonNull RegisteredClient registeredClient) {
@@ -71,7 +67,7 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
         var longId = Long.getLong(id);
         var tsid = TSID.from(longId);
         return registeredClientPropertiesSourceRepository.getRegisteredClientConfigByRegisteredClientId(tsid)
-                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                .map(this::appendRegisteredClientConfigs)
                 .map(registeredClientMapper::map)
                 .orElse(null);
     }
@@ -80,7 +76,7 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
     public RegisteredClient findByClientId(String clientId) {
         return Optional.ofNullable(registrationClientRepository.getRegistrationClient(clientId))
                 .orElseGet(()-> registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(clientId)
-                        .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                        .map(this::appendRegisteredClientConfigs)
                         .map(registeredClientMapper::map)
                         .orElse(null));
     }
@@ -94,6 +90,19 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
                 .map(RedirectURI.class::cast);
         return Stream.concat(redirectUrisStream, postLogoutRedirectUrisStream)
                 .collect(Collectors.toSet());
+    }
+
+    private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
+        var clientId = registeredClientConfig.getRegisteredClientId();
+        var redirectURI = redirectUrisDataSourceRepository.getAllRedirectUris();
+        var authorizationGrantTypes =
+                authorizationGrantTypeBindDataSourceRepository.getAuthorizationGrantTypesByRegisteredClientId(clientId);
+        var clientAuthenticationMethods =
+                clientAuthenticationMethodBindDataSourceRepository.getClientAuthenticationMethodsByRegisteredClientId(clientId);
+        return registeredClientConfig
+                .withRedirectUris(redirectURI)
+                .withAuthorizationGrantTypes(authorizationGrantTypes)
+                .withClientAuthenticationMethods(clientAuthenticationMethods);
     }
 
 }

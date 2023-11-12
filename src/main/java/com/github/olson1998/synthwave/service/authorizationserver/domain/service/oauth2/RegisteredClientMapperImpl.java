@@ -7,7 +7,6 @@ import com.github.olson1998.synthwave.support.rest.model.URLPath;
 import com.github.olson1998.synthwave.support.rest.util.URIModel;
 import com.github.olson1998.synthwave.support.rest.util.URIUtils;
 import lombok.NonNull;
-import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
@@ -29,9 +28,10 @@ public class RegisteredClientMapperImpl implements RegisteredClientMapper {
         var clientId = props.getClientId();
         var redirectUris= decorateRedirectUris(props.getRedirectUris(), clientId);
         var postLogoutUris = decorateRedirectUris(props.getPostLogoutRedirectUris(), clientId);
-        var registeredClientSettings = props.getRegisteredClientSettings();
-        var clientSettings = finishBuildingClientSettings(registeredClientSettings.fabricateClientSettingsBuilder());
         var tokenSettings = props.getTokenSettings();
+        var clientSettings = buildClientSettings(props);
+        var authorizationGrantTypesSet = props.getAuthorizationGrantTypes();
+        var clientAuthenticationMethodsSet = props.getClientAuthenticationMethods();
         var registeredClientBuilder = RegisteredClient.withId(props.getClientId())
                 .scopes(strings -> strings.addAll(List.of(OPENID, PROFILE)))
                 .clientName(props.getUsername())
@@ -39,10 +39,10 @@ public class RegisteredClientMapperImpl implements RegisteredClientMapper {
                 .clientSecret(props.getPasswordValue())
                 .redirectUris(uris -> uris.addAll(redirectUris))
                 .postLogoutRedirectUris(uris -> uris.addAll(postLogoutUris))
-                .clientSettings(clientSettings)
                 .tokenSettings(tokenSettings)
-                .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(registeredClientSettings.getClientAuthenticationMethods()))
-                .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(registeredClientSettings.getAuthorizationGrantTypes()));
+                .clientSettings(clientSettings)
+                .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(authorizationGrantTypesSet))
+                .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(clientAuthenticationMethodsSet));
         Optional.ofNullable(props.getPasswordExpireTime()).ifPresent(registeredClientBuilder::clientSecretExpiresAt);
         return new SynthWaveOAuth2RegisteredClient(
                 code,
@@ -51,10 +51,10 @@ public class RegisteredClientMapperImpl implements RegisteredClientMapper {
         );
     }
 
-    private ClientSettings finishBuildingClientSettings(ClientSettings.Builder builder){
-        return builder
-                .jwkSetUrl("http://localhost:8095")
-                .tokenEndpointAuthenticationSigningAlgorithm(SignatureAlgorithm.RS256)
+    private ClientSettings buildClientSettings(RegisteredClientConfig registeredClientConfig){
+        return ClientSettings.builder()
+                .requireAuthorizationConsent(registeredClientConfig.isRequireAuthorizationConsent())
+                .requireProofKey(registeredClientConfig.isRequireProofKey())
                 .build();
     }
 

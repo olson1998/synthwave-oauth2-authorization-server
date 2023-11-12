@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 interface OAuth2AuthorizationJpaRepository extends JpaRepository<OAuth2AuthorizationData, String> {
 
     @Query("SELECT authorization FROM OAuth2AuthorizationData authorization WHERE authorization.id=:id")
-    Optional<OAuth2AuthorizationData> selectAuthorizationById(String id);
+    Optional<OAuth2AuthorizationData> selectAuthorizationById(@Param("id") String id);
 
     @Query("""
     SELECT authorization
@@ -23,9 +24,9 @@ interface OAuth2AuthorizationJpaRepository extends JpaRepository<OAuth2Authoriza
     WHERE token.value=:token
     AND token.description.tokenClass=:tokenClass
     """)
-    Optional<OAuth2AuthorizationData> selectAuthorizationByTokenAndTokenClass(String token, Class<?> tokenClass);
+    Optional<OAuth2AuthorizationData> selectAuthorizationByTokenAndTokenClass(@Param("token") String token,@Param("tokenClass") Class<?> tokenClass);
 
     @Modifying
     @Query("DELETE FROM OAuth2AuthorizationData authorization WHERE authorization=:authorization")
-    int deleteAuthorizationByAuthorizationData(OAuth2AuthorizationData authorization);
+    int deleteAuthorizationByAuthorizationData(@Param("authorization") OAuth2AuthorizationData authorization);
 }

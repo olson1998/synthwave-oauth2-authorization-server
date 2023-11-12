@@ -17,6 +17,11 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPrope
     private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 
     @Override
+    public Optional<String> getClientIdByUserId(TSID userId) {
+        return registeredClientDataJpaRepository.selectClientIdByUserId(userId);
+    }
+
+    @Override
     public Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String clientId) {
         return registeredClientDataJpaRepository.selectRegisteredClientConfigByClientId(clientId)
                 .map(RegisteredClientConfig.class::cast);

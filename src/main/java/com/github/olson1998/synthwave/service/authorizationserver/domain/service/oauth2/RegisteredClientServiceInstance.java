@@ -5,25 +5,36 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.d
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegistrationClientRepository;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
+import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
 
 @RequiredArgsConstructor
 public class RegisteredClientServiceInstance implements RegisteredClientRepository {
 
     private final RegisteredClientMapper registeredClientMapper;
+
+    private final RegistrationClientRepository registrationClientRepository;
 
     private final RedirectURIsDataSourceRepository redirectUrisDataSourceRepository;
 
@@ -33,20 +44,23 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
 
     @Override
     public void save(@NonNull RegisteredClient registeredClient) {
-        var clientId = Objects.requireNonNull(
-                registeredClient.getClientId(),
-                "Client id is required property of registered client"
-        );
         var username = Objects.requireNonNull(
                 registeredClient.getClientName(),
                 "Client id is required property of registered client"
         );
-        var redirectUris = registeredClient.getRedirectUris();
-        var postLogoutRedirectUris = registeredClient.getPostLogoutRedirectUris();
-        var id = Long.parseLong(registeredClient.getId());
         var userProps = userPropertiesDataSourceRepository.getUserPropertiesByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
-        var registeredClientProps = new SynthWaveRegisteredClient(TSID.from(id), userProps.getId(), clientId );
+        var userId = userProps.getId();
+        String clientId;
+        var optionalClientId = registeredClientPropertiesSourceRepository.getClientIdByUserId(userId);
+        if(optionalClientId.isPresent()){
+            throw new IllegalStateException("User has already registered client: '%s'".formatted(optionalClientId.get()));
+        }else {
+            clientId = userProps.getUsername() + "@synthwave.com";
+        }
+        var redirectUris = registeredClient.getRedirectUris();
+        var postLogoutRedirectUris = registeredClient.getPostLogoutRedirectUris();
+        var registeredClientProps = new SynthWaveRegisteredClient(userId, clientId);
         var concatRedirectUri = concatRedirectUris(redirectUris, postLogoutRedirectUris);
         registeredClientPropertiesSourceRepository.save(registeredClientProps);
         redirectUrisDataSourceRepository.saveAll(redirectUrisDataSourceRepository.getAllNotPresentRedirectUris(concatRedirectUri));
@@ -64,10 +78,11 @@ public class RegisteredClientServiceInstance implements RegisteredClientReposito
 
     @Override
     public RegisteredClient findByClientId(String clientId) {
-        return registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(clientId)
-                .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
-                .map(registeredClientMapper::map)
-                .orElse(null);
+        return Optional.ofNullable(registrationClientRepository.getRegistrationClient(clientId))
+                .orElseGet(()-> registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(clientId)
+                        .map(config -> config.withRedirectUris(redirectUrisDataSourceRepository.getAllRedirectUris()))
+                        .map(registeredClientMapper::map)
+                        .orElse(null));
     }
 
     private Set<RedirectURI> concatRedirectUris(Set<String> redirectUris, Set<String> postLogoutRedirectUris){

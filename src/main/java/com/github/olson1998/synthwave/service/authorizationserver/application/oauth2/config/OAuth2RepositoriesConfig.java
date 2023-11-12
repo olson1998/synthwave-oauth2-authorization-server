@@ -2,12 +2,14 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.RegistrationClientImplProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service.UserPropertiesService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 
@@ -33,16 +35,25 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
+    public RegistrationClientRepository registrationClientRepository(PasswordEncoder passwordEncoder,
+                                                                     RegistrationClientImplProperties registrationClientImplProperties){
+        return new RegistrationClientService(passwordEncoder, registrationClientImplProperties);
+    }
+
+    @Bean
     public RegisteredClientRepository synthWaveRegisteredClientRepository(RegisteredClientMapper registeredClientMapper,
+                                                                          RegistrationClientRepository registrationClientRepository,
                                                                           UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
                                                                           RedirectURIsJpaRepositoryProxy redirectURIsJpaRepositoryProxy,
                                                                           RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy){
         return new RegisteredClientServiceInstance(
                 registeredClientMapper,
+                registrationClientRepository,
                 redirectURIsJpaRepositoryProxy,
                 userPropertiesSourceRepository,
                 synthWaveRegisteredClientJpaRepositoryProxy
         );
+
     }
 
     @Bean

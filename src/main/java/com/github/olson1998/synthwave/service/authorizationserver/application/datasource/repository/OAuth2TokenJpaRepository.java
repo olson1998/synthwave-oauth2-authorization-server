@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,9 +14,9 @@ import java.util.List;
 interface OAuth2TokenJpaRepository extends JpaRepository<OAuth2TokenData, OAuth2TokenDesc> {
 
     @Query("SELECT token FROM OAuth2TokenData token WHERE token.description.authorizationId=:authorizationId")
-    List<OAuth2TokenData> selectOAuth2TokensByAuthorizationId(String authorizationId);
+    List<OAuth2TokenData> selectOAuth2TokensByAuthorizationId(@Param("authorizationId") String authorizationId);
 
     @Modifying
     @Query("DELETE FROM OAuth2TokenData token WHERE token.description.authorizationId=:authorizationId")
-    int deleteTokenByAuthorizationId(String authorizationId);
+    int deleteTokenByAuthorizationId(@Param("authorizationId") String authorizationId);
 }

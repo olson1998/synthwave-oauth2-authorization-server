@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
 import static com.github.olson1998.synthwave.support.springbootstarter.async.config.ThreadPoolConfig.ASYNC_TASK_EXEC;
 
 @Async(ASYNC_TASK_EXEC)
-public interface RedirectURIsRequestPipeline {
+public interface RedirectURIRequestPipeline {
 
-    CompletableFuture<Void> runRedirectURIsSavingPipeline(List<RedirectURI> redirectURIs);
+    CompletableFuture<Void> runRedirectURISavingPipeline(List<RedirectURI> redirectURIs);
 
-    CompletableFuture<Void> runRedirectURIsDeletingPipeline(List<RedirectURI> redirectURIS);
+    CompletableFuture<Void> runRedirectURIDeletingPipeline(List<RedirectURI> redirectURIS);
 }

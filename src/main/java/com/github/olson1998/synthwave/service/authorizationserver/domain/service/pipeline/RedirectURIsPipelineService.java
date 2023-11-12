@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIsRequestPipeline;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIRequestPipeline;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectURIRepository;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
@@ -14,18 +14,18 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RedirectURIsPipelineService implements RedirectURIsRequestPipeline {
+public class RedirectURIsPipelineService implements RedirectURIRequestPipeline {
 
     private final RedirectURIRepository redirectURIRepository;
 
     @Override
-    public CompletableFuture<Void> runRedirectURIsSavingPipeline(List<RedirectURI> redirectURIs) {
+    public CompletableFuture<Void> runRedirectURISavingPipeline(List<RedirectURI> redirectURIs) {
         return Pipeline.initialJob(()-> saveRedirectURIs(redirectURIs), this::handleSavingUriError)
                 .toFuture();
     }
 
     @Override
-    public CompletableFuture<Void> runRedirectURIsDeletingPipeline(List<RedirectURI> redirectURIS) {
+    public CompletableFuture<Void> runRedirectURIDeletingPipeline(List<RedirectURI> redirectURIS) {
         return Pipeline.initialJob(()-> deleteRedirectURIs(redirectURIS), this::handleDeletingUriError)
                 .toFuture();
     }

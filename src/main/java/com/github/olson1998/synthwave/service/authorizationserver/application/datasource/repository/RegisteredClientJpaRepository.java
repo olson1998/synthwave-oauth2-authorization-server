@@ -5,12 +5,20 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.oa
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
 interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientData, TSID> {
+
+    @Query("""
+           SELECT registeredClient.clientId
+           FROM RegisteredClientData registeredClient
+           WHERE registeredClient.userId=:userId
+           """)
+    Optional<String> selectClientIdByUserId(@Param("userId") TSID userId);
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
@@ -44,7 +52,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     WHERE registeredClient.id=:registeredClientId
     AND password.latestVersion=true
     """)
-    Optional<SynthWaveRegisteredClientPropertiesImpl> selectSynthWaveRegisteredClientByRegisteredClientId(TSID registeredClientId);
+    Optional<SynthWaveRegisteredClientPropertiesImpl> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveRegisteredClientPropertiesImpl(
@@ -78,5 +86,5 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     WHERE user.username=:username
     AND password.latestVersion=true
     """)
-    Optional<SynthWaveRegisteredClientPropertiesImpl> selectRegisteredClientConfigByClientId(String username);
+    Optional<SynthWaveRegisteredClientPropertiesImpl> selectRegisteredClientConfigByClientId(@Param("username") String username);
 }

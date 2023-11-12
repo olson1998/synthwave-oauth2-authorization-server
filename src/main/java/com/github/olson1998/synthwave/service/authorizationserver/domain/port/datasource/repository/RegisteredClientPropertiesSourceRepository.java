@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface RegisteredClientPropertiesSourceRepository {
 
+    Optional<String> getClientIdByUserId(TSID userId);
+
     Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String username);
 
     Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId);

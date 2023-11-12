@@ -18,4 +18,10 @@ public class SynthWaveRegisteredClient implements RegisteredClientEntity {
     private final TSID userId;
 
     private final String clientId;
+
+    public SynthWaveRegisteredClient(TSID userId, String clientId) {
+        this.id = null;
+        this.userId = userId;
+        this.clientId = clientId;
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 interface RedirectURIsJpaRepository extends JpaRepository<RedirectURIsData, RedirectUrisValue> {
 
     @Query("SELECT uri FROM RedirectURIsData uri WHERE uri NOT IN :redirectUris")
-    Set<RedirectURIsData> selectRedirectURIThatAreNotPresent(Collection<RedirectUrisValue> redirectUris);
+    Set<RedirectURIsData> selectRedirectURIThatAreNotPresent(@Param("redirectUris") Collection<RedirectUrisValue> redirectUris);
 
     @Modifying
     @Query("DELETE FROM RedirectURIsData uri WHERE uri.redirect IN :redirectUris")

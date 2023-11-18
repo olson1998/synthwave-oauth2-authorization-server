@@ -23,11 +23,11 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "USRAFF")
+@Table(name = "AUEAFF")
 public class AffiliationData implements AffiliationEntity, Persistable<TSID> {
 
     @Id
-    @Column(name = "UID")
+    @Column(name = "USRID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;

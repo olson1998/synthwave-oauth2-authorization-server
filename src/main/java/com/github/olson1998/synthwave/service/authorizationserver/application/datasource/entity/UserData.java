@@ -24,12 +24,12 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "USRDTA")
+@Table(name = "AUEUSR")
 public class UserData implements UserEntity, Persistable<TSID> {
 
     @Id
     @Tsid
-    @Column(name = "UID")
+    @Column(name = "USRID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID id;

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBind;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBindingProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.EmbeddedId;
@@ -19,21 +19,21 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RCLTAM")
-public class ClientAuthenticationMethodBoundData implements Persistable<ClientAuthenticationMethodBind>, ClientAuthenticationMethodBinding {
+@Table(name = "O2ECAM")
+public class ClientAuthenticationMethodBoundData implements Persistable<ClientAuthenticationMethodBindingProperties>, ClientAuthenticationMethodBinding {
 
     @EmbeddedId
-    private ClientAuthenticationMethodBind binding;
+    private ClientAuthenticationMethodBindingProperties binding;
 
     public ClientAuthenticationMethodBoundData(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
-        this.binding = new ClientAuthenticationMethodBind(
+        this.binding = new ClientAuthenticationMethodBindingProperties(
                 clientAuthenticationMethodBinding.getRegisteredClientId(),
                 clientAuthenticationMethodBinding.getClientAuthenticationMethod()
         );
     }
 
     @Override
-    public ClientAuthenticationMethodBind getId() {
+    public ClientAuthenticationMethodBindingProperties getId() {
         return binding;
     }
 
@@ -45,14 +45,14 @@ public class ClientAuthenticationMethodBoundData implements Persistable<ClientAu
     @Override
     public TSID getRegisteredClientId() {
         return Optional.ofNullable(binding)
-                .map(ClientAuthenticationMethodBind::getRegisteredClientId)
+                .map(ClientAuthenticationMethodBindingProperties::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public ClientAuthenticationMethod getClientAuthenticationMethod() {
         return Optional.ofNullable(binding)
-                .map(ClientAuthenticationMethodBind::getClientAuthenticationMethod)
+                .map(ClientAuthenticationMethodBindingProperties::getClientAuthenticationMethod)
                 .orElse(null);
     }
 }

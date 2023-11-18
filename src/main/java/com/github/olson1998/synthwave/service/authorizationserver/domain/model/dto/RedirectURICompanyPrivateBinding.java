@@ -1,21 +1,17 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
 import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class CompanyPrivateRedirectURI extends RedirectURIBindDTO{
+public class RedirectURICompanyPrivateBinding extends AbstractRedirectURIBindingEntity {
 
-    private final Affiliation affiliationBind;
-
-    public CompanyPrivateRedirectURI(TSID uriId, String companyCode) {
-        super(uriId);
-        this.affiliationBind = new AffiliationDTO(companyCode, null);
+    public RedirectURICompanyPrivateBinding(TSID registeredClientId, RedirectURI redirectURI, String companyCode) {
+        super(registeredClientId, redirectURI, new AffiliationDTO(companyCode, null));
     }
 
     @Override
@@ -31,10 +27,5 @@ public class CompanyPrivateRedirectURI extends RedirectURIBindDTO{
     @Override
     public boolean isDivisionPrivate() {
         return false;
-    }
-
-    @Override
-    public TSID getRegisteredClientId() {
-        return null;
     }
 }

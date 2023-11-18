@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,15 +23,13 @@ import java.util.Set;
 
 @Getter
 @ToString
-public class RegisteredClientConfigImpl implements RegisteredClientConfig {
-
-    private final TSID registeredClientId;
+public class RegisteredClientPropertiesImpl implements RegisteredClientProperties {
 
     private final String companyCode;
 
     private final String division;
 
-    private final String clientId;
+    private final TSID clientId;
 
     private final String username;
 
@@ -53,24 +51,22 @@ public class RegisteredClientConfigImpl implements RegisteredClientConfig {
 
     private final Set<ClientAuthenticationMethod> clientAuthenticationMethods;
 
-    public RegisteredClientConfigImpl(TSID registeredClientId,
-                                      String companyCode,
-                                      String division,
-                                      String clientId,
-                                      String username,
-                                      TSID passwordId,
-                                      String passwordValue,
-                                      Period passwordExpirePeriod,
-                                      Period authorizationCodeExpirePeriod,
-                                      Period accessTokenExpirePeriod,
-                                      OAuth2TokenFormat accessTokenFormat,
-                                      Period deviceCodeExpirePeriod,
-                                      boolean reuseRefreshToken,
-                                      Period refreshTokenExpirePeriod,
-                                      SignatureAlgorithm idTokenSignatureAlgorithm,
-                                      boolean requireProofKey,
-                                      boolean requireAuthorizationConsent) {
-        this.registeredClientId = registeredClientId;
+    public RegisteredClientPropertiesImpl(String companyCode,
+                                          String division,
+                                          TSID clientId,
+                                          String username,
+                                          TSID passwordId,
+                                          String passwordValue,
+                                          Period passwordExpirePeriod,
+                                          Period authorizationCodeExpirePeriod,
+                                          Period accessTokenExpirePeriod,
+                                          OAuth2TokenFormat accessTokenFormat,
+                                          Period deviceCodeExpirePeriod,
+                                          boolean reuseRefreshToken,
+                                          Period refreshTokenExpirePeriod,
+                                          SignatureAlgorithm idTokenSignatureAlgorithm,
+                                          boolean requireProofKey,
+                                          boolean requireAuthorizationConsent) {
         this.companyCode = companyCode;
         this.division = division;
         this.clientId = clientId;
@@ -95,19 +91,19 @@ public class RegisteredClientConfigImpl implements RegisteredClientConfig {
     }
 
     @Override
-    public RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris) {
+    public RegisteredClientProperties withRedirectUris(Collection<RedirectURI> redirectUris) {
         appendUnresolvedUris(redirectUris);
         return this;
     }
 
     @Override
-    public RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
+    public RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
         this.authorizationGrantTypes.addAll(authorizationGrantTypes);
         return this;
     }
 
     @Override
-    public RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
+    public RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
         this.clientAuthenticationMethods.addAll(clientAuthenticationMethods);
         return this;
     }

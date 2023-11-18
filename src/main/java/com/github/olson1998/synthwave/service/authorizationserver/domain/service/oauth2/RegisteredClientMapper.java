@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveOAuth2RegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import com.github.olson1998.synthwave.support.rest.model.URLPath;
 import com.github.olson1998.synthwave.support.rest.util.URIModel;
 import com.github.olson1998.synthwave.support.rest.util.URIUtils;
@@ -20,20 +20,21 @@ import static org.springframework.security.oauth2.core.oidc.OidcScopes.PROFILE;
 
 class RegisteredClientMapper {
 
-    RegisteredClient map(RegisteredClientConfig props){
+    RegisteredClient map(RegisteredClientProperties props){
         var code = props.getCompanyCode();
         var divi = props.getDivision();
         var clientId = props.getClientId();
-        var redirectUris= decorateRedirectUris(props.getRedirectUris(), clientId);
-        var postLogoutUris = decorateRedirectUris(props.getPostLogoutRedirectUris(), clientId);
+        var clientIdString = String.valueOf(clientId.toLong());
+        var redirectUris= decorateRedirectUris(props.getRedirectUris(), clientIdString);
+        var postLogoutUris = decorateRedirectUris(props.getPostLogoutRedirectUris(), clientIdString);
         var tokenSettings = props.getTokenSettings();
         var clientSettings = buildClientSettings(props);
         var authorizationGrantTypesSet = props.getAuthorizationGrantTypes();
         var clientAuthenticationMethodsSet = props.getClientAuthenticationMethods();
-        var registeredClientBuilder = RegisteredClient.withId(props.getClientId())
+        var registeredClientBuilder = RegisteredClient.withId(clientIdString)
                 .scopes(strings -> strings.addAll(List.of(OPENID, PROFILE)))
                 .clientName(props.getUsername())
-                .clientIdIssuedAt(props.getRegisteredClientId().getInstant())
+                .clientIdIssuedAt(clientId.getInstant())
                 .clientSecret(props.getPasswordValue())
                 .redirectUris(uris -> uris.addAll(redirectUris))
                 .postLogoutRedirectUris(uris -> uris.addAll(postLogoutUris))
@@ -42,17 +43,17 @@ class RegisteredClientMapper {
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(authorizationGrantTypesSet))
                 .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(clientAuthenticationMethodsSet));
         Optional.ofNullable(props.getPasswordExpireTime()).ifPresent(registeredClientBuilder::clientSecretExpiresAt);
-        return new SynthWaveOAuth2RegisteredClient(
+        return new SynthWaveRegisteredClient(
                 code,
                 divi,
                 registeredClientBuilder.build()
         );
     }
 
-    private ClientSettings buildClientSettings(RegisteredClientConfig registeredClientConfig){
+    private ClientSettings buildClientSettings(RegisteredClientProperties registeredClientProperties){
         return ClientSettings.builder()
-                .requireAuthorizationConsent(registeredClientConfig.isRequireAuthorizationConsent())
-                .requireProofKey(registeredClientConfig.isRequireProofKey())
+                .requireAuthorizationConsent(registeredClientProperties.isRequireAuthorizationConsent())
+                .requireProofKey(registeredClientProperties.isRequireProofKey())
                 .build();
     }
 

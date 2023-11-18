@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.server.authorization.settings.OAuth2T
 @AllArgsConstructor
 
 @Entity
-@Table(name = "AFFTSG")
+@Table(name = "O2EATS")
 public class AffiliationBasedTokenSettingsData implements AffiliationBasedTokenSettings, Persistable<AffiliationProperties> {
 
     @EmbeddedId

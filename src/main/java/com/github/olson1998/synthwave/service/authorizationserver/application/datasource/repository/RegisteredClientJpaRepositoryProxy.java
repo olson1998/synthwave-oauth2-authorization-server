@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientPropertiesSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,15 +22,15 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientPrope
     }
 
     @Override
-    public Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String clientId) {
+    public Optional<RegisteredClientProperties> getRegisteredClientConfigByClientId(String clientId) {
         return registeredClientDataJpaRepository.selectRegisteredClientConfigByClientId(clientId)
-                .map(RegisteredClientConfig.class::cast);
+                .map(RegisteredClientProperties.class::cast);
     }
 
     @Override
-    public Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId) {
+    public Optional<RegisteredClientProperties> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId) {
         return registeredClientDataJpaRepository.selectSynthWaveRegisteredClientByRegisteredClientId(registeredClientId)
-                .map(RegisteredClientConfig.class::cast);
+                .map(RegisteredClientProperties.class::cast);
     }
 
     @Override

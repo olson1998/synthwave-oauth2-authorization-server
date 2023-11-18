@@ -21,17 +21,17 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "ACCLOC")
+@Table(name = "AUEACL")
 public class UserAccountLockData implements UserAccountLockEntity, Persistable<TSID> {
 
     @Id
     @Tsid
-    @Column(name = "LOCKID")
+    @Column(name = "ACLID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID id;
 
-    @Column(name = "UID", unique = true)
+    @Column(name = "USRID", unique = true)
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;

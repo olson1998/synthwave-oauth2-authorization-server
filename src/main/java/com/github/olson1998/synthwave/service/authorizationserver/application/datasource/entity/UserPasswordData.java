@@ -26,7 +26,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "PSSDTA")
+@Table(name = "AUEPSS")
 public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
 
     @Id
@@ -36,7 +36,7 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
     @JdbcType(BigIntJdbcType.class)
     private TSID id;
 
-    @Column(name = "UID", nullable = false)
+    @Column(name = "USRID", nullable = false)
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)
     private TSID userId;
@@ -44,7 +44,7 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
     @Column(name = "PSSVAL", nullable = false)
     private String value;
 
-    @Column(name = "PSEXPD")
+    @Column(name = "PSSEXP")
     @JavaType(PeriodJavaType.class)
     @JdbcType(VarcharJdbcType.class)
     private Period expirePeriod;

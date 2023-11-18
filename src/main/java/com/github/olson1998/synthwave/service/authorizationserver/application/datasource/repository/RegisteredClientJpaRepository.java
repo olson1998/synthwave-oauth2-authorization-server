@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesImpl;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +21,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     Optional<String> selectClientIdByUserId(@Param("userId") TSID userId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesImpl(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -55,10 +55,10 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     WHERE registeredClient.id=:registeredClientId
     AND password.latestVersion=true
     """)
-    Optional<RegisteredClientConfigImpl> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+    Optional<RegisteredClientPropertiesImpl> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientConfigImpl(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesImpl(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -92,5 +92,5 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     WHERE user.username=:username
     AND password.latestVersion=true
     """)
-    Optional<RegisteredClientConfigImpl> selectRegisteredClientConfigByClientId(@Param("username") String username);
+    Optional<RegisteredClientPropertiesImpl> selectRegisteredClientConfigByClientId(@Param("username") String username);
 }

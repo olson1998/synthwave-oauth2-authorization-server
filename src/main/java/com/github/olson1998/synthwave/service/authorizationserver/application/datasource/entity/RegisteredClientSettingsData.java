@@ -20,11 +20,11 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RCLTST")
+@Table(name = "O2ERCS")
 public class RegisteredClientSettingsData implements Persistable<TSID>, RegisteredClientSettings {
 
     @Id
-    @Column(name = "RCLTID")
+    @Column(name = "RCLID")
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID registeredClientId;

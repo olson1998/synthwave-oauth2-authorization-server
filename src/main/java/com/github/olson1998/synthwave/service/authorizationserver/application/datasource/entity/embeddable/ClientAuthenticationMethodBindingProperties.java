@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.mapping.AuthorizationGrantTypeJavaType;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.mapping.ClientAuthenticationMethodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.Column;
@@ -12,7 +12,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.io.Serializable;
 
@@ -21,17 +21,17 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class AuthorizationGrantTypeBind implements Serializable {
+public class ClientAuthenticationMethodBindingProperties implements Serializable {
 
-    private static final long serialVersionUID = -5454607683082707098L;
+    private static final long serialVersionUID = 7911596904554269586L;
 
-    @Column(name = "RCLTID")
+    @Column(name = "RCLID")
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID registeredClientId;
 
-    @Column(name = "AUTHGT")
-    @JavaType(AuthorizationGrantTypeJavaType.class)
+    @Column(name = "RCLAM")
+    @JavaType(ClientAuthenticationMethodJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private AuthorizationGrantType authorizationGrantType;
+    private ClientAuthenticationMethod clientAuthenticationMethod;
 }

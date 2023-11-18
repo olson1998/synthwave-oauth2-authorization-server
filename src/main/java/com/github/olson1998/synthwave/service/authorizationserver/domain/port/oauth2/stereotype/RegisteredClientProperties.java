@@ -9,15 +9,13 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Set;
 
-public interface RegisteredClientConfig {
-
-    TSID getRegisteredClientId();
+public interface RegisteredClientProperties {
 
     String getCompanyCode();
 
     String getDivision();
 
-    String getClientId();
+    TSID getClientId();
 
     String getUsername();
 
@@ -39,10 +37,10 @@ public interface RegisteredClientConfig {
 
     Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
 
-    RegisteredClientConfig withRedirectUris(Collection<RedirectURI> redirectUris);
+    RegisteredClientProperties withRedirectUris(Collection<RedirectURI> redirectUris);
 
-    RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
+    RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
 
-    RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
+    RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
 
 }

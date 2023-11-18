@@ -7,10 +7,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -25,16 +22,9 @@ public class AffiliationProperties implements Serializable, Affiliation {
     @Column(name = "DIVI", length = 3)
     private String division;
 
-    public AffiliationProperties(Affiliation affiliation) {
+    public AffiliationProperties(@NonNull Affiliation affiliation) {
         this.companyCode = affiliation.getCompanyCode();
         this.division = affiliation.getDivision();
     }
 
-    public static AffiliationProperties ofCompany(String cono){
-        return new AffiliationProperties(cono, null);
-    }
-
-    public static AffiliationProperties ofDivision(String divi){
-        return new AffiliationProperties(null, divi);
-    }
 }

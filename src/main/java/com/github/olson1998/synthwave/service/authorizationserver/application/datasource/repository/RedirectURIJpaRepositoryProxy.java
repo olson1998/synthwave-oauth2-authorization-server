@@ -2,7 +2,6 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
@@ -22,16 +21,16 @@ public class RedirectURIJpaRepositoryProxy implements RedirectURIDataSourceRepos
     private final RedirectURIJpaRepository redirectUrisJpaRepository;
 
     @Override
-    public Collection<RedirectURIEntity> getRedirectURIByURISet(Set<String> uriSet) {
+    public Collection<RedirectURI> getRedirectURIByURISet(Set<String> uriSet) {
         return redirectUrisJpaRepository.selectRedirectURIWhereURIInURISetAndScope(uriSet, POST_LOGIN).stream()
-                .map(RedirectURIEntity.class::cast)
+                .map(RedirectURI.class::cast)
                 .toList();
     }
 
     @Override
-    public Collection<RedirectURIEntity> getPostLogoutRedirectURIIdByURISet(Set<String> uriSet) {
+    public Collection<RedirectURI> getPostLogoutRedirectURIIdByURISet(Set<String> uriSet) {
         return redirectUrisJpaRepository.selectRedirectURIWhereURIInURISetAndScope(uriSet, POST_LOGOUT).stream()
-                .map(RedirectURIEntity.class::cast)
+                .map(RedirectURI.class::cast)
                 .toList();
     }
 

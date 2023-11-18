@@ -1,11 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.ClientPrivateRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.CompanyPrivateRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.DivisionPrivateRedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURIBind;
 import io.hypersistence.tsid.TSID;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,29 +15,28 @@ import java.util.stream.Stream;
 @NoArgsConstructor(access = AccessLevel.MODULE)
 class RedirectURIBoundMapper {
 
-    Collection<RedirectURIBind> mapBounds(@NonNull TSID registeredClientId,
-                                          @NonNull String companyCode,
-                                          @NonNull String division,
-                                          @NonNull Collection<RedirectURIEntity> postLogin,
-                                          @NonNull Collection<RedirectURIEntity> postLogout){
+    Collection<RedirectURIBinding> mapBounds(@NonNull TSID registeredClientId,
+                                             @NonNull String companyCode,
+                                             @NonNull String division,
+                                             @NonNull Collection<RedirectURI> postLogin,
+                                             @NonNull Collection<RedirectURI> postLogout){
         return Stream.concat(postLogin.stream(), postLogout.stream())
                 .map(redirectURI -> mapBound(redirectURI, registeredClientId, companyCode, division))
                 .collect(Collectors.toSet());
     }
 
-    private RedirectURIBind mapBound(@NonNull RedirectURIEntity redirectURI,
-                                     @NonNull TSID registeredClientId,
-                                     @NonNull String companyCode,
-                                     @NonNull String division){
+    private RedirectURIBinding mapBound(@NonNull RedirectURI redirectURI,
+                                        @NonNull TSID registeredClientId,
+                                        @NonNull String companyCode,
+                                        @NonNull String division){
         var uri = redirectURI.getUri();
-        var uriId = redirectURI.getId();
-        RedirectURIBind redirectURIBind;
+        RedirectURIBinding redirectURIBind;
         if(isCompanyPrivate(uri)){
             redirectURIBind = new CompanyPrivateRedirectURI(uriId, companyCode);
         } else if (isDivisionPrivate(uri)) {
             redirectURIBind = new DivisionPrivateRedirectURI(uriId, division);
         }else {
-            redirectURIBind = new ClientPrivateRedirectURI(uriId, registeredClientId);
+            redirectURIBind = new ClientPrivateRedirectURI(uriId, registeredClientId, redirectURI);
         }
         return redirectURIBind;
     }

@@ -8,5 +8,4 @@ public interface RegisteredClientEntity {
 
     TSID getUserId();
 
-    String getClientId();
 }

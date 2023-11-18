@@ -21,28 +21,24 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RCLTDT")
+@Table(name = "O2ERCL")
 public class RegisteredClientData implements RegisteredClientEntity, Persistable<TSID> {
 
     @Id
     @Tsid
-    @Column(name = "RCLTID")
+    @Column(name = "RCLID")
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID id;
 
-    @Column(name = "UID", nullable = false)
+    @Column(name = "USRID", nullable = false)
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID userId;
 
-    @Column(name = "RCLTNM", nullable = false)
-    private String clientId;
-
     public RegisteredClientData(@NonNull RegisteredClientEntity registeredClientEntity) {
         this.id = registeredClientEntity.getId();
         this.userId = registeredClientEntity.getUserId();
-        this.clientId = registeredClientEntity.getClientId();
     }
 
     @Override

@@ -24,7 +24,7 @@ public class OAuth2RepositoriesConfig {
     public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(@NonNull RegistrationClientRepository registrationClientRepository,
                                                                                    @NonNull UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
                                                                                    @NonNull RedirectURIJpaRepositoryProxy redirectURIJpaRepositoryProxy,
-                                                                                   @NonNull RedirectURIBindJpaRepositoryProxy redirectURIBindJpaRepositoryProxy,
+                                                                                   @NonNull RedirectURIBindingJpaRepositoryProxy redirectURIBindingJpaRepositoryProxy,
                                                                                    @NonNull RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy,
                                                                                    @NonNull RegisteredClientSettingsJpaRepositoryProxy registeredClientSettingsJpaRepositoryProxy,
                                                                                    @NonNull AuthorizationGrantTypeBindJpaRepositoryProxy authorizationGrantTypeBindJpaRepositoryProxy,
@@ -32,7 +32,7 @@ public class OAuth2RepositoriesConfig {
         return new SynthWaveRegisteredClientService(
                 registrationClientRepository,
                 redirectURIJpaRepositoryProxy,
-                redirectURIBindJpaRepositoryProxy,
+                redirectURIBindingJpaRepositoryProxy,
                 userPropertiesSourceRepository,
                 synthWaveRegisteredClientJpaRepositoryProxy,
                 registeredClientSettingsJpaRepositoryProxy,

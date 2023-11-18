@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ExtendedUserEntity;
 import io.hypersistence.tsid.TSID;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ public interface UserPropertiesDataSourceRepository {
 
     boolean existsUserWithGivenUsername(String username);
 
-    Optional<UserEntity> getUserPropertiesByUsername(String username);
+    Optional<ExtendedUserEntity> getExtendedUserPropertiesByUsername(String username);
 
     Optional<UserEntity> getUserById(TSID id);
 

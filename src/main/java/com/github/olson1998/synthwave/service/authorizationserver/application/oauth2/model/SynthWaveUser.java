@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 @Getter
 public class SynthWaveUser implements DefaultUserDetails {
@@ -48,9 +49,9 @@ public class SynthWaveUser implements DefaultUserDetails {
         this.passwordEntityData = passwordEntityData;
         this.accountNonLocked = accountNonLocked;
         this.accountNonExpired =
-                isExpired(userId.getInstant(), accountExpirePeriod);
+                isNonExpired(userId.getInstant(), accountExpirePeriod);
         this.credentialsNonExpired = passwordEntityData.getLatestVersion() ||
-                 isPasswordExpired(passwordEntityData);
+                isPasswordNonExpired(passwordEntityData);
     }
 
     @Override
@@ -68,18 +69,39 @@ public class SynthWaveUser implements DefaultUserDetails {
         return username;
     }
 
-    private boolean isPasswordExpired(PasswordEntity passwordEntity){
+    private boolean isPasswordNonExpired(PasswordEntity passwordEntity){
         var issueInstant = passwordEntity.getId().getInstant();
         return passwordEntity.getOptionalExpirePeriod()
-                .map(period -> isExpired(issueInstant, period))
-                .orElse(false);
+                .map(period -> isNonExpired(issueInstant, period))
+                .orElse(true);
     }
 
-    private boolean isExpired(Instant issueInstant, Period expirePeriod){
-        var jodaInstant =
-                org.joda.time.Instant.ofEpochMilli(issueInstant.toEpochMilli());
-        var expireInstant = jodaInstant.plus(expirePeriod.toStandardDuration());
-        return expireInstant.isAfterNow();
+    private boolean isNonExpired(Instant issueInstant, Period expirePeriod){
+        return Optional.ofNullable(expirePeriod)
+                .map(period ->{
+                    var jodaInstant =
+                            org.joda.time.Instant.ofEpochMilli(issueInstant.toEpochMilli());
+                    var expireInstant = jodaInstant.plus(period.toStandardDuration());
+                    return expireInstant.isAfterNow();
+                }).orElse(true);
     }
 
+    @Override
+    public String toString() {
+        var passwordId = Optional.ofNullable(passwordEntityData)
+                .map(PasswordEntity::getId)
+                .map(String::valueOf)
+                .orElse("?");
+        return "SynthWaveUser(" +
+                "userId=" + userId +
+                ", companyCode='" + companyCode + '\'' +
+                ", division='" + division + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + passwordId + '\'' +
+                ", enabled=" + enabled +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ')';
+    }
 }

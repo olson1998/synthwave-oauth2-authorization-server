@@ -23,6 +23,12 @@ public class AuthorizationGrantTypeBindJpaRepositoryProxy implements Authorizati
     }
 
     @Override
+    public void save(AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
+        var data = new AuthorizationGrantTypeBindData(authorizationGrantTypeBinding);
+        authorizationGrantTypeBindJpaRepository.save(data);
+    }
+
+    @Override
     public void saveAll(@NonNull Collection<AuthorizationGrantTypeBinding> authorizationGrantTypeBindings) {
         var data = authorizationGrantTypeBindings.stream()
                 .map(AuthorizationGrantTypeBindData::new)

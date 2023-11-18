@@ -6,12 +6,10 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.re
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.Map;
 
-@Slf4j
 @RequiredArgsConstructor
 public class UserRequestService implements UserRequestRepository {
 
@@ -22,7 +20,6 @@ public class UserRequestService implements UserRequestRepository {
     @Override
     public Map<String, String> saveUser(UserSchema userSchema) {
         var user = userPropertiesRepository.saveUserSchema(userSchema);
-        log.info("Saved user: {}", user);
         var activationToken = new UserActivationToken(user);
         return Collections.singletonMap(ACTIVATION_TOKEN_FIELD, activationToken.toString());
     }
@@ -35,7 +32,6 @@ public class UserRequestService implements UserRequestRepository {
         var verifyToken = new UserActivationToken(user);
         if(verifyToken.toString().equals(activationToken)){
             userPropertiesRepository.activateUser(userId);
-            log.info("Activated user: '{}'", userId.toLong());
         }
         return null;
     }
@@ -43,7 +39,6 @@ public class UserRequestService implements UserRequestRepository {
     @Override
     public Void deactivateUser(TSID userId) {
         userPropertiesRepository.deactivateUser(userId);
-        log.info("Deactivated user: '{}'", userId.toLong());
         return null;
     }
 

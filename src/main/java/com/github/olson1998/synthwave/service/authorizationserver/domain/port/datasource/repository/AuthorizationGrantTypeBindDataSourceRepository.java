@@ -10,6 +10,8 @@ public interface AuthorizationGrantTypeBindDataSourceRepository {
 
     Collection<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(TSID registeredClientId);
 
+    void save(AuthorizationGrantTypeBinding authorizationGrantTypeBinding);
+
     void saveAll(Collection<AuthorizationGrantTypeBinding> authorizationGrantTypeBindings);
 
 }

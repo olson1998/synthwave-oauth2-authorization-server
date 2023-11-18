@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ExtendedUserEntity;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
     }
 
     @Override
-    public Optional<UserEntity> getUserPropertiesByUsername(String username) {
+    public Optional<ExtendedUserEntity> getExtendedUserPropertiesByUsername(String username) {
         return userJpaRepository.selectUserByUsername(username)
-                .map(UserEntity.class::cast);
+                .map(ExtendedUserEntity.class::cast);
     }
 
     @Override

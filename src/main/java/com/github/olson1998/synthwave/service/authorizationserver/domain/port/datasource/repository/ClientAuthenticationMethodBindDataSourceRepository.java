@@ -10,5 +10,7 @@ public interface ClientAuthenticationMethodBindDataSourceRepository {
 
     Collection<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(TSID registeredClientId);
 
+    void save(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding);
+
     void saveAll(Collection<ClientAuthenticationMethodBinding> clientAuthenticationMethodBindings);
 }

@@ -66,10 +66,6 @@ public class AdminProvisioning {
         }));
     }
 
-    private Map<String, String> provisionAdmin(UserSchema userSchema){
-        return userRequestRepository.saveUser(userSchema);
-    }
-
     private void activateAdmin(String activationToken){
         Objects.requireNonNull(activationToken);
         userRequestRepository.activateUser(activationToken);

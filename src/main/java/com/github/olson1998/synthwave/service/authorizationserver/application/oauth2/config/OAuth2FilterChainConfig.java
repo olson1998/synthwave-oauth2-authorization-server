@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.web.authentication.JwtClientAssertionAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
+import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
@@ -56,13 +59,14 @@ public class OAuth2FilterChainConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain loginPageSecurityFilterChain(@NonNull HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain loginPageSecurityFilterChain(@NonNull HttpSecurity httpSecurity,
+                                                            @NonNull UserDetailsRepository userDetailsRepository) throws Exception {
         return httpSecurity
-                .securityMatcher(LOGIN_PATH + "/**")
+                .securityMatcher("/login")
                 .formLogin(formLoginConfigurer -> {
-                    formLoginConfigurer.failureForwardUrl(LOGIN_PATH);
                     formLoginConfigurer.loginProcessingUrl(LOGIN_PROCESS_ENDPOINT);
                 })
+                .userDetailsService(userDetailsRepository)
                 .build();
     }
 

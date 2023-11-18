@@ -1,10 +1,10 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIBindData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientSettingsData;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface RedirectURIBindJpaRepository extends JpaRepository<RedirectURIBindData, TSID> {
+interface RegisteredClientSettingsJpaRepository extends JpaRepository<RegisteredClientSettingsData, TSID> {
 }

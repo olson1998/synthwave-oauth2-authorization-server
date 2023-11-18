@@ -23,6 +23,12 @@ public class ClientAuthenticationMethodJpaRepositoryProxy implements ClientAuthe
     }
 
     @Override
+    public void save(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
+        var data = new ClientAuthenticationMethodBoundData(clientAuthenticationMethodBinding);
+        clientAuthenticationMethodJpaRepository.save(data);
+    }
+
+    @Override
     public void saveAll(@NonNull Collection<ClientAuthenticationMethodBinding> clientAuthenticationMethodBindings) {
         var data = clientAuthenticationMethodBindings.stream()
                 .map(ClientAuthenticationMethodBoundData::new)

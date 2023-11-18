@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveOAuth2RegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import com.github.olson1998.synthwave.support.rest.model.URLPath;
 import com.github.olson1998.synthwave.support.rest.util.URIModel;
@@ -19,10 +18,9 @@ import static com.github.olson1998.synthwave.support.rest.model.URLPathVariable.
 import static org.springframework.security.oauth2.core.oidc.OidcScopes.OPENID;
 import static org.springframework.security.oauth2.core.oidc.OidcScopes.PROFILE;
 
-public class RegisteredClientMapperImpl implements RegisteredClientMapper {
+class RegisteredClientMapper {
 
-    @Override
-    public RegisteredClient map(RegisteredClientConfig props){
+    RegisteredClient map(RegisteredClientConfig props){
         var code = props.getCompanyCode();
         var divi = props.getDivision();
         var clientId = props.getClientId();

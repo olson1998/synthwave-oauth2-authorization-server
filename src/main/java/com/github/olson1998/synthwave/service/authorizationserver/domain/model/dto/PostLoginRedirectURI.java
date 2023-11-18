@@ -1,15 +1,17 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-@Data
-@AllArgsConstructor
-public class PostLoginRedirectURI implements RedirectURI {
+@ToString
+@EqualsAndHashCode(callSuper = true)
+public class PostLoginRedirectURI extends RedirectURIDTO {
 
     public static final String TYPE = "POST_LOGIN";
 
-    private final String uri;
+    public PostLoginRedirectURI(String uri) {
+        super(uri);
+    }
 
     @Override
     public boolean isPostLogin() {

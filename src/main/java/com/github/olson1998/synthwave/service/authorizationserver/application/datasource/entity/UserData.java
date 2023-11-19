@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -45,11 +46,10 @@ public class UserData implements UserEntity, Persistable<TSID> {
     @JdbcType(VarcharJdbcType.class)
     private Period expirePeriod;
 
-    public UserData(@NonNull UserEntity userEntity) {
-        this.id = userEntity.getId();
-        this.username = userEntity.getUsername();
-        this.enabled = userEntity.isEnabled();
-        this.expirePeriod = userEntity.getExpirePeriod();
+    public UserData(@NonNull UserProperties userProperties) {
+        this.username = userProperties.getUsername();
+        this.enabled = userProperties.isEnabled();
+        this.expirePeriod = userProperties.getExpirePeriod();
     }
 
 

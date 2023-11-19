@@ -6,5 +6,7 @@ public interface UserProperties {
 
     String getUsername();
 
+    boolean isEnabled();
+
     Period getExpirePeriod();
 }

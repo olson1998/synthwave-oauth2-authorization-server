@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service.UserPropertiesService;

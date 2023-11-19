@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -52,12 +53,11 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
     @Column(name = "PSSVER", nullable = false)
     private Boolean latestVersion;
 
-    public UserPasswordData(@NonNull PasswordEntity passwordEntity) {
-        this.id = passwordEntity.getId();
-        this.userId = passwordEntity.getUserId();
-        this.value = passwordEntity.getValue();
-        this.expirePeriod = passwordEntity.getOptionalExpirePeriod().orElse(null);
-        this.latestVersion = passwordEntity.getLatestVersion();
+    public UserPasswordData(@NonNull Password password) {
+        this.userId = password.getUserId();
+        this.value = password.getValue();
+        this.expirePeriod = password.getOptionalExpirePeriod().orElse(null);
+        this.latestVersion = password.getLatestVersion();
     }
 
     public UserPasswordData(TSID userId, String value, Period expirePeriod, boolean latestVersion) {

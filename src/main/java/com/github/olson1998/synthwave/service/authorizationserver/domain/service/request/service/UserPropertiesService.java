@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserAffiliationEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
@@ -64,7 +64,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
                 true
         );
         userPasswordDataSourceRepository.save(passwordData);
-        var affiliation = new UserAffiliationEntityDTO(
+        var affiliation = new AffiliationEntityDTO(
                 userId,
                 affiliationProperties.getCompanyCode(),
                 affiliationProperties.getDivision()

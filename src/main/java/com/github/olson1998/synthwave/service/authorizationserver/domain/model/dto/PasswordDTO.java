@@ -17,6 +17,10 @@ public class PasswordDTO implements Password {
 
     private final String value;
 
+    private final TSID userId;
+
+    private final Boolean latestVersion;
+
     private final Period expirePeriod;
 
     @Override

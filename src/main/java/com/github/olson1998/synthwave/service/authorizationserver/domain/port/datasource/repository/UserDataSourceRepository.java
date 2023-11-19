@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,7 +19,7 @@ public interface UserDataSourceRepository {
 
     Optional<UserDetails> getUserDetailsByUsername(String username);
 
-    UserEntity save(UserEntity userEntity);
+    UserEntity save(UserProperties userProperties);
 
     Collection<UserEntity> saveAll(Collection<UserEntity> userEntityCollection);
 

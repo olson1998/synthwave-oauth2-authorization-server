@@ -9,13 +9,13 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class UserAffiliationEntityDTO extends UserAffiliationDTO implements AffiliationEntity {
+public class AffiliationEntityDTO extends AffiliationDTO implements AffiliationEntity {
 
     public static final String USER_AFFILIATION_USER_ID_JSON_FIELD = "uid";
 
     private final TSID userId;
 
-    public UserAffiliationEntityDTO(TSID userId, String companyCode, String division) {
+    public AffiliationEntityDTO(TSID userId, String companyCode, String division) {
         super(companyCode, division);
         this.userId = userId;
     }

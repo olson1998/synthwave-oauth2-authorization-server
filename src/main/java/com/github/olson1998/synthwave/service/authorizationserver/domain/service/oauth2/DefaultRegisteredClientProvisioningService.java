@@ -5,17 +5,20 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.d
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityImpl;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIBinding;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.support.pipeline.JobResult;
+import com.github.olson1998.synthwave.support.pipeline.Pipeline;
+import com.github.olson1998.synthwave.support.pipeline.PipelineInitializer;
+import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
 import io.hypersistence.tsid.TSID;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -85,4 +88,5 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 .map(id -> new RedirectURIBindingDTO(id, registeredClientId))
                 .collect(Collectors.toSet());
     }
+
 }

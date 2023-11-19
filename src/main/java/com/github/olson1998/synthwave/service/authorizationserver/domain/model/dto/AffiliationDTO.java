@@ -1,12 +1,15 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 public class AffiliationDTO implements Affiliation {
+
+    public static final String USER_AFFILIATION_CODE_JSON_FIELD = "code";
+
+    public static final String USER_AFFILIATION_DIVI_JSON_FIELD = "divi";
 
     private final String companyCode;
 

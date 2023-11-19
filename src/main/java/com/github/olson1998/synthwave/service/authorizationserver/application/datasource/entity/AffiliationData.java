@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AffiliationProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AffiliationEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.Column;
@@ -34,11 +35,11 @@ public class AffiliationData implements AffiliationEntity, Persistable<TSID> {
 
     private AffiliationProperties properties;
 
-    public AffiliationData(@NonNull AffiliationEntity affiliationEntity) {
-        this.userId = affiliationEntity.getUserId();
+    public AffiliationData(@NonNull AffiliationEntity affiliation) {
+        this.userId = affiliation.getUserId();
         this.properties = new AffiliationProperties(
-                affiliationEntity.getCompanyCode(),
-                affiliationEntity.getDivision()
+                affiliation.getCompanyCode(),
+                affiliation.getDivision()
         );
     }
 

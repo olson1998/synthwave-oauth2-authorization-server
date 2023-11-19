@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +43,8 @@ public class UserJpaRepositoryProxy implements UserDataSourceRepository {
     }
 
     @Override
-    public UserEntity save(@NonNull UserEntity userEntity) {
-        var data = new UserData(userEntity);
+    public UserEntity save(UserProperties userProperties) {
+        var data = new UserData(userProperties);
         return userJpaRepository.save(data);
     }
 

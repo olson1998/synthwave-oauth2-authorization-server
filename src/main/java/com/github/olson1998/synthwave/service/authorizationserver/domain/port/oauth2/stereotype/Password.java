@@ -9,5 +9,9 @@ public interface Password {
 
     String getValue();
 
+    TSID getUserId();
+
+    Boolean getLatestVersion();
+
     Optional<Period> getOptionalExpirePeriod();
 }

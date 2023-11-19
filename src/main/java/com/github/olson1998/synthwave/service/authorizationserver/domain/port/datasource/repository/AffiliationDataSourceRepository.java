@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AffiliationEntity;
 
-public interface UserAffiliationDataSourceRepository {
+public interface AffiliationDataSourceRepository {
 
     void save(AffiliationEntity affiliationEntity);
 }

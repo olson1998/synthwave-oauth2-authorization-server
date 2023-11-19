@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserAffiliationEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
@@ -28,7 +28,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
 
     private final UserPasswordDataSourceRepository userPasswordDataSourceRepository;
 
-    private final UserAffiliationDataSourceRepository userAffiliationDataSourceRepository;
+    private final AffiliationDataSourceRepository affiliationDataSourceRepository;
 
     @Override
     public boolean existsUserWithUsername(String username) {
@@ -69,7 +69,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
                 affiliationProperties.getCompanyCode(),
                 affiliationProperties.getDivision()
         );
-        userAffiliationDataSourceRepository.save(affiliation);
+        affiliationDataSourceRepository.save(affiliation);
         log.info(
                 "Saved USER: '{}', CODE: '{}' DIVI: '{}'",
                 username,

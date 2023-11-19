@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.RegistrationClientImplProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
@@ -64,12 +63,12 @@ public class OAuth2RepositoriesConfig {
     public UserPropertiesRepository userPropertiesRepository(@NonNull PasswordEncoder passwordEncoder,
                                                              @NonNull UserDataSourceRepository userDataSourceRepository,
                                                              @NonNull UserPasswordDataSourceRepository userPasswordDataSourceRepository,
-                                                             @NonNull UserAffiliationDataSourceRepository userAffiliationDataSourceRepository){
+                                                             @NonNull AffiliationDataSourceRepository affiliationDataSourceRepository){
         return new UserPropertiesService(
                 passwordEncoder,
                 userDataSourceRepository,
                 userPasswordDataSourceRepository,
-                userAffiliationDataSourceRepository
+                affiliationDataSourceRepository
         );
     }
 }

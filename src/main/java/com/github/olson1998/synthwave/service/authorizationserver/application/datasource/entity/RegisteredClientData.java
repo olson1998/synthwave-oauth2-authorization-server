@@ -32,17 +32,17 @@ public class RegisteredClientData implements RegisteredClientEntity, Persistable
     @JavaType(TSIDJavaType.class)
     private TSID id;
 
-    @Column(name = "RCLCID")
-    private String clientId;
-
     @Column(name = "USRID", nullable = false)
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID userId;
 
+    @Column(name = "RCLCID", nullable = false)
+    private String clientId;
+
     public RegisteredClientData(@NonNull RegisteredClientIdentifiers registeredClientIdentifiers) {
-        this.clientId = registeredClientIdentifiers.getClientId();
         this.userId = registeredClientIdentifiers.getUserId();
+        this.clientId = registeredClientIdentifiers.getClientId();
     }
 
     @Override

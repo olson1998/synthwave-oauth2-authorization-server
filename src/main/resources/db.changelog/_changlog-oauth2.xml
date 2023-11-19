@@ -66,8 +66,8 @@
             <column name="USRID" type="bigint">
                 <constraints foreignKeyName="RCLUSR" referencedTableName="AUEUSR" referencedColumnNames="USRID" nullable="false"/>
             </column>
-            <column name="RCLID" type="bigint">
-                <constraints primaryKey="true"/>
+            <column name="RCLCID" type="bigint">
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -185,30 +185,19 @@
                 <constraints foreignKeyName="RURISC" referencedTableName="O2IURI" referencedColumnNames="URISCP" nullable="false"/>
             </column>
             <column name="URIVAL" type="varchar(2047)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIBindingData" author="{server.hostname}">
         <createTable tableName="O2ERUB">
-            <column name="RUBID" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
             <column name="URIID" type="bigint">
-                <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIID"/>
+                <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIID" nullable="false"/>
             </column>
-            <column name="URISCP" type="varchar(10)">
-                <constraints foreignKeyName="RUBSCP" referencedTableName="O2IURI" referencedColumnNames="URISCP" nullable="false"/>
+            <column name="RCLID" type="bigint">
+                <constraints foreignKeyName="RUBCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
             </column>
-            <column name="URIVAL" type="varchar(2047)">
-                <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIVAL" nullable="false"/>
-            </column>
-            <column name="RUBTYP" type="varchar(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="RCLID" type="bigint"/>
-            <column name="CODE" type="varchar(10)"/>
-            <column name="DIVI" type="varchar(3)"/>
         </createTable>
+        <addUniqueConstraint constraintName="RUBBND" tableName="O2ERUB" columnNames="URIID,RCLID"/>
     </changeSet>
 </databaseChangeLog>

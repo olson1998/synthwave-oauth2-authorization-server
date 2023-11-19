@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import com.github.olson1998.synthwave.support.rest.model.URLPath;
 import com.github.olson1998.synthwave.support.rest.util.URIModel;
 import com.github.olson1998.synthwave.support.rest.util.URIUtils;
@@ -20,7 +20,7 @@ import static org.springframework.security.oauth2.core.oidc.OidcScopes.PROFILE;
 
 class RegisteredClientMapper {
 
-    RegisteredClient map(RegisteredClientProperties props){
+    RegisteredClient map(RegisteredClientConfig props){
         var code = props.getCompanyCode();
         var divi = props.getDivision();
         var clientId = props.getClientId();
@@ -50,10 +50,10 @@ class RegisteredClientMapper {
         );
     }
 
-    private ClientSettings buildClientSettings(RegisteredClientProperties registeredClientProperties){
+    private ClientSettings buildClientSettings(RegisteredClientConfig registeredClientConfig){
         return ClientSettings.builder()
-                .requireAuthorizationConsent(registeredClientProperties.isRequireAuthorizationConsent())
-                .requireProofKey(registeredClientProperties.isRequireProofKey())
+                .requireAuthorizationConsent(registeredClientConfig.isRequireAuthorizationConsent())
+                .requireProofKey(registeredClientConfig.isRequireProofKey())
                 .build();
     }
 

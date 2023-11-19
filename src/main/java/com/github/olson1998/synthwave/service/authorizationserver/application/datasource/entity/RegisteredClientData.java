@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientIdentifiers;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -31,14 +32,17 @@ public class RegisteredClientData implements RegisteredClientEntity, Persistable
     @JavaType(TSIDJavaType.class)
     private TSID id;
 
+    @Column(name = "RCLCID")
+    private String clientId;
+
     @Column(name = "USRID", nullable = false)
     @JdbcType(BigIntJdbcType.class)
     @JavaType(TSIDJavaType.class)
     private TSID userId;
 
-    public RegisteredClientData(@NonNull RegisteredClientEntity registeredClientEntity) {
-        this.id = registeredClientEntity.getId();
-        this.userId = registeredClientEntity.getUserId();
+    public RegisteredClientData(@NonNull RegisteredClientIdentifiers registeredClientIdentifiers) {
+        this.clientId = registeredClientIdentifiers.getClientId();
+        this.userId = registeredClientIdentifiers.getUserId();
     }
 
     @Override

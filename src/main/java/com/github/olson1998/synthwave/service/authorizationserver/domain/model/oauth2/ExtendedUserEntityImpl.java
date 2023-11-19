@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ExtendedUserEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import io.hypersistence.tsid.TSID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,7 @@ import org.joda.time.Period;
 
 @Data
 @AllArgsConstructor
-public class ExtendedUserEntityImpl implements ExtendedUserEntity {
+public class ExtendedUserEntityImpl implements UserEntity, Affiliation {
     
     private final TSID id;
     

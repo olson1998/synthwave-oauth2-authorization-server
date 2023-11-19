@@ -1,22 +1,27 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RedirectURIBindingDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSettingsDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityImpl;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegistrationClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClientRepository {
+public class DefaultRegisteredClientService implements SynthWaveRegisteredClientRepository {
 
     private final RegistrationClientRepository registrationClientRepository;
 
@@ -26,7 +31,7 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
 
     private final UserPropertiesDataSourceRepository userPropertiesDataSourceRepository;
 
-    private final RegisteredClientPropertiesSourceRepository registeredClientPropertiesSourceRepository;
+    private final RegisteredClientSourceRepository registeredClientSourceRepository;
 
     private final RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository;
 
@@ -35,8 +40,6 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
     private final ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository;
 
     private final RegisteredClientMapper registeredClientMapper = new RegisteredClientMapper();
-
-    private final RedirectURIBoundMapper redirectURIBoundMapper = new RedirectURIBoundMapper();
 
     private final AuthorizationGrantTypesBoundMapper authorizationGrantTypesBoundMapper = new AuthorizationGrantTypesBoundMapper();
 
@@ -48,25 +51,14 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
                 registeredClient.getClientName(),
                 "Client id is required property of registered client"
         );
-        var userProps = userPropertiesDataSourceRepository.getExtendedUserPropertiesByUsername(username)
+        var userMetadata = userPropertiesDataSourceRepository.getUserMetadataByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
-        var userId = userProps.getId();
-        var redirectUrisValues = registeredClient.getRedirectUris();
-        var postLogoutRedirectUrisValues = registeredClient.getPostLogoutRedirectUris();
-        var redirectUrisIds =
-                redirectUrisDataSourceRepository.getRedirectURIByURISet(redirectUrisValues);
-        var postLogoutRedirectUrisIds =
-                redirectUrisDataSourceRepository.getPostLogoutRedirectURIIdByURISet(postLogoutRedirectUrisValues);
-        var registeredClientProps = new RegisteredClientEntityImpl(userId);
-        var registeredClientEntity = registeredClientPropertiesSourceRepository.save(registeredClientProps);
+        var clientId = Optional.ofNullable(registeredClient.getClientId())
+                .orElseGet(()-> username + "@synthwave.com");
+        var userId = userMetadata.getUserId();
+        var registeredClientProps = new RegisteredClientEntityImpl(userId, clientId);
+        var registeredClientEntity = registeredClientSourceRepository.save(registeredClientProps);
         var registeredClientId = registeredClientEntity.getId();
-        var redirectURIBounds = redirectURIBoundMapper.mapBounds(
-                registeredClientId,
-                userProps.getCompanyCode(),
-                userProps.getDivision(),
-                redirectUrisIds,
-                postLogoutRedirectUrisIds
-        );
         var authorizationGrantTypes = authorizationGrantTypesBoundMapper.mapToAuthorizationGrantTypeBindings(
                 registeredClientId,
                 registeredClient.getAuthorizationGrantTypes()
@@ -81,17 +73,22 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
                 registeredClientId,
                 registeredClient.getClientAuthenticationMethods()
         );
+        var redirectURIIds = redirectUrisDataSourceRepository.getRedirectURIIdCollectionByRedirectURISetAndPostLogoutRedirectURISet(
+                registeredClient.getRedirectUris(),
+                registeredClient.getPostLogoutRedirectUris()
+        );
+        var redirectURIBindings = createRedirectURIBindingSet(redirectURIIds, registeredClientId);
         registeredClientSettingsDataSourceRepository.save(registeredClientSettings);
+        redirectURIBindingDataSourceRepository.saveAll(redirectURIBindings);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
         clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethodBounds);
-        redirectURIBindingDataSourceRepository.saveAll(redirectURIBounds);
     }
 
     @Override
     public RegisteredClient findById(String id) {
         var longId = Long.getLong(id);
         var tsid = TSID.from(longId);
-        return registeredClientPropertiesSourceRepository.getRegisteredClientConfigByRegisteredClientId(tsid)
+        return registeredClientSourceRepository.getRegisteredClientConfigByRegisteredClientId(tsid)
                 .map(this::appendRegisteredClientConfigs)
                 .map(registeredClientMapper::map)
                 .orElse(null);
@@ -100,26 +97,29 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
     @Override
     public RegisteredClient findByClientId(String clientId) {
         return Optional.ofNullable(registrationClientRepository.getRegistrationClient(clientId))
-                .orElseGet(()-> registeredClientPropertiesSourceRepository.getRegisteredClientConfigByClientId(clientId)
+                .orElseGet(()-> registeredClientSourceRepository.getRegisteredClientConfigByClientId(clientId)
                         .map(this::appendRegisteredClientConfigs)
                         .map(registeredClientMapper::map)
                         .orElse(null));
     }
 
-    private RegisteredClientProperties appendRegisteredClientConfigs(RegisteredClientProperties registeredClientProperties){
-        var clientId = registeredClientProperties.getClientId();
-        var divi = registeredClientProperties.getDivision();
-        var code = registeredClientProperties.getCompanyCode();
-        var redirectURI =
-                redirectUrisDataSourceRepository.getRedirectURIByRegisteredClientIdCompanyCodeAndDivision(clientId, code, divi);
+    private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
+        var clientId = registeredClientConfig.getId();
+        var redirectURI = redirectUrisDataSourceRepository.getRedirectURIByRegisteredClientId(clientId);
         var authorizationGrantTypes =
                 authorizationGrantTypeBindDataSourceRepository.getAuthorizationGrantTypesByRegisteredClientId(clientId);
         var clientAuthenticationMethods =
                 clientAuthenticationMethodBindDataSourceRepository.getClientAuthenticationMethodsByRegisteredClientId(clientId);
-        return registeredClientProperties
+        return registeredClientConfig
                 .withRedirectUris(redirectURI)
                 .withAuthorizationGrantTypes(authorizationGrantTypes)
                 .withClientAuthenticationMethods(clientAuthenticationMethods);
+    }
+
+    private Set<RedirectURIBinding> createRedirectURIBindingSet(Collection<TSID> redirectURIIds, TSID registeredClientId){
+        return redirectURIIds.stream()
+                .map(id -> new RedirectURIBindingDTO(id, registeredClientId))
+                .collect(Collectors.toSet());
     }
 
 }

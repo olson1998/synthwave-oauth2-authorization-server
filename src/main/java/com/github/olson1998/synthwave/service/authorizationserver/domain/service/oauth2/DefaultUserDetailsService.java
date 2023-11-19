@@ -7,13 +7,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RequiredArgsConstructor
-public class UserDetailsService implements UserDetailsRepository {
+public class DefaultUserDetailsService implements UserDetailsRepository {
 
     private final UserPropertiesDataSourceRepository userDataSourceRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDataSourceRepository.getSynthWaveUserByUsername(username)
+        return userDataSourceRepository.getUserDetailsByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User: '%s' has not been found".formatted(username)));
     }
 

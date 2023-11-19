@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
 import lombok.NonNull;
@@ -23,13 +23,15 @@ import java.util.Set;
 
 @Getter
 @ToString
-public class RegisteredClientPropertiesImpl implements RegisteredClientProperties {
+public class RegisteredClientPropertiesImpl implements RegisteredClientConfig {
 
     private final String companyCode;
 
     private final String division;
 
-    private final TSID clientId;
+    private final TSID id;
+
+    private final String clientId;
 
     private final String username;
 
@@ -53,7 +55,8 @@ public class RegisteredClientPropertiesImpl implements RegisteredClientPropertie
 
     public RegisteredClientPropertiesImpl(String companyCode,
                                           String division,
-                                          TSID clientId,
+                                          TSID id,
+                                          String clientId,
                                           String username,
                                           TSID passwordId,
                                           String passwordValue,
@@ -69,6 +72,7 @@ public class RegisteredClientPropertiesImpl implements RegisteredClientPropertie
                                           boolean requireAuthorizationConsent) {
         this.companyCode = companyCode;
         this.division = division;
+        this.id = id;
         this.clientId = clientId;
         this.username = username;
         this.passwordValue = passwordValue;
@@ -91,24 +95,24 @@ public class RegisteredClientPropertiesImpl implements RegisteredClientPropertie
     }
 
     @Override
-    public RegisteredClientProperties withRedirectUris(Collection<RedirectURI> redirectUris) {
+    public RegisteredClientConfig withRedirectUris(Collection<RedirectURIEntity> redirectUris) {
         appendUnresolvedUris(redirectUris);
         return this;
     }
 
     @Override
-    public RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
+    public RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
         this.authorizationGrantTypes.addAll(authorizationGrantTypes);
         return this;
     }
 
     @Override
-    public RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
+    public RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
         this.clientAuthenticationMethods.addAll(clientAuthenticationMethods);
         return this;
     }
 
-    private void appendUnresolvedUris(@NonNull Collection<RedirectURI> redirectUrisCollection) {
+    private void appendUnresolvedUris(@NonNull Collection<RedirectURIEntity> redirectUrisCollection) {
         redirectUrisCollection.forEach(redirectUri -> {
             var uri = redirectUri.getUri();
             if(redirectUri.isPostLogin()){

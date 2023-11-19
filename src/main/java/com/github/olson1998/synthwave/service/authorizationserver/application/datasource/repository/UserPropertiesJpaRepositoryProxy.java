@@ -3,11 +3,11 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ExtendedUserEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -25,21 +25,20 @@ public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourc
     }
 
     @Override
-    public Optional<ExtendedUserEntity> getExtendedUserPropertiesByUsername(String username) {
-        return userJpaRepository.selectUserByUsername(username)
-                .map(ExtendedUserEntity.class::cast);
-    }
-
-    @Override
-    public Optional<UserEntity> getUserById(TSID id) {
+    public Optional<UserEntity> getUserById(@NonNull TSID id) {
         return userJpaRepository.selectUserById(id)
                 .map(UserEntity.class::cast);
     }
 
     @Override
-    public Optional<DefaultUserDetails> getSynthWaveUserByUsername(String username) {
+    public Optional<UserMetadata> getUserMetadataByUsername(String username) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDetails> getUserDetailsByUsername(@NonNull String username) {
         return userJpaRepository.selectSynthWaveUserByUsername(username)
-                .map(DefaultUserDetails.class::cast);
+                .map(UserDetails.class::cast);
     }
 
     @Override

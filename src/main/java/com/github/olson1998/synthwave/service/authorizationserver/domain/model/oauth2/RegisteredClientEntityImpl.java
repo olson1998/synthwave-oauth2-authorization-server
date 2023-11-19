@@ -15,10 +15,13 @@ public class RegisteredClientEntityImpl implements RegisteredClientEntity {
 
     private final TSID id;
 
+    private final String clientId;
+
     private final TSID userId;
 
-    public RegisteredClientEntityImpl(TSID userId) {
+    public RegisteredClientEntityImpl(TSID userId, String clientId) {
         this.id = null;
+        this.clientId = clientId;
         this.userId = userId;
     }
 }

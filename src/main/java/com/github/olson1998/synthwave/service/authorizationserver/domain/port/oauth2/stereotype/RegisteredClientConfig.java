@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIEntity;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -9,13 +10,15 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Set;
 
-public interface RegisteredClientProperties {
+public interface RegisteredClientConfig {
 
     String getCompanyCode();
 
     String getDivision();
 
-    TSID getClientId();
+    TSID getId();
+
+    String getClientId();
 
     String getUsername();
 
@@ -37,10 +40,10 @@ public interface RegisteredClientProperties {
 
     Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
 
-    RegisteredClientProperties withRedirectUris(Collection<RedirectURI> redirectUris);
+    RegisteredClientConfig withRedirectUris(Collection<RedirectURIEntity> redirectUris);
 
-    RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
+    RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
 
-    RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
+    RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
 
 }

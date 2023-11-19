@@ -24,15 +24,13 @@ public class OAuth2RepositoriesConfig {
     public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(@NonNull RegistrationClientRepository registrationClientRepository,
                                                                                    @NonNull UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
                                                                                    @NonNull RedirectURIJpaRepositoryProxy redirectURIJpaRepositoryProxy,
-                                                                                   @NonNull RedirectURIBindingJpaRepositoryProxy redirectURIBindingJpaRepositoryProxy,
                                                                                    @NonNull RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy,
                                                                                    @NonNull RegisteredClientSettingsJpaRepositoryProxy registeredClientSettingsJpaRepositoryProxy,
                                                                                    @NonNull AuthorizationGrantTypeBindJpaRepositoryProxy authorizationGrantTypeBindJpaRepositoryProxy,
                                                                                    @NonNull ClientAuthenticationMethodJpaRepositoryProxy clientAuthenticationMethodJpaRepositoryProxy){
-        return new SynthWaveRegisteredClientService(
+        return new DefaultRegisteredClientService(
                 registrationClientRepository,
                 redirectURIJpaRepositoryProxy,
-                redirectURIBindingJpaRepositoryProxy,
                 userPropertiesSourceRepository,
                 synthWaveRegisteredClientJpaRepositoryProxy,
                 registeredClientSettingsJpaRepositoryProxy,
@@ -44,12 +42,12 @@ public class OAuth2RepositoriesConfig {
 
     @Bean
     public UserDetailsRepository synthWaveUserDetailsRepository(@NonNull UserPropertiesJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
-        return new UserDetailsService(synthWaveUserDataSourceRepositoryProxy);
+        return new DefaultUserDetailsService(synthWaveUserDataSourceRepositoryProxy);
     }
 
     @Bean
     public OAuth2AuthorizationRepository oAuth2AuthorizationRepository(){
-        return new SimpleOAuth2AuthorizationService();
+        return new DefaultOAuth2AuthorizationService();
     }
 
     @Bean

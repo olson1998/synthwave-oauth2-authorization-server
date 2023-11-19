@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
-public class SimpleOAuth2AuthorizationService implements OAuth2AuthorizationRepository {
+public class DefaultOAuth2AuthorizationService implements OAuth2AuthorizationRepository {
 
     private final Set<OAuth2Authorization> oAuth2Authorizations = new HashSet<>();
 

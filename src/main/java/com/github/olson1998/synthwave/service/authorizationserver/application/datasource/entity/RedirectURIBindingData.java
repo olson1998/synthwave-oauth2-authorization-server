@@ -1,17 +1,12 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIBindType;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AffiliationProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectURIBindingProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIBinding;
-import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
-import io.hypersistence.utils.hibernate.id.Tsid;
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.JavaType;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.springframework.data.domain.Persistable;
 
 import java.util.Optional;
@@ -24,56 +19,28 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "O2ERUB")
-public class RedirectURIBindingData implements Persistable<TSID>, RedirectURIBinding {
+public class RedirectURIBindingData implements Persistable<RedirectURIBindingProperties>, RedirectURIBinding {
 
-    @Id
-    @Tsid
-    @Column(name = "RUBID")
-    @JavaType(TSIDJavaType.class)
-    @JdbcType(BigIntJdbcType.class)
-    private TSID id;
+    @EmbeddedId
+    private RedirectURIBindingProperties properties;
 
-    @Column(name = "URIID")
-    @JavaType(TSIDJavaType.class)
-    @JdbcType(BigIntJdbcType.class)
-    private TSID redirectURIId;
-
-    @Column(name = "RUBTYP")
-    private RedirectURIBindType type;
-
-    @Column(name = "RCLID")
-    @JavaType(TSIDJavaType.class)
-    @JdbcType(BigIntJdbcType.class)
-    private TSID registeredClientId;
-
-    private AffiliationProperties affiliationProperties;
-
-    public RedirectURIBindingData(@NonNull RedirectURIBinding redirectURIBinding) {
-        this.redirectURIId = redirectURIBinding.getRedirectURIId();
-        this.registeredClientId = redirectURIBinding.getRegisteredClientId();
-        this.affiliationProperties = Optional.ofNullable(redirectURIBinding.getAffiliation())
-                .map(AffiliationProperties::new)
+    @Override
+    public TSID getRedirectURIId() {
+        return Optional.ofNullable(properties)
+                .map(RedirectURIBindingProperties::getRedirectURIId)
                 .orElse(null);
     }
 
     @Override
-    public Affiliation getAffiliation() {
-        return affiliationProperties;
+    public TSID getRegisteredClientId() {
+        return Optional.ofNullable(properties)
+                .map(RedirectURIBindingProperties::getRegisteredClientId)
+                .orElse(null);
     }
 
     @Override
-    public boolean isClientPrivate() {
-        return type == RedirectURIBindType.CLIENT_PRIVATE;
-    }
-
-    @Override
-    public boolean isCompanyPrivate() {
-        return type == RedirectURIBindType.COMPANY_PRIVATE;
-    }
-
-    @Override
-    public boolean isDivisionPrivate() {
-        return type == RedirectURIBindType.DIVISION_PRIVATE;
+    public RedirectURIBindingProperties getId() {
+        return properties;
     }
 
     @Override

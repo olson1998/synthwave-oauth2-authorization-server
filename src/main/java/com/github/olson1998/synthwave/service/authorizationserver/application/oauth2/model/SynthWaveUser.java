@@ -1,11 +1,12 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.DefaultUserDetails;
 import io.hypersistence.tsid.TSID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.joda.time.Period;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -13,15 +14,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 @Getter
-public class SynthWaveUser implements DefaultUserDetails {
-
-    private final TSID userId;
-
-    private final String companyCode;
-
-    private final String division;
-
-    private final String username;
+@EqualsAndHashCode(callSuper = true)
+public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails {
 
     private final PasswordEntity passwordEntityData;
 
@@ -41,10 +35,7 @@ public class SynthWaveUser implements DefaultUserDetails {
                          Period accountExpirePeriod,
                          PasswordEntity passwordEntityData,
                          boolean accountNonLocked) {
-        this.userId = userId;
-        this.companyCode = companyCode;
-        this.division = division;
-        this.username = username;
+        super(userId, username, companyCode, division);
         this.enabled = enabled;
         this.passwordEntityData = passwordEntityData;
         this.accountNonLocked = accountNonLocked;
@@ -62,11 +53,6 @@ public class SynthWaveUser implements DefaultUserDetails {
     @Override
     public String getPassword() {
         return passwordEntityData.getValue();
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     private boolean isPasswordNonExpired(PasswordEntity passwordEntity){
@@ -93,10 +79,10 @@ public class SynthWaveUser implements DefaultUserDetails {
                 .map(String::valueOf)
                 .orElse("?");
         return "SynthWaveUser(" +
-                "userId=" + userId +
-                ", companyCode='" + companyCode + '\'' +
-                ", division='" + division + '\'' +
-                ", username='" + username + '\'' +
+                "userId=" + super.getUserId() +
+                ", companyCode='" + super.getCompanyCode() + '\'' +
+                ", division='" + super.getDivision() + '\'' +
+                ", username='" + super.getUsername() + '\'' +
                 ", password='" + passwordId + '\'' +
                 ", enabled=" + enabled +
                 ", accountNonExpired=" + accountNonExpired +

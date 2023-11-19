@@ -24,6 +24,13 @@ public class RedirectURIBindingData implements Persistable<RedirectURIBindingPro
     @EmbeddedId
     private RedirectURIBindingProperties properties;
 
+    public RedirectURIBindingData(@NonNull RedirectURIBinding redirectURIBinding) {
+        this.properties = new RedirectURIBindingProperties(
+                redirectURIBinding.getRedirectURIId(),
+                redirectURIBinding.getRegisteredClientId()
+        );
+    }
+
     @Override
     public TSID getRedirectURIId() {
         return Optional.ofNullable(properties)

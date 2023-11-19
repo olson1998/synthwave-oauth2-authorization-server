@@ -47,7 +47,7 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.AffiliationData" author="${server.hostname}">
         <createTable tableName="AUEAFF">
             <column name="USRID" type="bigint">
-                <constraints foreignKeyName="UIDAFF" referencedTableName="AUEUSR" referencedColumnNames="UID" primaryKey="true" nullable="false"/>
+                <constraints foreignKeyName="UIDAFF" referencedTableName="AUEUSR" referencedColumnNames="USRID" primaryKey="true" nullable="false"/>
             </column>
             <column name="CODE" type="varchar(10)">
                 <constraints nullable="false"/>
@@ -56,7 +56,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="USRAFF" tableName="USIAFF" columnNames="CODE,DIVI"/>
+        <addUniqueConstraint constraintName="USRAFF" tableName="AUEAFF" columnNames="CODE,DIVI"/>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData" author="${server.hostname}">
         <createTable tableName="O2ERCL">
@@ -101,7 +101,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="ATSAFF" tableName="AUIAFF" columnNames="CODE,DIVI"/>
+        <addUniqueConstraint constraintName="ATSAFF" tableName="O2EATS" columnNames="CODE,DIVI"/>
     </changeSet>
     <changeSet id="org.springframework.security.oauth2.core.AuthorizationGrantType" author="${server.hostname}">
         <createTable tableName="O2IAGT">
@@ -148,10 +148,10 @@
                 <constraints foreignKeyName="AGBCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
             </column>
             <column name="AGTVAL" type="varchar(80)">
-                <constraints foreignKeyName="AGBVAL" referencedTableName="O2AUGT" referencedColumnNames="AGTVAL" nullable="false"/>
+                <constraints foreignKeyName="AGBVAL" referencedTableName="O2IAGT" referencedColumnNames="AGTVAL" nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="AGBAGT" tableName="O2IAGT" columnNames="RCLID,AGTVAL"/>
+        <addUniqueConstraint constraintName="AGBAGT" tableName="O2EAGB" columnNames="RCLID,AGTVAL"/>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.ClientAuthenticationMethodBoundData" author="${server.hostname}">
         <createTable tableName="O2ECAM">
@@ -160,7 +160,7 @@
             </column>
             <column name="RCLAM" type="varchar(80)"/>
         </createTable>
-        <addUniqueConstraint constraintName="RCLCAM" tableName="RCLTAM" columnNames="RCLID,RCLAM"/>
+        <addUniqueConstraint constraintName="RCLCAM" tableName="O2ECAM" columnNames="RCLID,RCLAM"/>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIScope" author="${server.hostname}">
         <createTable tableName="O2IURI">

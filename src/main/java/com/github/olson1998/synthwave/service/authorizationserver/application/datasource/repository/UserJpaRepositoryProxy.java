@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
 import io.hypersistence.tsid.TSID;
@@ -15,9 +15,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserPropertiesJpaRepositoryProxy implements UserPropertiesDataSourceRepository {
+public class UserJpaRepositoryProxy implements UserDataSourceRepository {
 
-    private final UserPropertiesJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     @Override
     public boolean existsUserWithGivenUsername(String username) {

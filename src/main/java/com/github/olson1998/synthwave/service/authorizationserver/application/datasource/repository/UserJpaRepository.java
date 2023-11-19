@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
+interface UserJpaRepository extends JpaRepository<UserData, TSID> {
 
     @Query("SELECT user FROM UserData user WHERE user.id=:id")
     Optional<UserData> selectUserById(@Param("id") TSID id);
@@ -21,6 +21,7 @@ interface UserPropertiesJpaRepository extends JpaRepository<UserData, TSID> {
     @Query("""
            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUserMetadata(
            user.id,
+           user.username,
            affiliation.properties.companyCode,
            affiliation.properties.division
            )

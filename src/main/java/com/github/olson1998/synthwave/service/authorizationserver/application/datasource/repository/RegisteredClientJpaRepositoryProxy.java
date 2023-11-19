@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientIdentifiers;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class RegisteredClientJpaRepositoryProxy implements RegisteredClientSourceRepository {
+public class RegisteredClientJpaRepositoryProxy implements RegisteredClientDataSourceRepository {
 
     private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 

@@ -5,7 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.d
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserAffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPropertiesDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
@@ -24,7 +24,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final UserPropertiesDataSourceRepository userPropertiesDataSourceRepository;
+    private final UserDataSourceRepository userDataSourceRepository;
 
     private final UserPasswordDataSourceRepository userPasswordDataSourceRepository;
 
@@ -32,12 +32,12 @@ public class UserPropertiesService implements UserPropertiesRepository {
 
     @Override
     public boolean existsUserWithUsername(String username) {
-        return userPropertiesDataSourceRepository.existsUserWithGivenUsername(username);
+        return userDataSourceRepository.existsUserWithGivenUsername(username);
     }
 
     @Override
     public UserEntity getUserById(TSID id) {
-        return userPropertiesDataSourceRepository.getUserById(id)
+        return userDataSourceRepository.getUserById(id)
                 .orElseThrow(()-> new SelectQueryWithNoResultException(UserProperties.class));
     }
 
@@ -53,7 +53,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
                 false,
                 userProps.getExpirePeriod()
         );
-        var savedUserProps = userPropertiesDataSourceRepository.save(userEntity);
+        var savedUserProps = userDataSourceRepository.save(userEntity);
         var userId= savedUserProps.getId();
         var encryptedPassword = passwordEncoder.encode(passwordProps.getValue());
         var passwordData = new PasswordEntityDTO(
@@ -81,7 +81,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
 
     @Override
     public void activateUser(TSID userId) {
-        var updatedRows = userPropertiesDataSourceRepository.setUserEnabledForUserWithId(userId, true);
+        var updatedRows = userDataSourceRepository.setUserEnabledForUserWithId(userId, true);
         if(updatedRows == 1){
             log.debug("Activated user: '{}'", userId.toLong());
         }else {
@@ -91,7 +91,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
 
     @Override
     public void deactivateUser(TSID userId) {
-        var updatedRows = userPropertiesDataSourceRepository.setUserEnabledForUserWithId(userId, false);
+        var updatedRows = userDataSourceRepository.setUserEnabledForUserWithId(userId, false);
         if(updatedRows == 1){
             log.debug("Deactivated user: '{}'", userId.toLong());
         }else {

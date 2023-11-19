@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.RegistrationClientImplProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.*;
@@ -15,33 +16,42 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class OAuth2RepositoriesConfig {
 
     @Bean
-    public RegistrationClientRepository registrationClientRepository(@NonNull PasswordEncoder passwordEncoder,
-                                                                     @NonNull RegistrationClientImplProperties registrationClientImplProperties){
-        return new RegistrationClientService(passwordEncoder, registrationClientImplProperties);
+    public RegisteredClientProvisioningRepository registeredClientProvisioningRepository(@NonNull RedirectURIDataSourceRepository redirectURIDataSourceRepository,
+                                                                                         @NonNull RedirectURIBindingDataSourceRepository redirectURIBindingDataSourceRepository,
+                                                                                         @NonNull UserDataSourceRepository userDataSourceRepository,
+                                                                                         @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
+                                                                                         @NonNull RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository,
+                                                                                         @NonNull AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository,
+                                                                                         @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
+        return new DefaultRegisteredClientProvisioningService(
+                redirectURIDataSourceRepository,
+                redirectURIBindingDataSourceRepository,
+                userDataSourceRepository,
+                registeredClientDataSourceRepository,
+                registeredClientSettingsDataSourceRepository,
+                authorizationGrantTypeBindDataSourceRepository,
+                clientAuthenticationMethodBindDataSourceRepository
+        );
     }
 
     @Bean
-    public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(@NonNull RegistrationClientRepository registrationClientRepository,
-                                                                                   @NonNull UserPropertiesJpaRepositoryProxy userPropertiesSourceRepository,
-                                                                                   @NonNull RedirectURIJpaRepositoryProxy redirectURIJpaRepositoryProxy,
-                                                                                   @NonNull RegisteredClientJpaRepositoryProxy synthWaveRegisteredClientJpaRepositoryProxy,
-                                                                                   @NonNull RegisteredClientSettingsJpaRepositoryProxy registeredClientSettingsJpaRepositoryProxy,
-                                                                                   @NonNull AuthorizationGrantTypeBindJpaRepositoryProxy authorizationGrantTypeBindJpaRepositoryProxy,
-                                                                                   @NonNull ClientAuthenticationMethodJpaRepositoryProxy clientAuthenticationMethodJpaRepositoryProxy){
+    public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(@NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository,
+                                                                                   @NonNull RedirectURIDataSourceRepository redirectURIDataSourceRepository,
+                                                                                   @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
+                                                                                   @NonNull AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository,
+                                                                                   @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
         return new DefaultRegisteredClientService(
-                registrationClientRepository,
-                redirectURIJpaRepositoryProxy,
-                userPropertiesSourceRepository,
-                synthWaveRegisteredClientJpaRepositoryProxy,
-                registeredClientSettingsJpaRepositoryProxy,
-                authorizationGrantTypeBindJpaRepositoryProxy,
-                clientAuthenticationMethodJpaRepositoryProxy
+                registeredClientProvisioningRepository,
+                redirectURIDataSourceRepository,
+                registeredClientDataSourceRepository,
+                authorizationGrantTypeBindDataSourceRepository,
+                clientAuthenticationMethodBindDataSourceRepository
         );
 
     }
 
     @Bean
-    public UserDetailsRepository synthWaveUserDetailsRepository(@NonNull UserPropertiesJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
+    public UserDetailsRepository synthWaveUserDetailsRepository(@NonNull UserJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
         return new DefaultUserDetailsService(synthWaveUserDataSourceRepositoryProxy);
     }
 
@@ -52,14 +62,14 @@ public class OAuth2RepositoriesConfig {
 
     @Bean
     public UserPropertiesRepository userPropertiesRepository(@NonNull PasswordEncoder passwordEncoder,
-                                                             @NonNull UserPropertiesJpaRepositoryProxy userPropertiesJpaRepositoryProxy,
-                                                             @NonNull UserPasswordJpaRepositoryProxy userPasswordJpaRepositoryProxy,
-                                                             @NonNull AffiliationJpaRepositoryProxy affiliationJpaRepositoryProxy){
+                                                             @NonNull UserDataSourceRepository userDataSourceRepository,
+                                                             @NonNull UserPasswordDataSourceRepository userPasswordDataSourceRepository,
+                                                             @NonNull UserAffiliationDataSourceRepository userAffiliationDataSourceRepository){
         return new UserPropertiesService(
                 passwordEncoder,
-                userPropertiesJpaRepositoryProxy,
-                userPasswordJpaRepositoryProxy,
-                affiliationJpaRepositoryProxy
+                userDataSourceRepository,
+                userPasswordDataSourceRepository,
+                userAffiliationDataSourceRepository
         );
     }
 }

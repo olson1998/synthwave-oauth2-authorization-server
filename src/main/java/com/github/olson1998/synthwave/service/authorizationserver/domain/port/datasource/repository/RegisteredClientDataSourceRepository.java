@@ -7,7 +7,7 @@ import io.hypersistence.tsid.TSID;
 
 import java.util.Optional;
 
-public interface RegisteredClientSourceRepository {
+public interface RegisteredClientDataSourceRepository {
 
     Optional<String> getClientIdByUserId(TSID userId);
 

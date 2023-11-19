@@ -10,9 +10,9 @@ import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializ
 import org.joda.time.Period;
 
 import java.io.IOException;
+import java.util.Optional;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.USER_EXP_PERIOD_JSON_FIELD;
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.USER_NAME_JSON_FIELD;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.*;
 
 class UserPropertiesStdDeserializer extends AbstractObjectStdDeserializer<UserProperties> {
 
@@ -24,6 +24,8 @@ class UserPropertiesStdDeserializer extends AbstractObjectStdDeserializer<UserPr
     protected UserProperties deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException {
         var username = readJsonProperty(USER_NAME_JSON_FIELD, objectNode, objectCodec, String.class, true);
         var userExpPrd = readJsonProperty(USER_EXP_PERIOD_JSON_FIELD, objectNode, objectCodec, Period.class);
-        return new UserPropertiesDTO(username, userExpPrd);
+        var enabled = Optional.ofNullable(readJsonProperty(USER_ENABLED_JSON_FIELD, objectNode, objectCodec, Boolean.class))
+                .orElse(false);
+        return new UserPropertiesDTO(username, enabled, userExpPrd);
     }
 }

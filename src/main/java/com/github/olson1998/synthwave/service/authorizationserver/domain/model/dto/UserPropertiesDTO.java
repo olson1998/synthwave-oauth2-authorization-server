@@ -12,7 +12,11 @@ public class UserPropertiesDTO implements UserProperties {
 
     public static final String USER_EXP_PERIOD_JSON_FIELD = "exprd";
 
+    public static final String USER_ENABLED_JSON_FIELD = "enabled";
+
     private final String username;
+
+    private final boolean isEnabled;
 
     private final Period expirePeriod;
 }

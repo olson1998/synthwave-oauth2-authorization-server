@@ -11,7 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class AffiliationEntityDTO extends AffiliationDTO implements AffiliationEntity {
 
-    public static final String USER_AFFILIATION_USER_ID_JSON_FIELD = "uid";
+    public static final String USER_AFFILIATION_USER_ID_JSON_FIELD = "user_id";
 
     private final TSID userId;
 

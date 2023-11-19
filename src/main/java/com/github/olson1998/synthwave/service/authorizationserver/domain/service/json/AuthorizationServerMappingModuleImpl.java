@@ -5,9 +5,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.json.AuthorizationServerMappingModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSavingRequest;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import lombok.Getter;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 @Getter
 public class AuthorizationServerMappingModuleImpl implements AuthorizationServerMappingModule {
@@ -38,6 +43,13 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(UserProperties.class, new UserPropertiesStdDeserializer());
         mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
         mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
+        mappings.addDeserializer(RegisteredClient.class, new RegisteredClientStdDeserializer());
+        mappings.addDeserializer(AuthorizationGrantType.class, new AuthorizationGrantTypeStdDeserializer());
+        mappings.addDeserializer(ClientAuthenticationMethod.class, new ClientAuthenticationMethodsStdDeserializer());
+        mappings.addDeserializer(TokenSettings.class, new TokenSettingsStdDeserializer());
+        mappings.addDeserializer(RegisteredClient.class, new RegisteredClientStdDeserializer());
+        mappings.addDeserializer(RegistrationClientProvisioningRequest.class, new RegistrationClientProvisioningRequestStdDeserializer());
+        mappings.addDeserializer(UserSavingRequest.class, new UserSavingRequestStdDeserializer());
         this.module = mappings;
     }
 }

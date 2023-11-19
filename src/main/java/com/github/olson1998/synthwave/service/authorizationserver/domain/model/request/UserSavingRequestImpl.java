@@ -15,6 +15,12 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class UserSavingRequestImpl implements UserSavingRequest {
 
+    public static final String USER_SAVING_REQUEST_USER_JSON_FIELD = "user";
+
+    public static final String USER_SAVING_REQUEST_PASSWORD_JSON_FIELD = "password";
+
+    public static final String USER_SAVING_REQUEST_AFFILIATION_JSON_FIELD = "affiliation";
+
     private final UserProperties user;
 
     private final Password password;

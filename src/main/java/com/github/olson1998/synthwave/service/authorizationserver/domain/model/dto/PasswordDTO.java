@@ -15,13 +15,18 @@ public class PasswordDTO implements Password {
 
     public static final String PASSWORD_EXPIRE_PERIOD_JSON_FILED = "expprd";
 
+    public static final String PASSWORD_USER_ID_JSON_FIELD = "user_id";
+
     private final String value;
 
     private final TSID userId;
 
-    private final Boolean latestVersion;
-
     private final Period expirePeriod;
+
+    @Override
+    public Boolean getLatestVersion() {
+        return null;
+    }
 
     @Override
     public Optional<Period> getOptionalExpirePeriod() {

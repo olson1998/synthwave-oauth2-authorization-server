@@ -37,7 +37,7 @@ public class RegistrationClientProvisioningService implements RegistrationClient
     public void provision() {
         var request = registrationClientRequestSupplier.get();
         request.forEach(this::provisionUserOptionally);
-        request.forEach(req -> registeredClientProvisioningRepository.provision(req.getSynthWaveRegisteredClient()));
+        request.forEach(req -> registeredClientProvisioningRepository.provision(req.getRegisteredClient()));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class RegistrationClientProvisioningService implements RegistrationClient
     }
 
     private PipelineInitializer<RegistrationClientProvisioningRequest> initializeRegistrationClientPipeline(RegistrationClientProvisioningRequest request){
-        var username = Optional.ofNullable(request.getSynthWaveRegisteredClient())
+        var username = Optional.ofNullable(request.getRegisteredClient())
                 .map(RegisteredClient::getClientName)
                 .orElse("?");
         return PipelineInitializer.builder(()-> provisionUserOptionally(request))
@@ -80,7 +80,7 @@ public class RegistrationClientProvisioningService implements RegistrationClient
         }else {
             var registeredClient = jobResult
                     .result()
-                    .getSynthWaveRegisteredClient();
+                    .getRegisteredClient();
             registeredClientProvisioningRepository.provision(registeredClient);
         }
     }

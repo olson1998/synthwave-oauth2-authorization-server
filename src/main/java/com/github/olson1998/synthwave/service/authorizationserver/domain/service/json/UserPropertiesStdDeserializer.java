@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 import org.joda.time.Period;
@@ -12,7 +12,7 @@ import org.joda.time.Period;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.*;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel.*;
 
 class UserPropertiesStdDeserializer extends AbstractObjectStdDeserializer<UserProperties> {
 
@@ -26,6 +26,6 @@ class UserPropertiesStdDeserializer extends AbstractObjectStdDeserializer<UserPr
         var userExpPrd = readJsonProperty(USER_EXP_PERIOD_JSON_FIELD, objectNode, objectCodec, Period.class);
         var enabled = Optional.ofNullable(readJsonProperty(USER_ENABLED_JSON_FIELD, objectNode, objectCodec, Boolean.class))
                 .orElse(false);
-        return new UserPropertiesDTO(username, enabled, userExpPrd);
+        return new UserPropertiesModel(username, enabled, userExpPrd);
     }
 }

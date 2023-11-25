@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.List;
 public interface RedirectURIRepository {
 
     @Transactional
-    void saveAll(List<RedirectURI> redirectURIs);
+    void saveAll(List<Redirect> redirectURIses);
 
     @Transactional
-    void deleteAll(List<RedirectURI> redirectURIs);
+    void deleteAll(List<Redirect> redirectURIses);
 }

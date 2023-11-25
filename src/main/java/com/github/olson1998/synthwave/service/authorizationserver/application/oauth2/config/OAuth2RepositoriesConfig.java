@@ -16,8 +16,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class OAuth2RepositoriesConfig {
 
     @Bean
-    public RegisteredClientProvisioningRepository registeredClientProvisioningRepository(@NonNull RedirectURIDataSourceRepository redirectURIDataSourceRepository,
-                                                                                         @NonNull RedirectURIBindingDataSourceRepository redirectURIBindingDataSourceRepository,
+    public PasswordRepository passwordRepository(@NonNull PasswordEncoder passwordEncoder,
+                                                 @NonNull UserPasswordDataSourceRepository userPasswordDataSourceRepository){
+        return new PasswordService(passwordEncoder, userPasswordDataSourceRepository);
+    }
+
+    @Bean
+    public AffiliationRepository affiliationRepository(AffiliationDataSourceRepository affiliationDataSourceRepository){
+        return new AffiliationService(affiliationDataSourceRepository);
+    }
+
+    @Bean
+    public RegisteredClientProvisioningRepository registeredClientProvisioningRepository(@NonNull RedirectDataSourceRepository redirectURIDataSourceRepository,
+                                                                                         @NonNull RedirectBoundDataSourceRepository redirectBoundDataSourceRepository,
                                                                                          @NonNull UserDataSourceRepository userDataSourceRepository,
                                                                                          @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
                                                                                          @NonNull RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository,
@@ -25,7 +36,7 @@ public class OAuth2RepositoriesConfig {
                                                                                          @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
         return new DefaultRegisteredClientProvisioningService(
                 redirectURIDataSourceRepository,
-                redirectURIBindingDataSourceRepository,
+                redirectBoundDataSourceRepository,
                 userDataSourceRepository,
                 registeredClientDataSourceRepository,
                 registeredClientSettingsDataSourceRepository,
@@ -36,7 +47,7 @@ public class OAuth2RepositoriesConfig {
 
     @Bean
     public SynthWaveRegisteredClientRepository synthWaveRegisteredClientRepository(@NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository,
-                                                                                   @NonNull RedirectURIDataSourceRepository redirectURIDataSourceRepository,
+                                                                                   @NonNull RedirectDataSourceRepository redirectURIDataSourceRepository,
                                                                                    @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
                                                                                    @NonNull AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository,
                                                                                    @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
@@ -51,8 +62,10 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
-    public UserDetailsRepository synthWaveUserDetailsRepository(@NonNull UserJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy){
-        return new DefaultUserDetailsService(synthWaveUserDataSourceRepositoryProxy);
+    public UserDetailsRepository synthWaveUserDetailsRepository(@NonNull UserJpaRepositoryProxy synthWaveUserDataSourceRepositoryProxy,
+                                                                @NonNull PasswordRepository passwordRepository,
+                                                                @NonNull AffiliationRepository affiliationRepository){
+        return new DefaultUserDetailsService(synthWaveUserDataSourceRepositoryProxy, passwordRepository, affiliationRepository);
     }
 
     @Bean

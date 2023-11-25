@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AffiliationRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
@@ -38,15 +38,15 @@ public class DefaultUserDetailsService implements UserDetailsRepository {
         var affiliation = userSavingRequest.getAffiliation();
         var password = userSavingRequest.getPassword();
         var userId = user.getId();
-        var affiliationObj = new AffiliationEntityDTO(
+        var affiliationObj = new AffiliationEntityModel(
                 userId,
                 affiliation.getCompanyCode(),
                 affiliation.getDivision()
         );
-        var passwordObj = new PasswordDTO(
+        var passwordObj = new PasswordModel(
                 password.getValue(),
                 userId,
-                password.getLatestVersion(),
+                true,
                 password.getOptionalExpirePeriod().orElse(null)
         );
         affiliationRepository.save(affiliationObj);

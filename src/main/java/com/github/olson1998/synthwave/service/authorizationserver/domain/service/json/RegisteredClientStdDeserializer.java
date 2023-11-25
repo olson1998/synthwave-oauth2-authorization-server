@@ -27,9 +27,9 @@ public class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializ
     @Override
     protected RegisteredClient deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException {
         var id = readJsonProperty(REGISTERED_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, TSID.class);
-        var idString = Optional.ofNullable(id).map(TSID::toLong).map(String::valueOf).orElse("");
+        var idString = Optional.ofNullable(id).map(TSID::toLong).map(String::valueOf).orElse("{?}");
         var clientId = Optional.ofNullable(readJsonProperty(REGISTERED_CLIENT_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, String.class))
-                .orElse("");
+                .orElse("{?}");
         var username = readJsonProperty(REGISTERED_CLIENT_NAME_JSON_PROPERTY, objectNode, objectCodec, String.class, true);
         var tokenSettings =readJsonProperty(REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY, objectNode, objectCodec, TokenSettings.class);
         var redirectUriSet = readJsonProperty(REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<String>>() {

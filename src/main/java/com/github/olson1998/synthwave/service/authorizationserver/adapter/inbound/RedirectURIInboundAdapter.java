@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.adapter.inbound;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RedirectURI;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIRequestPipeline;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -32,13 +32,13 @@ public class RedirectURIInboundAdapter {
 
     @ResponseStatus(CREATED)
     @PostMapping(path = CREATE_REDIRECT_URI_ENDPOINT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CompletableFuture<Void> postSaveRedirectURI(@RequestBody List<RedirectURI> redirectURIList){
-        return redirectURIRequestPipeline.runRedirectURISavingPipeline(redirectURIList);
+    public CompletableFuture<Void> postSaveRedirectURI(@RequestBody List<Redirect> redirectList){
+        return redirectURIRequestPipeline.runRedirectURISavingPipeline(redirectList);
     }
 
     @ResponseStatus(ACCEPTED)
     @PostMapping(path = DELETE_REDIRECT_URI_ENDPOINT, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public CompletableFuture<Void> deleteRedirectURI(@RequestBody List<RedirectURI> redirectURIList){
-        return redirectURIRequestPipeline.runRedirectURIDeletingPipeline(redirectURIList);
+    public CompletableFuture<Void> deleteRedirectURI(@RequestBody List<Redirect> redirectList){
+        return redirectURIRequestPipeline.runRedirectURIDeletingPipeline(redirectList);
     }
 }

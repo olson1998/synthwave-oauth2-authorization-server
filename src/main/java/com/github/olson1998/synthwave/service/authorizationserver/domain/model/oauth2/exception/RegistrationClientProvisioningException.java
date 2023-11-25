@@ -2,9 +2,13 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.github.olson1998.synthwave.support.rest.exception.InternalServerErrorWebException;
 
-public class RegistrationClientProvisioningException extends InternalServerErrorWebException {
+public class RegistrationClientProvisioningException extends RuntimeException {
 
     public RegistrationClientProvisioningException(Throwable cause) {
         super(cause);
+    }
+
+    public RegistrationClientProvisioningException(String message) {
+        super(message);
     }
 }

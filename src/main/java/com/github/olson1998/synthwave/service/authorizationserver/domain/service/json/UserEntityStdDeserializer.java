@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
@@ -12,7 +12,7 @@ import org.joda.time.Period;
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO.*;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityModel.*;
 
 class UserEntityStdDeserializer extends AbstractObjectStdDeserializer<UserEntity> {
 
@@ -26,6 +26,6 @@ class UserEntityStdDeserializer extends AbstractObjectStdDeserializer<UserEntity
         var username = readJsonProperty(USER_NAME_JSON_FIELD, objectNode, objectCodec, String.class, true);
         var enabled = readJsonProperty(USER_ENABLED_JSON_FIELD, objectNode, objectCodec, Boolean.class);
         var expPeriod = readJsonProperty(USER_EXP_PERIOD_JSON_FIELD, objectNode, objectCodec, Period.class);
-        return new UserEntityDTO(id, username, enabled, expPeriod);
+        return new UserEntityModel(id, username, enabled, expPeriod);
     }
 }

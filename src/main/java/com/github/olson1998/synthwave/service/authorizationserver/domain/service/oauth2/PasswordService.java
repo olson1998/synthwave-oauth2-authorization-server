@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
@@ -19,8 +19,10 @@ public class PasswordService implements PasswordRepository {
     public void save(@NonNull Password password) {
         var rawPassword = password.getValue();
         var encodedPassword = passwordEncoder.encode(rawPassword);
-        var encodedPasswordObj = new PasswordDTO(
+        var encodedPasswordObj = new PasswordModel(
                 encodedPassword,
+                password.getUserId(),
+                true,
                 password.getOptionalExpirePeriod().orElse(null)
         );
         userPasswordDataSourceRepository.save(encodedPasswordObj);

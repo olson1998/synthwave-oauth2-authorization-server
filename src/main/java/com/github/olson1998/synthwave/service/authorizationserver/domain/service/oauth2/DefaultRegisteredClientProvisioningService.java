@@ -1,33 +1,32 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RedirectURIBindingDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSettingsDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityImpl;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RedirectBoundModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectBound;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
-import com.github.olson1998.synthwave.support.pipeline.JobResult;
-import com.github.olson1998.synthwave.support.pipeline.Pipeline;
-import com.github.olson1998.synthwave.support.pipeline.PipelineInitializer;
-import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import io.hypersistence.tsid.TSID;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultRegisteredClientProvisioningService implements RegisteredClientProvisioningRepository {
 
-    private final RedirectURIDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectDataSourceRepository redirectUrisDataSourceRepository;
 
-    private final RedirectURIBindingDataSourceRepository redirectURIBindingDataSourceRepository;
+    private final RedirectBoundDataSourceRepository redirectBoundDataSourceRepository;
 
     private final UserDataSourceRepository userDataSourceRepository;
 
@@ -52,10 +51,13 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
         var userMetadata = userDataSourceRepository.getUserMetadataByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
         log.debug("Provisioning of user: {}", userMetadata);
-        var clientId = Optional.ofNullable(registeredClient.getClientId())
-                .orElseGet(()-> username + "@synthwave.com");
+        var clientId = registeredClient.getClientId();
+        if(clientId.equals("{?}")){
+            clientId = username + "@synthwave." + userMetadata.getCompanyCode().toLowerCase() +
+                    userMetadata.getDivision().toLowerCase() + ".com";
+        }
         var userId = userMetadata.getUserId();
-        var registeredClientProps = new RegisteredClientEntityImpl(userId, clientId);
+        var registeredClientProps = new RegisteredClientEntityModel(userId, clientId);
         var registeredClientEntity = registeredClientDataSourceRepository.save(registeredClientProps);
         var registeredClientId = registeredClientEntity.getId();
         var authorizationGrantTypes = authorizationGrantTypesBoundMapper.mapToAuthorizationGrantTypeBindings(
@@ -63,7 +65,7 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 registeredClient.getAuthorizationGrantTypes()
         );
         var clientSettings = registeredClient.getClientSettings();
-        var registeredClientSettings = new RegisteredClientSettingsDTO(
+        var registeredClientSettings = new RegisteredClientSettingsModel(
                 registeredClientId,
                 clientSettings.isRequireProofKey(),
                 clientSettings.isRequireAuthorizationConsent()
@@ -72,21 +74,59 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 registeredClientId,
                 registeredClient.getClientAuthenticationMethods()
         );
-        var redirectURIIds = redirectUrisDataSourceRepository.getRedirectURIIdCollectionByRedirectURISetAndPostLogoutRedirectURISet(
+        var presentRedirectURI = redirectUrisDataSourceRepository.getRedirectURICollectionByRedirectURISetAndPostLogoutRedirectURISet(
                 registeredClient.getRedirectUris(),
                 registeredClient.getPostLogoutRedirectUris()
         );
+        var toPersistURI = resolveNotPresentRedirectURI(
+                presentRedirectURI,
+                registeredClient.getRedirectUris(),
+                registeredClient.getPostLogoutRedirectUris()
+        );
+        var persistedURI = redirectUrisDataSourceRepository.saveAll(toPersistURI);
+        var redirectURIIds = resolveRedirectURIId(
+                Stream.concat(presentRedirectURI.stream(), persistedURI.stream()).toList()
+        );
         var redirectURIBindings = createRedirectURIBindingSet(redirectURIIds, registeredClientId);
         registeredClientSettingsDataSourceRepository.save(registeredClientSettings);
-        redirectURIBindingDataSourceRepository.saveAll(redirectURIBindings);
+        redirectBoundDataSourceRepository.saveAll(redirectURIBindings);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
         clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethodBounds);
     }
 
-    private Set<RedirectURIBinding> createRedirectURIBindingSet(Collection<TSID> redirectURIIds, TSID registeredClientId){
+    private Set<RedirectBound> createRedirectURIBindingSet(Collection<TSID> redirectURIIds, TSID registeredClientId){
         return redirectURIIds.stream()
-                .map(id -> new RedirectURIBindingDTO(id, registeredClientId))
+                .map(id -> new RedirectBoundModel(id, registeredClientId))
                 .collect(Collectors.toSet());
+    }
+
+    private Set<TSID> resolveRedirectURIId(Collection<RedirectEntity> redirectEntityCollection){
+        return redirectEntityCollection.stream()
+                .map(RedirectEntity::getId)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<Redirect> resolveNotPresentRedirectURI(Collection<RedirectEntity> redirectURIEntities, Set<String> redirectURI, Set<String> postLogoutURI){
+        var toPersist = new HashSet<Redirect>();
+        redirectURI.stream()
+                .map(Optional::ofNullable)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(uri -> redirectURIEntities.stream().noneMatch(entity -> entity.getUri().equals(uri) && entity.isPostLogin()))
+                .forEach(uriValue ->{
+                    var data = new PostLoginRedirect(uriValue);
+                    toPersist.add(data);
+                });
+        postLogoutURI.stream()
+                .map(Optional::ofNullable)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(uri -> redirectURIEntities.stream().noneMatch(entity -> entity.getUri().equals(uri) && entity.isPostLogout()))
+                .forEach(uriValue ->{
+                    var data = new PostLogoutRedirect(uriValue);
+                    toPersist.add(data);
+                });
+        return toPersist;
     }
 
 }

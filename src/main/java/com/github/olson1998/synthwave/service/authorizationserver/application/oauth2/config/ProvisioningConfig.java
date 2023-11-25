@@ -18,7 +18,7 @@ public class ProvisioningConfig {
 
     @Bean
     @ConditionalOnProperty(value = "synthwave.service.authorizationserver.oauth2.registration-client.provisioning.source", havingValue = "file", matchIfMissing = true)
-    public RegistrationClientRequestSupplier registrationClientRequestSupplier(@Value("synthwave.service.authorizationserver.oauth2.registration-client.provisioning.file:classpath:/provisioning/_registration-client.json")
+    public RegistrationClientRequestSupplier registrationClientRequestSupplier(@Value("${synthwave.service.authorizationserver.oauth2.registration-client.provisioning.file:classpath:provisioning/_registration-client.json}")
                                                                                @NonNull String fileLocation,
                                                                                @NonNull ObjectMapper objectMapper){
         return new RegistrationClientRequestFileSupplier(fileLocation, objectMapper);

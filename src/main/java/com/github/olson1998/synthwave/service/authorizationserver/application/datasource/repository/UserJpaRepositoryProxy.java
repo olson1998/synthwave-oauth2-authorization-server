@@ -33,7 +33,8 @@ public class UserJpaRepositoryProxy implements UserDataSourceRepository {
 
     @Override
     public Optional<UserMetadata> getUserMetadataByUsername(String username) {
-        return Optional.empty();
+        return userJpaRepository.selectUserMetadataByUsername(username)
+                .map(UserMetadata.class::cast);
     }
 
     @Override

@@ -7,8 +7,8 @@ import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdSerializer
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationDTO.USER_AFFILIATION_CODE_JSON_FIELD;
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationDTO.USER_AFFILIATION_DIVI_JSON_FIELD;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.AffiliationModel.USER_AFFILIATION_CODE_JSON_FIELD;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.AffiliationModel.USER_AFFILIATION_DIVI_JSON_FIELD;
 
 class UserAffiliationStdSerializer extends AbstractObjectStdSerializer<Affiliation> {
 

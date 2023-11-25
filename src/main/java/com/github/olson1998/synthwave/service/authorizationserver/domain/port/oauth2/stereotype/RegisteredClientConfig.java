@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectURIEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -40,7 +40,7 @@ public interface RegisteredClientConfig {
 
     Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
 
-    RegisteredClientConfig withRedirectUris(Collection<RedirectURIEntity> redirectUris);
+    RegisteredClientConfig withRedirectUris(Collection<RedirectEntity> redirectUris);
 
     RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
 

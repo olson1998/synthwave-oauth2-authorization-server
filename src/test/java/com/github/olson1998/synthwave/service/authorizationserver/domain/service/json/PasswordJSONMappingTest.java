@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import io.hypersistence.tsid.TSID;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +28,7 @@ class PasswordJSONMappingTest extends AuthorizationServerObjectMappingTest<Passw
 
     @Override
     protected PasswordEntity testSerializableObject() {
-        return new PasswordEntityDTO(
+        return new PasswordEntityModel(
                 TSID.fast(),
                 TSID.fast(),
                 "pass",

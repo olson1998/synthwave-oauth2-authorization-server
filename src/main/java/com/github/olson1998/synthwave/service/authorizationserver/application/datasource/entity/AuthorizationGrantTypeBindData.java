@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AuthorizationGrantTypeBindingProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AuthorizationGrantTypeBoundProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.EmbeddedId;
@@ -20,20 +20,20 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "O2EAGB")
-public class AuthorizationGrantTypeBindData implements Persistable<AuthorizationGrantTypeBindingProperties>, AuthorizationGrantTypeBinding {
+public class AuthorizationGrantTypeBindData implements Persistable<AuthorizationGrantTypeBoundProperties>, AuthorizationGrantTypeBinding {
 
     @EmbeddedId
-    private AuthorizationGrantTypeBindingProperties binding;
+    private AuthorizationGrantTypeBoundProperties binding;
 
     public AuthorizationGrantTypeBindData(AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
-        this.binding = new AuthorizationGrantTypeBindingProperties(
+        this.binding = new AuthorizationGrantTypeBoundProperties(
                 authorizationGrantTypeBinding.getRegisteredClientId(),
                 authorizationGrantTypeBinding.getAuthorizationGrantType()
         );
     }
 
     @Override
-    public AuthorizationGrantTypeBindingProperties getId() {
+    public AuthorizationGrantTypeBoundProperties getId() {
         return binding;
     }
 
@@ -45,14 +45,14 @@ public class AuthorizationGrantTypeBindData implements Persistable<Authorization
     @Override
     public TSID getRegisteredClientId() {
         return Optional.ofNullable(binding)
-                .map(AuthorizationGrantTypeBindingProperties::getRegisteredClientId)
+                .map(AuthorizationGrantTypeBoundProperties::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public AuthorizationGrantType getAuthorizationGrantType() {
         return Optional.ofNullable(binding)
-                .map(AuthorizationGrantTypeBindingProperties::getAuthorizationGrantType)
+                .map(AuthorizationGrantTypeBoundProperties::getAuthorizationGrantType)
                 .orElse(null);
     }
 }

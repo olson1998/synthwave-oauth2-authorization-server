@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.json.AuthorizationServerMappingModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.RegistrationClientProvisioningRequest;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSavingRequest;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
         mappings.addDeserializer(PasswordEntity.class, new PasswordEntityStdDeserializer());
         mappings.addSerializer(PasswordEntity.class, new PasswordEntityStdSerializer());
-        mappings.addDeserializer(RedirectURI.class, new RedirectURIStdDeserializer());
-        mappings.addSerializer(RedirectURI.class, new RedirectURIStdSerializer());
+        mappings.addDeserializer(Redirect.class, new RedirectStdDeserializer());
+        mappings.addSerializer(Redirect.class, new RedirectStdSerializer());
         mappings.addSerializer(Affiliation.class, new UserAffiliationStdSerializer());
         mappings.addDeserializer(Affiliation.class, new UserAffiliationStdDeserializer());
         mappings.addDeserializer(AffiliationEntity.class, new UserAffiliationEntityStdDeserializer());

@@ -7,8 +7,8 @@ import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdSerializer
 
 import java.io.IOException;
 
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.USER_EXP_PERIOD_JSON_FIELD;
-import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserPropertiesDTO.USER_NAME_JSON_FIELD;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel.USER_EXP_PERIOD_JSON_FIELD;
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel.USER_NAME_JSON_FIELD;
 
 class UserPropertiesStdSerializer extends AbstractObjectStdSerializer<UserProperties> {
 

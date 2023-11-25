@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AuthorizationGrantTypeBindDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.ClientAuthenticationMethodBindDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectURIDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
@@ -19,7 +19,7 @@ public class DefaultRegisteredClientService implements SynthWaveRegisteredClient
 
     private final RegisteredClientProvisioningRepository registeredClientProvisioningRepository;
 
-    private final RedirectURIDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectDataSourceRepository redirectUrisDataSourceRepository;
 
     private final RegisteredClientDataSourceRepository registeredClientDataSourceRepository;
 

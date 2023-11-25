@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityDTO;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityDTO;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AffiliationDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
@@ -47,7 +47,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
         var username = userProps.getUsername();
         var passwordProps = userSchema.getPassword();
         var affiliationProperties = userSchema.getAffiliation();
-        var userEntity = new UserEntityDTO(
+        var userEntity = new UserEntityModel(
                 null,
                 username,
                 false,
@@ -56,15 +56,15 @@ public class UserPropertiesService implements UserPropertiesRepository {
         var savedUserProps = userDataSourceRepository.save(userEntity);
         var userId= savedUserProps.getId();
         var encryptedPassword = passwordEncoder.encode(passwordProps.getValue());
-        var passwordData = new PasswordEntityDTO(
+        var passwordData = new PasswordEntityModel(
                 null,
                 userId,
                 encryptedPassword,
-                passwordProps.getOptionalExpirePeriod().orElse(null),
-                true
+                true,
+                passwordProps.getOptionalExpirePeriod().orElse(null)
         );
         userPasswordDataSourceRepository.save(passwordData);
-        var affiliation = new AffiliationEntityDTO(
+        var affiliation = new AffiliationEntityModel(
                 userId,
                 affiliationProperties.getCompanyCode(),
                 affiliationProperties.getDivision()

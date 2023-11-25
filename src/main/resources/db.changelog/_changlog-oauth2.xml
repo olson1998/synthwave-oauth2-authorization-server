@@ -66,7 +66,7 @@
             <column name="USRID" type="bigint">
                 <constraints foreignKeyName="RCLUSR" referencedTableName="AUEUSR" referencedColumnNames="USRID" nullable="false"/>
             </column>
-            <column name="RCLCID" type="bigint">
+            <column name="RCLCID" type="varchar(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
@@ -137,7 +137,7 @@
             <column name="RCLRPK" type="tinyint">
                 <constraints nullable="false"/>
             </column>
-            <column name="RCLACR" type="tinyint">
+            <column name="RCLRAC" type="tinyint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -162,7 +162,7 @@
         </createTable>
         <addUniqueConstraint constraintName="RCLCAM" tableName="O2ECAM" columnNames="RCLID,RCLAM"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIScope" author="${server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope" author="${server.hostname}">
         <createTable tableName="O2IURI">
             <column name="URISCP" type="varchar(11)">
                 <constraints nullable="false"/>
@@ -176,12 +176,12 @@
             <column name="URISCP">POST_LOGOUT</column>
         </insert>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIData" author="${server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectData" author="${server.hostname}">
         <createTable tableName="O2EURI">
             <column name="URIID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="URISCP" type="varchar(10)">
+            <column name="URISCP" type="varchar(11)">
                 <constraints foreignKeyName="RURISC" referencedTableName="O2IURI" referencedColumnNames="URISCP" nullable="false"/>
             </column>
             <column name="URIVAL" type="varchar(2047)">
@@ -189,7 +189,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectURIBindingData" author="${server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectBoundData" author="${server.hostname}">
         <createTable tableName="O2ERUB">
             <column name="URIID" type="bigint">
                 <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIID" nullable="false"/>

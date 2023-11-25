@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(value = "synthwave.service.authorizationserver.oauth2.registration-client.provisioning.async", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(value = "synthwave.service.authorizationserver.oauth2.registration-client.provisioning.type", havingValue = "sync", matchIfMissing = true)
 public class RegistrationClientProvisioningExecutor {
 
     private final RegistrationClientProvisioningRepository registrationClientProvisioningRepository;

@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class DefaultRegisteredClientProvisioningService implements RegisteredClientProvisioningRepository {
 
-    private final RedirectDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectDataSourceRepository redirectDataSourceRepository;
 
     private final RedirectBoundDataSourceRepository redirectBoundDataSourceRepository;
 
@@ -74,59 +74,17 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 registeredClientId,
                 registeredClient.getClientAuthenticationMethods()
         );
-        var presentRedirectURI = redirectUrisDataSourceRepository.getRedirectURICollectionByRedirectURISetAndPostLogoutRedirectURISet(
-                registeredClient.getRedirectUris(),
-                registeredClient.getPostLogoutRedirectUris()
+        var redirectURISet = registeredClient.getRedirectUris();
+        var postLogoutRedirectURISet = registeredClient.getPostLogoutRedirectUris();
+        var redirectEntities = redirectDataSourceRepository.getRedirectByRedirectAndPostLogoutURISetAndAffiliation(
+                redirectURISet,
+                postLogoutRedirectURISet,
+                userMetadata.getCompanyCode(),
+                userMetadata.getDivision()
         );
-        var toPersistURI = resolveNotPresentRedirectURI(
-                presentRedirectURI,
-                registeredClient.getRedirectUris(),
-                registeredClient.getPostLogoutRedirectUris()
-        );
-        var persistedURI = redirectUrisDataSourceRepository.saveAll(toPersistURI);
-        var redirectURIIds = resolveRedirectURIId(
-                Stream.concat(presentRedirectURI.stream(), persistedURI.stream()).toList()
-        );
-        var redirectURIBindings = createRedirectURIBindingSet(redirectURIIds, registeredClientId);
         registeredClientSettingsDataSourceRepository.save(registeredClientSettings);
-        redirectBoundDataSourceRepository.saveAll(redirectURIBindings);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
         clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethodBounds);
-    }
-
-    private Set<RedirectBound> createRedirectURIBindingSet(Collection<TSID> redirectURIIds, TSID registeredClientId){
-        return redirectURIIds.stream()
-                .map(id -> new RedirectBoundModel(id, registeredClientId))
-                .collect(Collectors.toSet());
-    }
-
-    private Set<TSID> resolveRedirectURIId(Collection<RedirectEntity> redirectEntityCollection){
-        return redirectEntityCollection.stream()
-                .map(RedirectEntity::getId)
-                .collect(Collectors.toSet());
-    }
-
-    private Set<Redirect> resolveNotPresentRedirectURI(Collection<RedirectEntity> redirectURIEntities, Set<String> redirectURI, Set<String> postLogoutURI){
-        var toPersist = new HashSet<Redirect>();
-        redirectURI.stream()
-                .map(Optional::ofNullable)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(uri -> redirectURIEntities.stream().noneMatch(entity -> entity.getUri().equals(uri) && entity.isPostLogin()))
-                .forEach(uriValue ->{
-                    var data = new PostLoginRedirect(uriValue);
-                    toPersist.add(data);
-                });
-        postLogoutURI.stream()
-                .map(Optional::ofNullable)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .filter(uri -> redirectURIEntities.stream().noneMatch(entity -> entity.getUri().equals(uri) && entity.isPostLogout()))
-                .forEach(uriValue ->{
-                    var data = new PostLogoutRedirect(uriValue);
-                    toPersist.add(data);
-                });
-        return toPersist;
     }
 
 }

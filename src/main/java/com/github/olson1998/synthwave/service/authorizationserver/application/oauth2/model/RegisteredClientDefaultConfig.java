@@ -95,7 +95,7 @@ public class RegisteredClientDefaultConfig implements RegisteredClientConfig {
     }
 
     @Override
-    public RegisteredClientConfig withRedirectUris(Collection<RedirectEntity> redirectUris) {
+    public RegisteredClientConfig withRedirectEntities(Collection<RedirectEntity> redirectUris) {
         appendUnresolvedUris(redirectUris);
         return this;
     }

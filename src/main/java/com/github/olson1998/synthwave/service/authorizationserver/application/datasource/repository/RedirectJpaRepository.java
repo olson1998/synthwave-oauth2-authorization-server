@@ -14,22 +14,31 @@ import java.util.Set;
 interface RedirectJpaRepository extends JpaRepository<RedirectData, TSID> {
 
     @Query("""
-           SELECT redirectURI
-           FROM RedirectData redirectURI
-           LEFT OUTER JOIN RedirectURIBindingData binding
-           ON redirectURI.id=binding.properties.redirectURIId
-           WHERE binding.properties.registeredClientId=:registeredClientId
+           SELECT redirect
+           FROM RedirectData redirect
+           LEFT OUTER JOIN RedirectBoundData bound
+           ON redirect.id=bound.properties.redirectId
+           WHERE bound.properties.affiliationProperties.companyCode=:code
+           AND bound.properties.affiliationProperties.division=:divi
            """)
-    List<RedirectData> selectRedirectURIByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+    List<RedirectData> selectRedirectByCompanyCodeAndDivision(@Param("code") String companyCode, @Param("divi")String division);
 
     @Query("""
-           SELECT redirectURI
-           FROM RedirectData redirectURI
+           SELECT redirect
+           FROM RedirectData redirect
+           LEFT OUTER JOIN RedirectBoundData bound
+           ON redirect.id=bound.properties.redirectId
            WHERE
-           (redirectURI.uri IN :redirectURISet AND redirectURI.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIScope.POST_LOGIN)
+           (redirect.uri IN :redirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGIN)
            OR
-           (redirectURI.uri IN :postLogoutRedirectURISet AND redirectURI.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectURIScope.POST_LOGOUT)
+           (redirect.uri IN :postLogoutRedirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGOUT)
+           AND
+           bound.properties.affiliationProperties.companyCode=:code
+           AND
+           bound.properties.affiliationProperties.division=:divi
            """)
-    List<RedirectData> selectRedirectURIIdInRedirectURISetAndPostLogoutRedirectURISet(@Param("redirectURISet") Set<String> redirectURISet,
-                                                                                      @Param("postLogoutRedirectURISet") Set<String> postLogoutRedirectURISet);
+    List<RedirectData> selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(@Param("redirects") Set<String> redirects,
+                                                                                      @Param("postLogoutRedirects") Set<String> postLogoutRedirects,
+                                                                                      @Param("code") String comapnyCode,
+                                                                                      @Param("divi") String division);
 }

@@ -19,7 +19,7 @@ public class DefaultRegisteredClientService implements SynthWaveRegisteredClient
 
     private final RegisteredClientProvisioningRepository registeredClientProvisioningRepository;
 
-    private final RedirectDataSourceRepository redirectUrisDataSourceRepository;
+    private final RedirectDataSourceRepository redirectDataSourceRepository;
 
     private final RegisteredClientDataSourceRepository registeredClientDataSourceRepository;
 
@@ -56,14 +56,20 @@ public class DefaultRegisteredClientService implements SynthWaveRegisteredClient
 
     private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
         var id = registeredClientConfig.getId();
-        var redirectURI =
-                redirectUrisDataSourceRepository.getRedirectURIByRegisteredClientId(id);
+        var code = registeredClientConfig.getCompanyCode();
+        var divi = registeredClientConfig.getDivision();
+        var redirectEntities = redirectDataSourceRepository.getRedirectURIByRedirectAndPostLogoutURISetAndAffiliation(
+                registeredClientConfig.getRedirectUris(),
+                registeredClientConfig.getPostLogoutRedirectUris(),
+                code,
+                divi
+        );
         var authorizationGrantTypes =
                 authorizationGrantTypeBindDataSourceRepository.getAuthorizationGrantTypesByRegisteredClientId(id);
         var clientAuthenticationMethods =
                 clientAuthenticationMethodBindDataSourceRepository.getClientAuthenticationMethodsByRegisteredClientId(id);
         return registeredClientConfig
-                .withRedirectUris(redirectURI)
+                .withRedirectEntities(redirectEntities)
                 .withAuthorizationGrantTypes(authorizationGrantTypes)
                 .withClientAuthenticationMethods(clientAuthenticationMethods);
     }

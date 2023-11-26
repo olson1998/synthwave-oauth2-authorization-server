@@ -40,7 +40,7 @@ public interface RegisteredClientConfig {
 
     Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
 
-    RegisteredClientConfig withRedirectUris(Collection<RedirectEntity> redirectUris);
+    RegisteredClientConfig withRedirectEntities(Collection<RedirectEntity> redirectUris);
 
     RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
 

@@ -2,9 +2,10 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 public interface Redirect {
 
+    String getUri();
+
     boolean isPostLogin();
 
     boolean isPostLogout();
 
-    String getUri();
 }

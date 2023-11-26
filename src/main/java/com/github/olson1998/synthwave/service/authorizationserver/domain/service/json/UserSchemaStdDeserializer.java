@@ -9,7 +9,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 
 import java.io.IOException;
 

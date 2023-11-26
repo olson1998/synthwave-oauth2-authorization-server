@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 @Getter
@@ -24,6 +25,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
 
     public AuthorizationServerMappingModuleImpl() {
         var mappings= new SimpleModule();
+        var registeredClientStdSerializer = new RegisteredClientStdSerializer();
+        var synthWaveRegisteredClientStdSerializer =new SynthWaveRegisteredClientStdSerializer(registeredClientStdSerializer);
         var registeredClientStdDeserializer = new RegisteredClientStdDeserializer();
         var synthWaveRegisteredClientStdDeserializer = new SynthWaveRegisteredClientStdDeserializer(registeredClientStdDeserializer);
         //entities
@@ -37,8 +40,6 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(Affiliation.class, new UserAffiliationStdDeserializer());
         mappings.addDeserializer(AffiliationEntity.class, new UserAffiliationEntityStdDeserializer());
         mappings.addSerializer(AffiliationEntity.class, new UserAffiliationEntityStdSerializer());
-        mappings.addSerializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdSerializer());
-        mappings.addDeserializer(OAuth2AccessToken.TokenType.class, new TokenTypeStdDeserializer());
         mappings.addSerializer(UserAccountLock.class, new UserAccountLockStdSerializer());
         mappings.addDeserializer(UserAccountLock.class, new UserAccountLockStdDeserializer());
         mappings.addSerializer(UserAccountLockEntity.class, new UserAccountLockEntityStdSerializer());
@@ -50,11 +51,17 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
         mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
         //Registered client
+        mappings.addSerializer(RegisteredClient.class, registeredClientStdSerializer);
         mappings.addDeserializer(RegisteredClient.class, registeredClientStdDeserializer);
+        mappings.addSerializer(AbstractSynthWaveRegisteredClient.class, synthWaveRegisteredClientStdSerializer);
         mappings.addDeserializer(AbstractSynthWaveRegisteredClient.class, synthWaveRegisteredClientStdDeserializer);
-        mappings.addDeserializer(SynthWaveRegisteredClient.class, synthWaveRegisteredClientStdDeserializer);
+        mappings.addSerializer(AuthorizationGrantType.class, new AuthorizationGrantTypeStdSerializer());
         mappings.addDeserializer(AuthorizationGrantType.class, new AuthorizationGrantTypeStdDeserializer());
+        mappings.addSerializer(ClientAuthenticationMethod.class, new ClientAuthenticationMethodStdSerializer());
         mappings.addDeserializer(ClientAuthenticationMethod.class, new ClientAuthenticationMethodsStdDeserializer());
+        mappings.addSerializer(OAuth2TokenFormat.class, new OAuth2TokenFormatStdSerializer());
+        mappings.addDeserializer(OAuth2TokenFormat.class, new OAuth2TokenFormatStdDeserializer());
+        mappings.addSerializer(TokenSettings.class, new TokenSettingsStdSerializer());
         mappings.addDeserializer(TokenSettings.class, new TokenSettingsStdDeserializer());
         mappings.addSerializer(ClientSettings.class, new ClientSettingsStdSerializer());
         mappings.addDeserializer(ClientSettings.class, new ClientSettingsStdDeserializer());

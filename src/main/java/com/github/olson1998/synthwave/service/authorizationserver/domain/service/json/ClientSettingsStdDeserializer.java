@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 

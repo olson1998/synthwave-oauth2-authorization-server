@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
 import org.joda.time.Period;
 

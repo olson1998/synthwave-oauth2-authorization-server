@@ -9,10 +9,10 @@ import static com.github.olson1998.synthwave.support.springbootstarter.async.con
 
 public interface RegistrationClientProvisioningRepository {
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void provision();
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Async(ASYNC_TASK_EXEC)
     CompletableFuture<Void> provisionAsync();
 }

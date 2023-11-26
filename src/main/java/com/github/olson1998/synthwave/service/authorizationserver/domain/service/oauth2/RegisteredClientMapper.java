@@ -2,18 +2,17 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
-import com.github.olson1998.synthwave.support.rest.exception.PathVariableWritingException;
-import com.github.olson1998.synthwave.support.rest.exception.URITraversingException;
-import com.github.olson1998.synthwave.support.rest.exception.URIWritingException;
-import com.github.olson1998.synthwave.support.rest.model.PathVariables;
-import com.github.olson1998.synthwave.support.rest.util.URIModel;
-import com.github.olson1998.synthwave.support.rest.util.URIUtils;
+import com.github.olson1998.synthwave.support.web.exception.PathVariableWritingException;
+import com.github.olson1998.synthwave.support.web.exception.URIReadingException;
+import com.github.olson1998.synthwave.support.web.exception.URIWritingException;
+import com.github.olson1998.synthwave.support.web.model.PathVariables;
+import com.github.olson1998.synthwave.support.web.util.URIModel;
+import com.github.olson1998.synthwave.support.web.util.URIUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -82,7 +81,7 @@ class RegisteredClientMapper {
     private Optional<URIModel> buildModelSafely(String uri){
         try{
             return Optional.of(URIUtils.read(uri));
-        }catch (URITraversingException e){
+        }catch (URIReadingException e){
             log.error("Failed to map redirect URI: '{}', reason:", uri, e);
             return Optional.empty();
         }

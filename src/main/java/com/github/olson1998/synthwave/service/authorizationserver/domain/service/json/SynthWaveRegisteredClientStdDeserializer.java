@@ -5,16 +5,17 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 
 import java.io.IOException;
 
-class SynthWaveRegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<SynthWaveRegisteredClient> {
+class SynthWaveRegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<AbstractSynthWaveRegisteredClient> {
 
     private final RegisteredClientStdDeserializer registeredClientStdDeserializer;
 
     SynthWaveRegisteredClientStdDeserializer(RegisteredClientStdDeserializer registeredClientStdDeserializer) {
-        super(SynthWaveRegisteredClient.class);
+        super(AbstractSynthWaveRegisteredClient.class);
         this.registeredClientStdDeserializer = registeredClientStdDeserializer;
     }
 

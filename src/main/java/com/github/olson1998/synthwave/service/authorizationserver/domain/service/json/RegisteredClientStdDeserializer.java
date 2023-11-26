@@ -5,9 +5,10 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.olson1998.synthwave.support.rest.model.PathVariables;
-import com.github.olson1998.synthwave.support.rest.util.URIModel;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.support.web.model.PathVariables;
+import com.github.olson1998.synthwave.support.web.util.URIModel;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient.*;
 import static com.github.olson1998.synthwave.service.authorizationserver.domain.service.json.fields.RegisteredClientJsonFields.*;
 
 class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<RegisteredClient> {
@@ -32,8 +34,11 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
     protected RegisteredClient deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException {
         var id = readJsonProperty(REGISTERED_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, TSID.class);
         var idString = Optional.ofNullable(id).map(TSID::toLong).map(String::valueOf).orElse("{?}");
+        var companyCode = readJsonProperty(REGISTERED_CLIENT_COMPANY_CODE_JSON_PROPERTY, objectNode, objectCodec, String.class);
+        var division = readJsonProperty(REGISTERED_CLIENT_DIVISION_JSON_PROPERTY, objectNode, objectCodec, String.class);
         var clientId = Optional.ofNullable(readJsonProperty(REGISTERED_CLIENT_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, String.class))
                 .orElse("{?}");
+        var clientSecret = readJsonProperty("client_secret", objectNode, objectCodec, String.class);
         var username = readJsonProperty(REGISTERED_CLIENT_NAME_JSON_PROPERTY, objectNode, objectCodec, String.class, true);
         var tokenSettings =readJsonProperty(REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY, objectNode, objectCodec, TokenSettings.class);
         var redirectUriModelSet = readJsonProperty(REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<URIModel>>() {
@@ -46,9 +51,10 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
         });
         var clientAuthenticationMethods = readJsonProperty(CLIENT_AUTHENTICATION_METHODS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<ClientAuthenticationMethod>>() {
         });
-        return RegisteredClient.withId(idString)
+        var registeredClient = RegisteredClient.withId(idString)
                 .clientId(clientId)
                 .clientName(username)
+                .clientSecret(clientSecret)
                 .clientIdIssuedAt(Optional.ofNullable(id).map(TSID::getInstant).orElse(null))
                 .clientAuthenticationMethods(clientAuthenticationMethodsSet -> clientAuthenticationMethodsSet.addAll(clientAuthenticationMethods))
                 .authorizationGrantTypes(authorizationGrantTypesSet -> authorizationGrantTypesSet.addAll(authorizationGrantTypes))
@@ -56,6 +62,11 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
                 .postLogoutRedirectUris(postLogoutRedirectUriSet -> postLogoutRedirectUriSet.addAll(postLogoutRedirectUris))
                 .redirectUris(redirectUris -> redirectUris.addAll(redirectUriSet))
                 .build();
+        if(division != null && companyCode != null){
+            return new SynthWaveRegisteredClient(companyCode, division, registeredClient);
+        }else {
+            return registeredClient;
+        }
     }
 
     private Set<String> customizeRedirectURISet(Set<URIModel> uriModelSet, String clientId, String username){

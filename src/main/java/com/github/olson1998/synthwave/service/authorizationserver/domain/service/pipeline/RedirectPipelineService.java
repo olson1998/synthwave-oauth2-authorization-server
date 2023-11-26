@@ -5,7 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pi
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
-import com.github.olson1998.synthwave.support.rest.exception.InternalServerErrorWebException;
+import com.github.olson1998.synthwave.support.web.exception.InternalServerErrorWebException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -26,11 +26,11 @@
         </dependency>
         <dependency>
             <groupId>com.github.olson1998.synthwave.support</groupId>
-            <artifactId>synthwave-spring-data-core</artifactId>
+            <artifactId>synthwave-spring-data</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.olson1998.synthwave.support</groupId>
-            <artifactId>synthwave-jackson-databind-test</artifactId>
+            <artifactId>synthwave-jackson-test</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- Utils -->

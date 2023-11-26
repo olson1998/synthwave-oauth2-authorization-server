@@ -8,7 +8,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 
 import java.io.IOException;
 import java.util.Optional;

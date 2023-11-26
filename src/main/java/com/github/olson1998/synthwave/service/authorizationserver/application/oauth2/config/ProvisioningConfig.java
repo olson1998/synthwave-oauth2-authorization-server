@@ -27,14 +27,10 @@ public class ProvisioningConfig {
 
     @Bean
     public RegistrationClientProvisioningRepository registrationClientProvisioningRepository(@NonNull RegistrationClientRequestSupplier registrationClientRequestSupplier,
-                                                                                             @NonNull UserDetailsRepository userDetailsRepository,
-                                                                                             @NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository,
-                                                                                             @NonNull RedirectRepository redirectRepository){
+                                                                                             @NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository){
         return new RegistrationClientProvisioningService(
                 registrationClientRequestSupplier,
-                userDetailsRepository,
-                registeredClientProvisioningRepository,
-                redirectRepository
+                registeredClientProvisioningRepository
         );
     }
 

@@ -3,11 +3,13 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientRequestSupplier;
+import com.github.olson1998.synthwave.support.jackson.exception.IORuntimeException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 
 @RequiredArgsConstructor
@@ -18,19 +20,25 @@ public class RegistrationClientRequestFileSupplier implements RegistrationClient
     private final ObjectMapper objectMapper;
 
     @Override
-    public LinkedHashSet<RegistrationClientProvisioningRequest> get() {
+    public LinkedHashSet<RegisteredClient> get() {
         var configFile = getConfigFile();
-        return mapToRequestsSet(configFile);
+        return readConfigFileJSON(configFile);
     }
 
-    @SneakyThrows
     private File getConfigFile(){
-        return ResourceUtils.getFile(configFileLocation);
+        try{
+            return ResourceUtils.getFile(configFileLocation);
+        }catch(IOException e){
+            throw new IORuntimeException(e);
+        }
     }
 
-    @SneakyThrows
-    private LinkedHashSet<RegistrationClientProvisioningRequest> mapToRequestsSet(File configFile){
-        return objectMapper.readValue(configFile, new TypeReference<>() {
-        });
+    private LinkedHashSet<RegisteredClient> readConfigFileJSON(File configFile) {
+        try{
+            return objectMapper.readValue(configFile, new TypeReference<>() {
+            });
+        }catch(IOException e){
+            throw new IORuntimeException(e);
+        }
     }
 }

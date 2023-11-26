@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
-import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdSerializer;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdSerializer;
 
 import java.io.IOException;
 

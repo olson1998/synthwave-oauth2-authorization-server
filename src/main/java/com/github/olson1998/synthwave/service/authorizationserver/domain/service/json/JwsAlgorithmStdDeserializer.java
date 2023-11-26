@@ -1,67 +1,44 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.json;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.NullNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.github.olson1998.sythwave.support.jackson.exception.IORuntimeException;
-import org.apache.commons.codec.digest.HmacAlgorithms;
+import com.github.olson1998.synthwave.support.jackson.AbstractTextStdDeserializer;
+import com.github.olson1998.synthwave.support.jackson.exception.IORuntimeException;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithms;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 
 import java.io.IOException;
-import java.util.HashSet;
 
-class JwsAlgorithmStdDeserializer extends StdDeserializer<JwsAlgorithm> {
+class JwsAlgorithmStdDeserializer extends AbstractTextStdDeserializer<JwsAlgorithm> {
 
     JwsAlgorithmStdDeserializer() {
         super(JwsAlgorithm.class);
     }
 
     @Override
-    public JwsAlgorithm deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
-        var objectCodec = jsonParser.getCodec();
-        var jsonTree = objectCodec.readTree(jsonParser);
-        if(jsonTree instanceof NullNode){
-            return null;
-        } else if (jsonTree instanceof TextNode textNode) {
-            return getAlgorithm(textNode.asText());
-        }else {
-            throw new IOException("Expected instance of TextNode but got: " + jsonTree.getClass().getCanonicalName());
-        }
+    protected JwsAlgorithm deserializeText(String textValue, ObjectCodec objectCodec, JsonParser jsonParser, DeserializationContext deserializationContext) {
+        return getAlgorithm(textValue);
     }
 
     private JwsAlgorithm getAlgorithm(String algName){
-        if(algName.equals(JwsAlgorithms.ES256)){
-            return SignatureAlgorithm.ES256;
-        } else if (algName.equals(JwsAlgorithms.ES384)) {
-            return SignatureAlgorithm.ES384;
-        } else if (algName.equals(JwsAlgorithms.ES512)) {
-            return SignatureAlgorithm.ES512;
-        } else if (algName.equals(JwsAlgorithms.HS256)) {
-            return MacAlgorithm.HS256;
-        } else if (algName.equals(JwsAlgorithms.HS384)) {
-            return MacAlgorithm.HS384;
-        } else if (algName.equals(JwsAlgorithms.HS512)) {
-            return MacAlgorithm.HS512;
-        } else if (algName.equals(JwsAlgorithms.PS256)) {
-            return SignatureAlgorithm.PS256;
-        } else if (algName.equals(JwsAlgorithms.PS384)) {
-            return SignatureAlgorithm.PS384;
-        } else if (algName.equals(JwsAlgorithms.PS512)) {
-            return SignatureAlgorithm.PS512;
-        } else if (algName.equals(JwsAlgorithms.RS256)) {
-            return SignatureAlgorithm.RS256;
-        } else if (algName.equals(JwsAlgorithms.RS384)) {
-            return SignatureAlgorithm.RS384;
-        } else if (algName.equals(JwsAlgorithms.RS512)) {
-            return SignatureAlgorithm.RS512;
-        }else {
-            throw new IORuntimeException(new IOException("Unknown JWS algorithm: " + algName));
-        }
+        return switch (algName) {
+            case JwsAlgorithms.ES256 -> SignatureAlgorithm.ES256;
+            case JwsAlgorithms.ES384 -> SignatureAlgorithm.ES384;
+            case JwsAlgorithms.ES512 -> SignatureAlgorithm.ES512;
+            case JwsAlgorithms.HS256 -> MacAlgorithm.HS256;
+            case JwsAlgorithms.HS384 -> MacAlgorithm.HS384;
+            case JwsAlgorithms.HS512 -> MacAlgorithm.HS512;
+            case JwsAlgorithms.PS256 -> SignatureAlgorithm.PS256;
+            case JwsAlgorithms.PS384 -> SignatureAlgorithm.PS384;
+            case JwsAlgorithms.PS512 -> SignatureAlgorithm.PS512;
+            case JwsAlgorithms.RS256 -> SignatureAlgorithm.RS256;
+            case JwsAlgorithms.RS384 -> SignatureAlgorithm.RS384;
+            case JwsAlgorithms.RS512 -> SignatureAlgorithm.RS512;
+            default -> throw new IORuntimeException(new IOException("Unknown JWS algorithm: " + algName));
+        };
     }
+
 }

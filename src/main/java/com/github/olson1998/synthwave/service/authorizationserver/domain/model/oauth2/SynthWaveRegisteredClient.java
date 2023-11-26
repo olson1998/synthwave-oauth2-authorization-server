@@ -19,9 +19,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient {
 
-    public static final String COMPANY_CODE_JSON_PROPERTY ="code";
+    public static final String REGISTERED_CLIENT_COMPANY_CODE_JSON_PROPERTY ="company_code";
 
-    public static final String DIVISION_CODE_JSON_PROPERTY ="divi";
+    public static final String REGISTERED_CLIENT_DIVISION_JSON_PROPERTY ="division";
 
     @Getter
     private final String companyCode;

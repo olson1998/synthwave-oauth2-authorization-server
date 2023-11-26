@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.p
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIRequestPipeline;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.UserRequestPipeline;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectURIRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserRequestRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline.RedirectPipelineService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.pipeline.UserRequestPipelineService;
@@ -18,7 +18,7 @@ public class AuthorizationServicePipelineServicesConfig {
     }
 
     @Bean
-    public RedirectURIRequestPipeline redirectURIsRequestPipeline(RedirectURIRepository redirectURIRepository){
-        return new RedirectPipelineService(redirectURIRepository);
+    public RedirectURIRequestPipeline redirectURIsRequestPipeline(RedirectRepository redirectRepository){
+        return new RedirectPipelineService(redirectRepository);
     }
 }

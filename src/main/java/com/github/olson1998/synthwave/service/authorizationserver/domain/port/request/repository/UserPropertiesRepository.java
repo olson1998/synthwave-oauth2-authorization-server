@@ -11,13 +11,10 @@ public interface UserPropertiesRepository {
 
     UserEntity getUserById(TSID id);
 
-    @Transactional
     UserEntity saveUserSchema(UserSchema userSchema);
 
-    @Transactional
     void activateUser(TSID userId);
 
-    @Transactional
     void deactivateUser(TSID userId);
 
 }

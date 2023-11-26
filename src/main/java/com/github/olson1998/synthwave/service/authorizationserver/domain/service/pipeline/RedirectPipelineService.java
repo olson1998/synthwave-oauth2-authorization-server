@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.pipeline.RedirectURIRequestPipeline;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectURIRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import com.github.olson1998.synthwave.support.pipeline.exception.PipelineJobFailure;
 import com.github.olson1998.synthwave.support.rest.exception.InternalServerErrorWebException;
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class RedirectPipelineService implements RedirectURIRequestPipeline {
 
-    private final RedirectURIRepository redirectURIRepository;
+    private final RedirectRepository redirectRepository;
 
     @Override
     public CompletableFuture<Void> runRedirectURISavingPipeline(List<Redirect> redirectSet) {
@@ -32,13 +32,12 @@ public class RedirectPipelineService implements RedirectURIRequestPipeline {
 
     private Void saveRedirectURIs(List<Redirect> redirectURIses){
         log.debug("Saving redirect URI");
-        redirectURIRepository.saveAll(redirectURIses);
+        redirectRepository.saveAll(redirectURIses);
         return null;
     }
 
     private Void deleteRedirectURIs(List<Redirect> redirectURIses){
         log.debug("Deleting redirect URI");
-        redirectURIRepository.deleteAll(redirectURIses);
         return null;
     }
 

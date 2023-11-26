@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -111,7 +112,7 @@ class RegisteredClientMapper {
 
     private Optional<URI> writeRedirectURI(URIModel uriModel){
         try{
-            return Optional.of(uriModel.toUri());
+            return Optional.of(uriModel.toURI());
         }catch (URIWritingException e){
             log.error("Failed to write redirect URI: {}, reason:", uriModel, e);
             return Optional.empty();

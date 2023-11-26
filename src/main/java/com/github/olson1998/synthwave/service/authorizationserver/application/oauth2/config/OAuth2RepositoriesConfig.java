@@ -27,16 +27,12 @@ public class OAuth2RepositoriesConfig {
     }
 
     @Bean
-    public RegisteredClientProvisioningRepository registeredClientProvisioningRepository(@NonNull RedirectDataSourceRepository redirectURIDataSourceRepository,
-                                                                                         @NonNull RedirectBoundDataSourceRepository redirectBoundDataSourceRepository,
-                                                                                         @NonNull UserDataSourceRepository userDataSourceRepository,
+    public RegisteredClientProvisioningRepository registeredClientProvisioningRepository(@NonNull UserDataSourceRepository userDataSourceRepository,
                                                                                          @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
                                                                                          @NonNull RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository,
                                                                                          @NonNull AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository,
                                                                                          @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
         return new DefaultRegisteredClientProvisioningService(
-                redirectURIDataSourceRepository,
-                redirectBoundDataSourceRepository,
                 userDataSourceRepository,
                 registeredClientDataSourceRepository,
                 registeredClientSettingsDataSourceRepository,

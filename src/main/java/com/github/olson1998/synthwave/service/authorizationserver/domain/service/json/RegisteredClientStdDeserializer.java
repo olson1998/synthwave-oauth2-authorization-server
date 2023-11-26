@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.olson1998.synthwave.support.rest.model.PathVariables;
+import com.github.olson1998.synthwave.support.rest.util.URIModel;
 import com.github.olson1998.sythwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -13,14 +15,16 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.domain.service.json.fields.RegisteredClientJsonFields.*;
 
-public class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<RegisteredClient> {
+class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<RegisteredClient> {
 
-    protected RegisteredClientStdDeserializer() {
+    RegisteredClientStdDeserializer() {
         super(RegisteredClient.class);
     }
 
@@ -32,10 +36,12 @@ public class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializ
                 .orElse("{?}");
         var username = readJsonProperty(REGISTERED_CLIENT_NAME_JSON_PROPERTY, objectNode, objectCodec, String.class, true);
         var tokenSettings =readJsonProperty(REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY, objectNode, objectCodec, TokenSettings.class);
-        var redirectUriSet = readJsonProperty(REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<String>>() {
+        var redirectUriModelSet = readJsonProperty(REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<URIModel>>() {
         });
-        var postLogoutRedirectUris = readJsonProperty(POST_LOGOUT_REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<String>>(){
+        var redirectUriSet = customizeRedirectURISet(redirectUriModelSet, clientId, username);
+        var postLogoutRedirectModelUris = readJsonProperty(POST_LOGOUT_REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<URIModel>>(){
         });
+        var postLogoutRedirectUris = customizeRedirectURISet(postLogoutRedirectModelUris, clientId, username);
         var authorizationGrantTypes = readJsonProperty(AUTHORIZATION_GRANT_TYPES_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<AuthorizationGrantType>>() {
         });
         var clientAuthenticationMethods = readJsonProperty(CLIENT_AUTHENTICATION_METHODS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<ClientAuthenticationMethod>>() {
@@ -50,5 +56,31 @@ public class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializ
                 .postLogoutRedirectUris(postLogoutRedirectUriSet -> postLogoutRedirectUriSet.addAll(postLogoutRedirectUris))
                 .redirectUris(redirectUris -> redirectUris.addAll(redirectUriSet))
                 .build();
+    }
+
+    private Set<String> customizeRedirectURISet(Set<URIModel> uriModelSet, String clientId, String username){
+        if(uriModelSet == null){
+            return null;
+        }else {
+            return uriModelSet.stream()
+                    .map(uriModel -> customizeRedirectURI(uriModel, clientId, username))
+                    .map(URIModel::toURI)
+                    .map(URI::toString)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    private URIModel customizeRedirectURI(URIModel uriModel, String clientId, String username){
+        uriModel.getPath().customize(pathVariables -> fillPathVariables(pathVariables, clientId, username));
+        return uriModel;
+    }
+
+    private void fillPathVariables(PathVariables pathVariables, String clientId, String username){
+        if(pathVariables.containsVariable("{clientId}")){
+            pathVariables.setValue("{clientId}", clientId);
+        }
+        if(pathVariables.containsVariable("{username}")){
+            pathVariables.setValue("{username}", username);
+        }
     }
 }

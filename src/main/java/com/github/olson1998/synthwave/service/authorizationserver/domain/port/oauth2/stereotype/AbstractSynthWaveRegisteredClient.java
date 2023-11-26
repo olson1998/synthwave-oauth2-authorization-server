@@ -7,4 +7,5 @@ public abstract class AbstractSynthWaveRegisteredClient extends RegisteredClient
     public abstract String getCompanyCode();
 
     public abstract String getDivision();
+
 }

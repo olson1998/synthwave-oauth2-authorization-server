@@ -58,7 +58,7 @@ public class DefaultRegisteredClientService implements SynthWaveRegisteredClient
         var id = registeredClientConfig.getId();
         var code = registeredClientConfig.getCompanyCode();
         var divi = registeredClientConfig.getDivision();
-        var redirectEntities = redirectDataSourceRepository.getRedirectURIByRedirectAndPostLogoutURISetAndAffiliation(
+        var redirectEntities = redirectDataSourceRepository.getRedirectByRedirectAndPostLogoutURISetAndAffiliation(
                 registeredClientConfig.getRedirectUris(),
                 registeredClientConfig.getPostLogoutRedirectUris(),
                 code,

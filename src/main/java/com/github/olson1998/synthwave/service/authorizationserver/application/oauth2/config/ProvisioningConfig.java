@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientRequestSupplier;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.provisioning.RegistrationClientProvisioningService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.provisioning.RegistrationClientRequestFileSupplier;
 import lombok.NonNull;
@@ -27,11 +28,13 @@ public class ProvisioningConfig {
     @Bean
     public RegistrationClientProvisioningRepository registrationClientProvisioningRepository(@NonNull RegistrationClientRequestSupplier registrationClientRequestSupplier,
                                                                                              @NonNull UserDetailsRepository userDetailsRepository,
-                                                                                             @NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository){
+                                                                                             @NonNull RegisteredClientProvisioningRepository registeredClientProvisioningRepository,
+                                                                                             @NonNull RedirectRepository redirectRepository){
         return new RegistrationClientProvisioningService(
                 registrationClientRequestSupplier,
                 userDetailsRepository,
-                registeredClientProvisioningRepository
+                registeredClientProvisioningRepository,
+                redirectRepository
         );
     }
 

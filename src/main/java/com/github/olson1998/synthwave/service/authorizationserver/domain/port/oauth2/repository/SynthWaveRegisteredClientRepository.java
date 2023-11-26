@@ -7,5 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SynthWaveRegisteredClientRepository extends RegisteredClientRepository {
 
     @Override
+    @Transactional
     void save(RegisteredClient registeredClient);
 }

@@ -25,6 +25,13 @@ public class RedirectJpaRepositoryProxy implements RedirectDataSourceRepository 
     }
 
     @Override
+    public Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISet(Set<String> redirects, Set<String> postLogoutRedirects) {
+        return redirectJpaRepository.selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(redirects, postLogoutRedirects).stream()
+                .map(RedirectEntity.class::cast)
+                .toList();
+    }
+
+    @Override
     public Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISetAndAffiliation(@NonNull Set<String> redirects,
                                                                                              @NonNull Set<String> postLogoutRedirects,
                                                                                              @NonNull String companyCode,

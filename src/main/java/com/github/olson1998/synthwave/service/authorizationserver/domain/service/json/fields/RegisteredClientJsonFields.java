@@ -20,4 +20,5 @@ public class RegisteredClientJsonFields {
     public static final String CLIENT_AUTHENTICATION_METHODS_JSON_PROPERTY = "client_authentication_methods";
 
     public static final String REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY = "token_settings";
+
 }

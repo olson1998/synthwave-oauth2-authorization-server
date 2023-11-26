@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Persistable;
 public class RedirectData implements Persistable<TSID>, RedirectEntity {
 
     @Id
+    @Tsid
     @Column(name = "URIID")
     @JavaType(TSIDJavaType.class)
     @JdbcType(BigIntJdbcType.class)

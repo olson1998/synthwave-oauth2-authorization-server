@@ -25,6 +25,10 @@ public class RedirectBoundData implements Persistable<RedirectBoundProperties>, 
     @EmbeddedId
     private RedirectBoundProperties properties;
 
+    public RedirectBoundData(RedirectBound redirectBound) {
+        this.properties = new RedirectBoundProperties(redirectBound);
+    }
+
     @Override
     public TSID getRedirectId() {
         return Optional.ofNullable(properties)

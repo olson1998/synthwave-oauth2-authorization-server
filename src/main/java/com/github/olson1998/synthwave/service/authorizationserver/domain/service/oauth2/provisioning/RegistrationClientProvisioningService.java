@@ -1,11 +1,14 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.provisioning;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.exception.RegistrationClientProvisioningException;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientRequestSupplier;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.RegistrationClientProvisioningRequest;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSavingRequest;
 import com.github.olson1998.synthwave.support.pipeline.JobResult;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
@@ -16,9 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -30,6 +31,8 @@ public class RegistrationClientProvisioningService implements RegistrationClient
     private final UserDetailsRepository userDetailsRepository;
 
     private final RegisteredClientProvisioningRepository registeredClientProvisioningRepository;
+
+    private final RedirectRepository redirectRepository;
 
     @Override
     public void provision() {
@@ -76,6 +79,14 @@ public class RegistrationClientProvisioningService implements RegistrationClient
         Optional.ofNullable(registrationClientProvisioningRequest).ifPresentOrElse(request -> {
             var registeredClient = request.getRegisteredClient();
             registeredClientProvisioningRepository.provision(registeredClient);
+            var redirectCollection = createRedirectCollection(
+                    registeredClient.getRedirectUris(),
+                    registeredClient.getPostLogoutRedirectUris()
+            );
+            if(!redirectCollection.isEmpty()){
+                var persistedRedirects = redirectRepository.saveAll(redirectCollection);
+                log.debug("Persisted redirects: {}", persistedRedirects);
+            }
         }, ()-> log.error("Aborting provisioning of registered client..."));
     }
 
@@ -98,6 +109,17 @@ public class RegistrationClientProvisioningService implements RegistrationClient
                                                                         RegistrationClientProvisioningRequest request){
         log.error("Failed to process request: {}, reason", request.getOptionalUserSavingRequest(), pipelineJobFailure);
         return null;
+    }
+
+    private Collection<Redirect> createRedirectCollection(Collection<String> redirects, Collection<String> postLogoutRedirects){
+        var redirectCollection = new ArrayList<Redirect>();
+        Optional.ofNullable(redirects).ifPresent(redirectSet ->{
+            redirectSet.forEach(uri -> redirectCollection.add(new PostLoginRedirect(uri)));
+        });
+        Optional.ofNullable(postLogoutRedirects).ifPresent(redirectSet ->{
+            redirectSet.forEach(uri -> redirectCollection.add(new PostLogoutRedirect(uri)));
+        });
+        return redirectCollection;
     }
 
 }

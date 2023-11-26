@@ -1,32 +1,19 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RedirectBoundModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSettingsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectBound;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
-import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultRegisteredClientProvisioningService implements RegisteredClientProvisioningRepository {
-
-    private final RedirectDataSourceRepository redirectDataSourceRepository;
-
-    private final RedirectBoundDataSourceRepository redirectBoundDataSourceRepository;
 
     private final UserDataSourceRepository userDataSourceRepository;
 
@@ -73,14 +60,6 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
         var clientAuthenticationMethodBounds = clientAuthenticationMethodBoundMapper.map(
                 registeredClientId,
                 registeredClient.getClientAuthenticationMethods()
-        );
-        var redirectURISet = registeredClient.getRedirectUris();
-        var postLogoutRedirectURISet = registeredClient.getPostLogoutRedirectUris();
-        var redirectEntities = redirectDataSourceRepository.getRedirectByRedirectAndPostLogoutURISetAndAffiliation(
-                redirectURISet,
-                postLogoutRedirectURISet,
-                userMetadata.getCompanyCode(),
-                userMetadata.getDivision()
         );
         registeredClientSettingsDataSourceRepository.save(registeredClientSettings);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);

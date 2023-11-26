@@ -12,7 +12,7 @@ public interface RegistrationClientProvisioningRepository {
     @Transactional
     void provision();
 
-    @Async(ASYNC_TASK_EXEC)
     @Transactional
+    @Async(ASYNC_TASK_EXEC)
     CompletableFuture<Void> provisionAsync();
 }

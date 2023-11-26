@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.request;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.RedirectJpaRepositoryProxy;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectURIRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserPropertiesRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.UserRequestRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service.RedirectRequestService;
@@ -18,7 +18,7 @@ public class AuthorizationServerRequestServicesConfig {
     }
 
     @Bean
-    public RedirectURIRepository redirectURIRepository(RedirectJpaRepositoryProxy redirectJpaRepositoryProxy){
+    public RedirectRepository redirectURIRepository(RedirectJpaRepositoryProxy redirectJpaRepositoryProxy){
         return new RedirectRequestService(redirectJpaRepositoryProxy);
     }
 }

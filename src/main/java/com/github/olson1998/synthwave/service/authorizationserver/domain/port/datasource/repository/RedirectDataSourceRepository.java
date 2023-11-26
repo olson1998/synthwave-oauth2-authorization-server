@@ -10,10 +10,13 @@ public interface RedirectDataSourceRepository {
 
     Collection<RedirectEntity> getRedirectByAffiliation(String companyCode, String division);
 
+    Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISet(Set<String> redirects,
+                                                                        Set<String> postLogoutRedirects);
+
     Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISetAndAffiliation(Set<String> redirects,
-                                                                                         Set<String> postLogoutRedirects,
-                                                                                         String companyCode,
-                                                                                         String division);
+                                                                                      Set<String> postLogoutRedirects,
+                                                                                      String companyCode,
+                                                                                      String division);
 
     Collection<RedirectEntity> saveAll(Collection<Redirect> redirectSet);
 

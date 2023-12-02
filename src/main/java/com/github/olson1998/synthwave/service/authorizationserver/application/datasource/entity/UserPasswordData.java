@@ -50,21 +50,16 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
     @JdbcType(VarcharJdbcType.class)
     private Period expirePeriod;
 
-    @Column(name = "PSSVER", nullable = false)
-    private Boolean latestVersion;
-
     public UserPasswordData(@NonNull Password password) {
         this.userId = password.getUserId();
         this.value = password.getValue();
-        this.expirePeriod = password.getOptionalExpirePeriod().orElse(null);
-        this.latestVersion = password.getLatestVersion();
+        this.expirePeriod = password.getExpirePeriod();
     }
 
-    public UserPasswordData(TSID userId, String value, Period expirePeriod, boolean latestVersion) {
+    public UserPasswordData(TSID userId, String value, Period expirePeriod) {
         this.userId = userId;
         this.value = value;
         this.expirePeriod = expirePeriod;
-        this.latestVersion = latestVersion;
     }
 
     @Override
@@ -72,8 +67,4 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
         return true;
     }
 
-    @Override
-    public Optional<Period> getOptionalExpirePeriod() {
-        return Optional.ofNullable(expirePeriod);
-    }
 }

@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class AuthorizationGrantTypeBoundProperties implements Serializable {
+public class AuthorizationGrantTypeBinding implements Serializable {
 
     private static final long serialVersionUID = -5454607683082707098L;
 

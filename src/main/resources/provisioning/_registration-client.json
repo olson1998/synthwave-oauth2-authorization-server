@@ -2,9 +2,16 @@
   {
     "company_code": "FACWRO01",
     "division": "MNU",
-    "client_id": "admin@facwro01.mnu.synthwave.com",
-    "client_secret": "pass",
     "username": "admin",
+    "password": {
+      "value": "pass",
+      "expire_period": "1 month"
+    },
+    "client_id": "admin@facwro01.mnu.synthwave.com",
+    "client_secret": {
+      "value": "super$ecret",
+      "expireAt": "12/31/2023 11:59:59.999-05:00 pm"
+    },
     "redirect_uri": [
       "http://localhost:8095/path/to/redirect/{clientId}"
     ],
@@ -15,7 +22,6 @@
       "authorization_code",
       "refresh_token",
       "client_credentials",
-      "password",
       "urn:ietf:params:oauth:grant-type:jwt-bearer",
       "urn:ietf:params:oauth:grant-type:device_code"
     ],
@@ -26,88 +32,30 @@
       "private_key_jwt",
       "none"
     ],
+    "client_settings": {
+      "require_proof_key": true,
+      "require_authorization_consent": true,
+      "auth_signing_alg": "RS256"
+    },
     "token_settings": {
-      "signature_algorithm": "RS256",
-      "access_token_format": "REFERENCE",
       "reuse_refresh_token": true,
-      "access_token_time_to_live": 3600,
-      "refresh_token_time_to_live": 600,
-      "device_code_time_to_live": 600,
-      "authorization_code_time_to_live": 600
-    }
-  },
-  {
-    "company_code": "FACWRO01",
-    "division": "MNU",
-    "client_id": "admin1@facwro01.mnu.synthwave.com",
-    "client_secret": "pass",
-    "username": "admin1",
-    "redirect_uri": [
-      "http://localhost:8095/path/to/redirect/{clientId}"
-    ],
-    "post_logout_redirect_uri": [
-      "http://localhost:8095/path/to/logout/{clientId}"
-    ],
-    "authorization_grant_types": [
-      "authorization_code",
-      "refresh_token",
-      "client_credentials",
-      "password",
-      "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      "urn:ietf:params:oauth:grant-type:device_code"
-    ],
-    "client_authentication_methods": [
-      "client_secret_basic",
-      "client_secret_post",
-      "client_secret_jwt",
-      "private_key_jwt",
-      "none"
-    ],
-    "token_settings": {
       "signature_algorithm": "RS256",
-      "access_token_format": "REFERENCE",
-      "reuse_refresh_token": true,
-      "access_token_time_to_live": 3600,
-      "refresh_token_time_to_live": 600,
-      "device_code_time_to_live": 600,
-      "authorization_code_time_to_live": 600
-    }
-  },
-  {
-    "company_code": "FACWRO01",
-    "division": "MNU",
-    "client_id": "admin2@facwro01.mnu.synthwave.com",
-    "client_secret": "pass",
-    "username": "admin2",
-    "redirect_uri": [
-      "http://localhost:8095/path/to/redirect/{clientId}"
-    ],
-    "post_logout_redirect_uri": [
-      "http://localhost:8095/path/to/logout/{clientId}"
-    ],
-    "authorization_grant_types": [
-      "authorization_code",
-      "refresh_token",
-      "client_credentials",
-      "password",
-      "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      "urn:ietf:params:oauth:grant-type:device_code"
-    ],
-    "client_authentication_methods": [
-      "client_secret_basic",
-      "client_secret_post",
-      "client_secret_jwt",
-      "private_key_jwt",
-      "none"
-    ],
-    "token_settings": {
-      "signature_algorithm": "RS256",
-      "access_token_format": "REFERENCE",
-      "reuse_refresh_token": true,
-      "access_token_time_to_live": 3600,
-      "refresh_token_time_to_live": 600,
-      "device_code_time_to_live": 600,
-      "authorization_code_time_to_live": 600
+      "access_token_exp": {
+        "amount": 1,
+        "time_unit": "HOURS"
+      },
+      "authorization_code_exp": {
+        "amount": 3,
+        "time_unit": "MINUTES"
+      },
+      "refresh_token_exp": {
+        "amount": 30,
+        "time_unit": "MINUTES"
+      },
+      "device_code_exp": {
+        "amount": 30,
+        "time_unit": "MINUTES"
+      }
     }
   }
 ]

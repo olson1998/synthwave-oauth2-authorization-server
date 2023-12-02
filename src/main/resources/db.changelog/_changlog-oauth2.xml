@@ -29,9 +29,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="PSSEXP" type="varchar(255)"/>
-            <column name="PSSVER" type="tinyint">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserAccountLockData" author="${server.hostname}">
@@ -58,51 +55,6 @@
         </createTable>
         <addUniqueConstraint constraintName="USRAFF" tableName="AUEAFF" columnNames="CODE,DIVI"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData" author="${server.hostname}">
-        <createTable tableName="O2ERCL">
-            <column name="RCLID" type="bigint">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="USRID" type="bigint">
-                <constraints foreignKeyName="RCLUSR" referencedTableName="AUEUSR" referencedColumnNames="USRID" nullable="false"/>
-            </column>
-            <column name="RCLCID" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.AffiliationBasedTokenSettingsData" author="${server.hostname}">
-        <createTable tableName="O2EATS">
-            <column name="CODE" type="varchar(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DIVI" type="varchar(3)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EXPPAC" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EXPPAT" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ACCTKF" type="varchar(14)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EXPPDC" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="RRFTKN" type="tinyint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EXPPRT" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ITKALG" type="tinyint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addUniqueConstraint constraintName="ATSAFF" tableName="O2EATS" columnNames="CODE,DIVI"/>
-    </changeSet>
     <changeSet id="org.springframework.security.oauth2.core.AuthorizationGrantType" author="${server.hostname}">
         <createTable tableName="O2IAGT">
             <column name="AGTVAL" type="varchar(80)">
@@ -128,6 +80,75 @@
         <insert tableName="O2IAGT">
             <column name="AGTVAL">urn:ietf:params:oauth:grant-type:device_code</column>
         </insert>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope" author="${server.hostname}">
+        <createTable tableName="O2IURI">
+            <column name="URISCP" type="varchar(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint constraintName="URI" tableName="O2IURI" columnNames="URISCP"/>
+        <insert tableName="O2IURI">
+            <column name="URISCP">POST_LOGIN</column>
+        </insert>
+        <insert tableName="O2IURI">
+            <column name="URISCP">POST_LOGOUT</column>
+        </insert>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData" author="${server.hostname}">
+        <createTable tableName="O2ERCL">
+            <column name="RCLID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="USRID" type="bigint">
+                <constraints foreignKeyName="RCLUSR" referencedTableName="AUEUSR" referencedColumnNames="USRID" nullable="false"/>
+            </column>
+            <column name="RCLCID" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientSecretData" author="${server.hostname}">
+        <createTable tableName="O2ESEC">
+            <column name="RCSID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RCLID" type="bigint">
+                <constraints foreignKeyName="RCLCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
+            </column>
+            <column name="RCSVAL" type="varchar(4095)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RCSEXP" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientTokenSettingsData" author="${server.hostname}">
+        <createTable tableName="O2ECTS">
+            <column name="RCLID" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="CTSCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
+            </column>
+            <column name="EXPPAC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPAT" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCTKF" type="varchar(14)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPDC" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RRFTKN" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXPPRT" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ITKALG" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientSettingsData" author="${server.hostname}">
         <createTable tableName="O2ERCS">
@@ -162,20 +183,6 @@
         </createTable>
         <addUniqueConstraint constraintName="RCLCAM" tableName="O2ECAM" columnNames="RCLID,RCLAM"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope" author="${server.hostname}">
-        <createTable tableName="O2IURI">
-            <column name="URISCP" type="varchar(11)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addUniqueConstraint constraintName="URI" tableName="O2IURI" columnNames="URISCP"/>
-        <insert tableName="O2IURI">
-            <column name="URISCP">POST_LOGIN</column>
-        </insert>
-        <insert tableName="O2IURI">
-            <column name="URISCP">POST_LOGOUT</column>
-        </insert>
-    </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectData" author="${server.hostname}">
         <createTable tableName="O2EURI">
             <column name="URIID" type="bigint">
@@ -194,10 +201,13 @@
             <column name="URIID" type="bigint">
                 <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIID" nullable="false"/>
             </column>
-            <column name="RCLID" type="bigint">
-                <constraints foreignKeyName="RUBCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
+            <column name="CODE" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIVI" type="varchar(3)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="RUBBND" tableName="O2ERUB" columnNames="URIID,RCLID"/>
+        <addUniqueConstraint constraintName="RUBBND" tableName="O2ERUB" columnNames="URIID,CODE,DIVI"/>
     </changeSet>
 </databaseChangeLog>

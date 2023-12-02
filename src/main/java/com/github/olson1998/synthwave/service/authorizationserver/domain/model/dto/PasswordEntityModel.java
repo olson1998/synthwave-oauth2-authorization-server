@@ -23,13 +23,10 @@ public class PasswordEntityModel extends PasswordModel implements PasswordEntity
 
     private final TSID userId;
 
-    private final Boolean latestVersion;
-
-    public PasswordEntityModel(TSID id, TSID userId, String value, Boolean latestVersion, Period expirePeriod) {
-        super(value, userId, latestVersion, expirePeriod);
+    public PasswordEntityModel(TSID id, TSID userId, String value, Period expirePeriod) {
+        super(value, userId, expirePeriod);
         this.id = id;
         this.userId = userId;
-        this.latestVersion = latestVersion;
     }
 
 }

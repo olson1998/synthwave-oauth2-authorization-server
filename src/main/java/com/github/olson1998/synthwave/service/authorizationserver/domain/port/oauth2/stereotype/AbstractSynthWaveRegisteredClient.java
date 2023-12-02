@@ -8,4 +8,8 @@ public abstract class AbstractSynthWaveRegisteredClient extends RegisteredClient
 
     public abstract String getDivision();
 
+    public abstract Password getUserPassword();
+
+    public abstract RegisteredClientSecret getRegisteredClientSecret();
+
 }

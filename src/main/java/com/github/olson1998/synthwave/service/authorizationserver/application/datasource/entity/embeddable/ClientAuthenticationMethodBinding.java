@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class ClientAuthenticationMethodBoundProperties implements Serializable {
+public class ClientAuthenticationMethodBinding implements Serializable {
 
     private static final long serialVersionUID = 7911596904554269586L;
 

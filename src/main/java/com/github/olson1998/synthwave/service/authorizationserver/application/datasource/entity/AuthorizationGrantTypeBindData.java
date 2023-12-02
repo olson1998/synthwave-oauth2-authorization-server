@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AuthorizationGrantTypeBoundProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.AuthorizationGrantTypeBinding;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -20,20 +19,20 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "O2EAGB")
-public class AuthorizationGrantTypeBindData implements Persistable<AuthorizationGrantTypeBoundProperties>, AuthorizationGrantTypeBinding {
+public class AuthorizationGrantTypeBindData implements Persistable<AuthorizationGrantTypeBinding>, com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding {
 
     @EmbeddedId
-    private AuthorizationGrantTypeBoundProperties binding;
+    private AuthorizationGrantTypeBinding binding;
 
-    public AuthorizationGrantTypeBindData(AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
-        this.binding = new AuthorizationGrantTypeBoundProperties(
+    public AuthorizationGrantTypeBindData(com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
+        this.binding = new AuthorizationGrantTypeBinding(
                 authorizationGrantTypeBinding.getRegisteredClientId(),
                 authorizationGrantTypeBinding.getAuthorizationGrantType()
         );
     }
 
     @Override
-    public AuthorizationGrantTypeBoundProperties getId() {
+    public AuthorizationGrantTypeBinding getId() {
         return binding;
     }
 
@@ -45,14 +44,14 @@ public class AuthorizationGrantTypeBindData implements Persistable<Authorization
     @Override
     public TSID getRegisteredClientId() {
         return Optional.ofNullable(binding)
-                .map(AuthorizationGrantTypeBoundProperties::getRegisteredClientId)
+                .map(AuthorizationGrantTypeBinding::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public AuthorizationGrantType getAuthorizationGrantType() {
         return Optional.ofNullable(binding)
-                .map(AuthorizationGrantTypeBoundProperties::getAuthorizationGrantType)
+                .map(AuthorizationGrantTypeBinding::getAuthorizationGrantType)
                 .orElse(null);
     }
 }

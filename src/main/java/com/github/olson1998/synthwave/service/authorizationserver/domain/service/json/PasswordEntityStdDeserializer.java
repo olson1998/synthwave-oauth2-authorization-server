@@ -27,12 +27,10 @@ class PasswordEntityStdDeserializer extends AbstractObjectStdDeserializer<Passwo
         var userId= readJsonProperty(PASSWORD_USER_ID_JSON_FIELD, objectNode, objectCodec, TSID.class, true);
         var value = readJsonProperty(PASSWORD_VALUE_JSON_FILED, objectNode, objectCodec, String.class, true);
         var expirePeriod = readJsonProperty(PASSWORD_EXPIRE_PERIOD_JSON_FILED, objectNode, objectCodec, Period.class);
-        var latestVersion = readJsonProperty(PASSWORD_LATEST_VER_JSON_FIELD, objectNode, objectCodec, Boolean.class);
         return new PasswordEntityModel(
                 id,
                 userId,
                 value,
-                latestVersion,
                 expirePeriod
         );
     }

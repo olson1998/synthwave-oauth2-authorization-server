@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.ClientAuthenticationMethodBoundData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBoundProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBinding;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodBoundData, ClientAuthenticationMethodBoundProperties> {
+interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodBoundData, ClientAuthenticationMethodBinding> {
 
     @Query("""
            SELECT clientAuthenticationMethod.binding.clientAuthenticationMethod

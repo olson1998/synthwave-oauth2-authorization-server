@@ -17,12 +17,12 @@ class TokenSettingsStdSerializer extends AbstractObjectStdSerializer<TokenSettin
 
     @Override
     protected void serializeObject(TokenSettings tokenSettings, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        writeField(TOKEN_SETTINGS_SIGNATURE_ALG, tokenSettings.getIdTokenSignatureAlgorithm(), jsonGenerator);
-        writeField(TOKEN_SETTINGS_ACCESS_TOKEN_FORMAT, tokenSettings.getAccessTokenFormat(), jsonGenerator);
+        writeField(TOKEN_SETTINGS_SIGNATURE_ALG, tokenSettings.getIdTokenSignatureAlgorithm(), jsonGenerator, false);
+        writeField(TOKEN_SETTINGS_ACCESS_TOKEN_FORMAT, tokenSettings.getAccessTokenFormat(), jsonGenerator, false);
         writeField(REUSE_REFRESH_TOKEN, tokenSettings.isReuseRefreshTokens(), jsonGenerator);
-        writeField(ACCESS_TOKEN_TIME_TO_LIVE, tokenSettings.getAccessTokenTimeToLive(), jsonGenerator);
-        writeField(REFRESH_TOKEN_TIME_TO_LIVE, tokenSettings.getRefreshTokenTimeToLive(), jsonGenerator);
-        writeField(DEVICE_CODE_TIME_TO_LIVE, tokenSettings.getDeviceCodeTimeToLive(), jsonGenerator);
-        writeField(AUTHORIZATION_CODE_TIME_TO_LIVE, tokenSettings.getAuthorizationCodeTimeToLive(), jsonGenerator);
+        writeField(ACCESS_TOKEN_TIME_TO_LIVE, tokenSettings.getAccessTokenTimeToLive(), jsonGenerator, false);
+        writeField(REFRESH_TOKEN_TIME_TO_LIVE, tokenSettings.getRefreshTokenTimeToLive(), jsonGenerator, false);
+        writeField(DEVICE_CODE_TIME_TO_LIVE, tokenSettings.getDeviceCodeTimeToLive(), jsonGenerator, false);
+        writeField(AUTHORIZATION_CODE_TIME_TO_LIVE, tokenSettings.getAuthorizationCodeTimeToLive(), jsonGenerator, false);
     }
 }

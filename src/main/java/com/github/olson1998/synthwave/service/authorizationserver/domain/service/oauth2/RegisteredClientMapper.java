@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import com.github.olson1998.synthwave.support.web.exception.PathVariableWritingException;
 import com.github.olson1998.synthwave.support.web.exception.URIReadingException;
 import com.github.olson1998.synthwave.support.web.exception.URIWritingException;
@@ -24,43 +25,54 @@ import static org.springframework.security.oauth2.core.oidc.OidcScopes.PROFILE;
 @Slf4j
 class RegisteredClientMapper {
 
+    private final TokenSettingsMapper tokenSettingsMapper = new TokenSettingsMapper();
+
     RegisteredClient map(RegisteredClientConfig props){
         var code = props.getCompanyCode();
         var divi = props.getDivision();
         var id = props.getId();
         var idString = String.valueOf(id.toLong());
         var clientId = props.getClientId();
-        var tokenSettings = props.getTokenSettings();
+        var tokenSettings = tokenSettingsMapper.map(props);
         var clientSettings = buildClientSettings(props);
         var redirectURI = writeRedirectURISet(props.getRedirectUris(), props);
         var postLogoutURI = writeRedirectURISet(props.getPostLogoutRedirectUris(), props);
         var authorizationGrantTypesSet = props.getAuthorizationGrantTypes();
         var clientAuthenticationMethodsSet = props.getClientAuthenticationMethods();
+        var secret = props.getRegisteredClientSecret();
         var registeredClientBuilder = RegisteredClient.withId(idString)
                 .scopes(strings -> strings.addAll(List.of(OPENID, PROFILE)))
                 .clientId(clientId)
                 .clientName(props.getUsername())
                 .clientIdIssuedAt(id.getInstant())
-                .clientSecret(props.getPasswordValue())
                 .redirectUris(uris -> uris.addAll(redirectURI))
                 .postLogoutRedirectUris(uris -> uris.addAll(postLogoutURI))
                 .tokenSettings(tokenSettings)
                 .clientSettings(clientSettings)
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(authorizationGrantTypesSet))
                 .clientAuthenticationMethods(clientAuthenticationMethods -> clientAuthenticationMethods.addAll(clientAuthenticationMethodsSet));
-        Optional.ofNullable(props.getPasswordExpireTime()).ifPresent(registeredClientBuilder::clientSecretExpiresAt);
+        Optional.ofNullable(secret).ifPresent(clientSecret ->{
+            registeredClientBuilder.clientSecret(clientSecret.getValue());
+            Optional.ofNullable(clientSecret.getExpiresDateTime()).ifPresent(expireAt ->{
+                var expireAtInstant = new MutableDateTimeConverter(expireAt)
+                        .toJavaInstant();
+                Optional.ofNullable(expireAtInstant).ifPresent(registeredClientBuilder::clientSecretExpiresAt);
+            });
+        });
         return new SynthWaveRegisteredClient(
                 code,
                 divi,
-                registeredClientBuilder.build()
+                null,
+                registeredClientBuilder.build(),
+                secret
         );
     }
 
     private ClientSettings buildClientSettings(RegisteredClientConfig registeredClientConfig){
-        return ClientSettings.builder()
-                .requireAuthorizationConsent(registeredClientConfig.isRequireAuthorizationConsent())
-                .requireProofKey(registeredClientConfig.isRequireProofKey())
-                .build();
+        var builder = ClientSettings.builder();
+        registeredClientConfig.findRequireProofKey().ifPresent(builder::requireProofKey);
+        registeredClientConfig.findRequireAuthorizationConsent().ifPresent(builder::requireAuthorizationConsent);
+        return builder.build();
     }
 
     private Set<String> writeRedirectURISet(Set<String> redirectUriSet, RegisteredClientConfig registeredClientConfig){

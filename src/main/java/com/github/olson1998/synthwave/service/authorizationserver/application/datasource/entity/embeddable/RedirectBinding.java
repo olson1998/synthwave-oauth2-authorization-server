@@ -22,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Embeddable
-public class RedirectBoundProperties implements Serializable, RedirectBound {
+public class RedirectBinding implements Serializable, RedirectBound {
 
     private static final long serialVersionUID = -2698328071315151610L;
 
@@ -33,7 +33,7 @@ public class RedirectBoundProperties implements Serializable, RedirectBound {
 
     private AffiliationProperties affiliationProperties;
 
-    public RedirectBoundProperties(@NonNull RedirectBound redirectBound) {
+    public RedirectBinding(@NonNull RedirectBound redirectBound) {
         this.redirectId = redirectBound.getRedirectId();
         this.affiliationProperties = Optional.ofNullable(redirectBound.getAffiliation())
                 .map(AffiliationProperties::new)

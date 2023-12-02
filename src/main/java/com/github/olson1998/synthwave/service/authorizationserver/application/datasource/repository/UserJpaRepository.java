@@ -50,8 +50,9 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
     ON user.id=password.userId
     LEFT OUTER JOIN UserAccountLockData lock
     ON user.id=lock.userId
-    WHERE
-    user.username=:username AND password.latestVersion=true
+    WHERE user.username=:username
+    GROUP BY password.id
+    HAVING MAX(password.id)=password.id
     """)
     Optional<SynthWaveUser> selectSynthWaveUserByUsername(@Param("username") String username);
 

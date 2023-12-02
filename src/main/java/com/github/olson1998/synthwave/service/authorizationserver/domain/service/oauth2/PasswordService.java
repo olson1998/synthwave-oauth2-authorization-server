@@ -22,9 +22,13 @@ public class PasswordService implements PasswordRepository {
         var encodedPasswordObj = new PasswordModel(
                 encodedPassword,
                 password.getUserId(),
-                true,
-                password.getOptionalExpirePeriod().orElse(null)
+                password.getExpirePeriod()
         );
         userPasswordDataSourceRepository.save(encodedPasswordObj);
+    }
+
+    @Override
+    public String encode(String password) {
+        return passwordEncoder.encode(password);
     }
 }

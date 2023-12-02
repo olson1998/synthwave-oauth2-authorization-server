@@ -60,8 +60,7 @@ public class UserPropertiesService implements UserPropertiesRepository {
                 null,
                 userId,
                 encryptedPassword,
-                true,
-                passwordProps.getOptionalExpirePeriod().orElse(null)
+                passwordProps.getExpirePeriod()
         );
         userPasswordDataSourceRepository.save(passwordData);
         var affiliation = new AffiliationEntityModel(

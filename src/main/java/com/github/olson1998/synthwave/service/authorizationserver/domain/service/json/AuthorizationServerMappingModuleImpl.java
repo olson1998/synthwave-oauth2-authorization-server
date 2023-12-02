@@ -2,7 +2,6 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.json.AuthorizationServerMappingModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
@@ -11,7 +10,6 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.re
 import lombok.Getter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
@@ -26,9 +24,7 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
     public AuthorizationServerMappingModuleImpl() {
         var mappings= new SimpleModule();
         var registeredClientStdSerializer = new RegisteredClientStdSerializer();
-        var synthWaveRegisteredClientStdSerializer =new SynthWaveRegisteredClientStdSerializer(registeredClientStdSerializer);
         var registeredClientStdDeserializer = new RegisteredClientStdDeserializer();
-        var synthWaveRegisteredClientStdDeserializer = new SynthWaveRegisteredClientStdDeserializer(registeredClientStdDeserializer);
         //entities
         mappings.addSerializer(Password.class, new PasswordStdSerializer());
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
@@ -50,11 +46,11 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(UserProperties.class, new UserPropertiesStdDeserializer());
         mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
         mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
+        mappings.addSerializer(RegisteredClientSecret.class, new RegisteredClientSecretStdSerializer());
+        mappings.addDeserializer(RegisteredClientSecret.class, new RegisteredClientSecretStdDeserializer());
         //Registered client
         mappings.addSerializer(RegisteredClient.class, registeredClientStdSerializer);
         mappings.addDeserializer(RegisteredClient.class, registeredClientStdDeserializer);
-        mappings.addSerializer(AbstractSynthWaveRegisteredClient.class, synthWaveRegisteredClientStdSerializer);
-        mappings.addDeserializer(AbstractSynthWaveRegisteredClient.class, synthWaveRegisteredClientStdDeserializer);
         mappings.addSerializer(AuthorizationGrantType.class, new AuthorizationGrantTypeStdSerializer());
         mappings.addDeserializer(AuthorizationGrantType.class, new AuthorizationGrantTypeStdDeserializer());
         mappings.addSerializer(ClientAuthenticationMethod.class, new ClientAuthenticationMethodStdSerializer());

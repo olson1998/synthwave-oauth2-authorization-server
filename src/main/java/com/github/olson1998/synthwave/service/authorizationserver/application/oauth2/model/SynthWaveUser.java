@@ -41,8 +41,7 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
         this.accountNonLocked = accountNonLocked;
         this.accountNonExpired =
                 isNonExpired(userId.getInstant(), accountExpirePeriod);
-        this.credentialsNonExpired = passwordEntityData.getLatestVersion() ||
-                isPasswordNonExpired(passwordEntityData);
+        this.credentialsNonExpired = isPasswordNonExpired(passwordEntityData);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
 
     private boolean isPasswordNonExpired(PasswordEntity passwordEntity){
         var issueInstant = passwordEntity.getId().getInstant();
-        return passwordEntity.getOptionalExpirePeriod()
+        return Optional.ofNullable(passwordEntity.getExpirePeriod())
                 .map(period -> isNonExpired(issueInstant, period))
                 .orElse(true);
     }

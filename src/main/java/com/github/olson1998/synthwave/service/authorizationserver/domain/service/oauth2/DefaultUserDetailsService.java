@@ -46,8 +46,7 @@ public class DefaultUserDetailsService implements UserDetailsRepository {
         var passwordObj = new PasswordModel(
                 password.getValue(),
                 userId,
-                true,
-                password.getOptionalExpirePeriod().orElse(null)
+                password.getExpirePeriod()
         );
         affiliationRepository.save(affiliationObj);
         passwordRepository.save(passwordObj);

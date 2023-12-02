@@ -3,15 +3,11 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 import io.hypersistence.tsid.TSID;
 import org.joda.time.Period;
 
-import java.util.Optional;
-
 public interface Password {
 
     String getValue();
 
     TSID getUserId();
 
-    Boolean getLatestVersion();
-
-    Optional<Period> getOptionalExpirePeriod();
+    Period getExpirePeriod();
 }

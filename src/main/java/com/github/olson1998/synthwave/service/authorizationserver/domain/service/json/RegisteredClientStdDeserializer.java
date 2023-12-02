@@ -6,6 +6,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
+import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import com.github.olson1998.synthwave.support.web.model.PathVariables;
 import com.github.olson1998.synthwave.support.web.util.URIModel;
 import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
@@ -38,8 +41,9 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
         var division = readJsonProperty(REGISTERED_CLIENT_DIVISION_JSON_PROPERTY, objectNode, objectCodec, String.class);
         var clientId = Optional.ofNullable(readJsonProperty(REGISTERED_CLIENT_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, String.class))
                 .orElse("{?}");
-        var clientSecret = readJsonProperty("client_secret", objectNode, objectCodec, String.class);
+        var clientSecret = readJsonProperty(REGISTERED_CLIENT_SECRET_JSON_PROPERTY, objectNode, objectCodec, RegisteredClientSecret.class);
         var username = readJsonProperty(REGISTERED_CLIENT_NAME_JSON_PROPERTY, objectNode, objectCodec, String.class, true);
+        var password = readJsonProperty(REGISTERED_CLIENT_USER_PASSWORD_JSON_PROPERTY, objectNode, objectCodec, Password.class);
         var tokenSettings =readJsonProperty(REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY, objectNode, objectCodec, TokenSettings.class);
         var redirectUriModelSet = readJsonProperty(REDIRECT_URIS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<URIModel>>() {
         });
@@ -51,19 +55,25 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
         });
         var clientAuthenticationMethods = readJsonProperty(CLIENT_AUTHENTICATION_METHODS_JSON_PROPERTY, objectNode, objectCodec, new TypeReference<Set<ClientAuthenticationMethod>>() {
         });
-        var registeredClient = RegisteredClient.withId(idString)
+        var registeredClientBuilder = RegisteredClient.withId(idString)
                 .clientId(clientId)
                 .clientName(username)
-                .clientSecret(clientSecret)
                 .clientIdIssuedAt(Optional.ofNullable(id).map(TSID::getInstant).orElse(null))
                 .clientAuthenticationMethods(clientAuthenticationMethodsSet -> clientAuthenticationMethodsSet.addAll(clientAuthenticationMethods))
                 .authorizationGrantTypes(authorizationGrantTypesSet -> authorizationGrantTypesSet.addAll(authorizationGrantTypes))
                 .tokenSettings(tokenSettings)
                 .postLogoutRedirectUris(postLogoutRedirectUriSet -> postLogoutRedirectUriSet.addAll(postLogoutRedirectUris))
-                .redirectUris(redirectUris -> redirectUris.addAll(redirectUriSet))
-                .build();
+                .redirectUris(redirectUris -> redirectUris.addAll(redirectUriSet));
+        Optional.ofNullable(clientSecret).ifPresent(secret ->{
+            registeredClientBuilder.clientSecret(secret.getValue());
+            Optional.ofNullable(secret.getExpiresDateTime())
+                    .map(MutableDateTimeConverter::new)
+                    .map(MutableDateTimeConverter::toJavaInstant)
+                    .ifPresent(registeredClientBuilder::clientSecretExpiresAt);
+        });
+        var registeredClient = registeredClientBuilder.build();
         if(division != null && companyCode != null){
-            return new SynthWaveRegisteredClient(companyCode, division, registeredClient);
+            return new SynthWaveRegisteredClient(companyCode, division,password, registeredClient, clientSecret);
         }else {
             return registeredClient;
         }

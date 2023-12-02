@@ -13,7 +13,7 @@ public class PasswordModel implements Password {
 
     public static final String PASSWORD_VALUE_JSON_FILED = "value";
 
-    public static final String PASSWORD_EXPIRE_PERIOD_JSON_FILED = "expprd";
+    public static final String PASSWORD_EXPIRE_PERIOD_JSON_FILED = "expire_period";
 
     public static final String PASSWORD_USER_ID_JSON_FIELD = "user_id";
 
@@ -21,13 +21,5 @@ public class PasswordModel implements Password {
 
     private final TSID userId;
 
-    private final Boolean latestVersion;
-
     private final Period expirePeriod;
-
-    @Override
-    public Optional<Period> getOptionalExpirePeriod() {
-        return Optional.ofNullable(expirePeriod);
-    }
-
 }

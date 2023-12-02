@@ -1,7 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBoundProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.ClientAuthenticationMethodBinding;
 import io.hypersistence.tsid.TSID;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -20,20 +19,20 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "O2ECAM")
-public class ClientAuthenticationMethodBoundData implements Persistable<ClientAuthenticationMethodBoundProperties>, ClientAuthenticationMethodBinding {
+public class ClientAuthenticationMethodBoundData implements Persistable<ClientAuthenticationMethodBinding>, com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding {
 
     @EmbeddedId
-    private ClientAuthenticationMethodBoundProperties binding;
+    private ClientAuthenticationMethodBinding binding;
 
-    public ClientAuthenticationMethodBoundData(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
-        this.binding = new ClientAuthenticationMethodBoundProperties(
+    public ClientAuthenticationMethodBoundData(com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
+        this.binding = new ClientAuthenticationMethodBinding(
                 clientAuthenticationMethodBinding.getRegisteredClientId(),
                 clientAuthenticationMethodBinding.getClientAuthenticationMethod()
         );
     }
 
     @Override
-    public ClientAuthenticationMethodBoundProperties getId() {
+    public ClientAuthenticationMethodBinding getId() {
         return binding;
     }
 
@@ -45,14 +44,14 @@ public class ClientAuthenticationMethodBoundData implements Persistable<ClientAu
     @Override
     public TSID getRegisteredClientId() {
         return Optional.ofNullable(binding)
-                .map(ClientAuthenticationMethodBoundProperties::getRegisteredClientId)
+                .map(ClientAuthenticationMethodBinding::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public ClientAuthenticationMethod getClientAuthenticationMethod() {
         return Optional.ofNullable(binding)
-                .map(ClientAuthenticationMethodBoundProperties::getClientAuthenticationMethod)
+                .map(ClientAuthenticationMethodBinding::getClientAuthenticationMethod)
                 .orElse(null);
     }
 }

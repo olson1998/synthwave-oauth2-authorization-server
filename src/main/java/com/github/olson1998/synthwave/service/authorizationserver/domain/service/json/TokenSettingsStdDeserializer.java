@@ -31,14 +31,14 @@ class TokenSettingsStdDeserializer extends AbstractObjectStdDeserializer<TokenSe
                 .ifPresent(tokenSettingsBuilder::accessTokenFormat);
         Optional.ofNullable(readJsonProperty(REUSE_REFRESH_TOKEN, objectNode, objectCodec, Boolean.class))
                 .ifPresent(tokenSettingsBuilder::reuseRefreshTokens);
-        Optional.ofNullable(readJsonProperty(ACCESS_TOKEN_TIME_TO_LIVE, objectNode, objectCodec, Long.class))
-                .ifPresent(value -> tokenSettingsBuilder.accessTokenTimeToLive(Duration.ofSeconds(value)));
-        Optional.ofNullable(readJsonProperty(REFRESH_TOKEN_TIME_TO_LIVE, objectNode, objectCodec, Long.class))
-                .ifPresent(value -> tokenSettingsBuilder.refreshTokenTimeToLive(Duration.ofSeconds(value)));
-        Optional.ofNullable(readJsonProperty(DEVICE_CODE_TIME_TO_LIVE, objectNode, objectCodec, Long.class))
-                .ifPresent(value -> tokenSettingsBuilder.deviceCodeTimeToLive(Duration.ofSeconds(value)));
-        Optional.ofNullable(readJsonProperty(AUTHORIZATION_CODE_TIME_TO_LIVE, objectNode, objectCodec, Long.class))
-                .ifPresent(value -> tokenSettingsBuilder.authorizationCodeTimeToLive(Duration.ofSeconds(value)));
+        Optional.ofNullable(readJsonProperty(ACCESS_TOKEN_TIME_TO_LIVE, objectNode, objectCodec, Duration.class))
+                .ifPresent(tokenSettingsBuilder::accessTokenTimeToLive);
+        Optional.ofNullable(readJsonProperty(REFRESH_TOKEN_TIME_TO_LIVE, objectNode, objectCodec, Duration.class))
+                .ifPresent(tokenSettingsBuilder::refreshTokenTimeToLive);
+        Optional.ofNullable(readJsonProperty(DEVICE_CODE_TIME_TO_LIVE, objectNode, objectCodec, Duration.class))
+                .ifPresent(tokenSettingsBuilder::deviceCodeTimeToLive);
+        Optional.ofNullable(readJsonProperty(AUTHORIZATION_CODE_TIME_TO_LIVE, objectNode, objectCodec, Duration.class))
+                .ifPresent(tokenSettingsBuilder::authorizationCodeTimeToLive);
         return tokenSettingsBuilder.build();
     }
 

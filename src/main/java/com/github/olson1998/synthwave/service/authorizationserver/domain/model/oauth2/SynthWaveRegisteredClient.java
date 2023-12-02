@@ -1,6 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +16,8 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import java.time.Instant;
 import java.util.Set;
 
-@ToString
-@EqualsAndHashCode(callSuper = true)
+@ToString(exclude = {"registeredClientSecret", "userPassword"})
+@EqualsAndHashCode(callSuper = true, exclude = {"registeredClientSecret","userPassword"})
 @RequiredArgsConstructor
 public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient {
 
@@ -23,13 +25,21 @@ public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient
 
     public static final String REGISTERED_CLIENT_DIVISION_JSON_PROPERTY ="division";
 
+    public static final String REGISTERED_CLIENT_USER_PASSWORD_JSON_PROPERTY ="password";
+
     @Getter
     private final String companyCode;
 
     @Getter
     private final String division;
 
+    @Getter
+    private final Password userPassword;
+
     private final RegisteredClient registeredClient;
+
+    @Getter
+    private final RegisteredClientSecret registeredClientSecret;
 
     @Override
     public String getId() {

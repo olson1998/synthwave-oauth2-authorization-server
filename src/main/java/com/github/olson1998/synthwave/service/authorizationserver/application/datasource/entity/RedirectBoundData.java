@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectBoundProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.embeddable.RedirectBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectBound;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import io.hypersistence.tsid.TSID;
@@ -20,31 +20,31 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "O2ERUB")
-public class RedirectBoundData implements Persistable<RedirectBoundProperties>, RedirectBound {
+public class RedirectBoundData implements Persistable<RedirectBinding>, RedirectBound {
 
     @EmbeddedId
-    private RedirectBoundProperties properties;
+    private RedirectBinding properties;
 
     public RedirectBoundData(RedirectBound redirectBound) {
-        this.properties = new RedirectBoundProperties(redirectBound);
+        this.properties = new RedirectBinding(redirectBound);
     }
 
     @Override
     public TSID getRedirectId() {
         return Optional.ofNullable(properties)
-                .map(RedirectBoundProperties::getRedirectId)
+                .map(RedirectBinding::getRedirectId)
                 .orElse(null);
     }
 
     @Override
     public Affiliation getAffiliation() {
         return Optional.ofNullable(properties)
-                .map(RedirectBoundProperties::getAffiliationProperties)
+                .map(RedirectBinding::getAffiliationProperties)
                 .orElse(null);
     }
 
     @Override
-    public RedirectBoundProperties getId() {
+    public RedirectBinding getId() {
         return properties;
     }
 

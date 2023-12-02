@@ -15,8 +15,6 @@ public class RegisteredClientJsonFields {
 
     public static final String REGISTERED_CLIENT_ID_ISS_TMP_JSON_PROPERTY = "client_id_iss";
 
-    public static final String REGISTERED_CLIENT_SECRET_EXP_TMP_JSON_PROPERTY = "client_secret_exp";
-
     public static final String REGISTERED_CLIENT_CLIENT_SETTINGS_JSON_PROPERTY = "client_settings";
 
     public static final String REDIRECT_URIS_JSON_PROPERTY = "redirect_uri";

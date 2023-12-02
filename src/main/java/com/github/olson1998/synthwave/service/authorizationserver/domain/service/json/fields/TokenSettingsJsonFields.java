@@ -15,11 +15,11 @@ public class TokenSettingsJsonFields {
 
     public static final String REUSE_REFRESH_TOKEN = "reuse_refresh_token";
 
-    public static final String ACCESS_TOKEN_TIME_TO_LIVE = "access_token_time_to_live";
+    public static final String ACCESS_TOKEN_TIME_TO_LIVE = "access_token_exp";
 
-    public static final String REFRESH_TOKEN_TIME_TO_LIVE = "refresh_token_time_to_live";
+    public static final String REFRESH_TOKEN_TIME_TO_LIVE = "refresh_token_exp";
 
-    public static final String DEVICE_CODE_TIME_TO_LIVE = "device_code_time_to_live";
+    public static final String DEVICE_CODE_TIME_TO_LIVE = "device_code_time_exp";
 
-    public static final String AUTHORIZATION_CODE_TIME_TO_LIVE = "authorization_code_time_to_live";
+    public static final String AUTHORIZATION_CODE_TIME_TO_LIVE = "authorization_code_exp";
 }

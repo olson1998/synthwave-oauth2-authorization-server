@@ -31,6 +31,8 @@ public class OAuth2RepositoriesConfig {
                                                                                          @NonNull AffiliationRepository affiliationRepository,
                                                                                          @NonNull UserDataSourceRepository userDataSourceRepository,
                                                                                          @NonNull RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
+                                                                                         @NonNull RegisteredClientSecretDataSourceRepository registeredClientSecretDataSourceRepository,
+                                                                                         @NonNull RegisteredClientTokenSettingsDataSourceRepository registeredClientTokenSettingsDataSourceRepository,
                                                                                          @NonNull RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository,
                                                                                          @NonNull AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository,
                                                                                          @NonNull ClientAuthenticationMethodBindDataSourceRepository clientAuthenticationMethodBindDataSourceRepository){
@@ -39,7 +41,9 @@ public class OAuth2RepositoriesConfig {
                 affiliationRepository,
                 userDataSourceRepository,
                 registeredClientDataSourceRepository,
+                registeredClientSecretDataSourceRepository,
                 registeredClientSettingsDataSourceRepository,
+                registeredClientTokenSettingsDataSourceRepository,
                 authorizationGrantTypeBindDataSourceRepository,
                 clientAuthenticationMethodBindDataSourceRepository
         );

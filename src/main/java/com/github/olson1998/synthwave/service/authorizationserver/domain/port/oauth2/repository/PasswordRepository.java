@@ -5,4 +5,6 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 public interface PasswordRepository {
 
     void save(Password password);
+
+    String encode(String password);
 }

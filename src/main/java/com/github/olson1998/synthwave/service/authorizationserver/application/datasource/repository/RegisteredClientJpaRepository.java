@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientDefaultConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,15 +21,13 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     Optional<String> selectClientIdByUserId(@Param("userId") TSID userId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientDefaultConfig(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
     registeredClient.clientId,
     user.username,
-    password.id,
-    password.value,
-    password.expirePeriod,
+    secret,
     tokenSettings.authorizationCodeExpirePeriod,
     tokenSettings.accessTokenExpirePeriod,
     tokenSettings.accessTokenFormat,
@@ -43,30 +41,28 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     FROM RegisteredClientData registeredClient
     LEFT OUTER JOIN UserData user
     ON registeredClient.userId=user.id
-    LEFT OUTER JOIN UserPasswordData password
-    ON registeredClient.userId=password.userId
+    LEFT OUTER JOIN RegisteredClientSecretData secret
+    ON registeredClient.id=secret.registeredClientId
     LEFT OUTER JOIN AffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
     LEFT OUTER JOIN RegisteredClientSettingsData settings
     ON registeredClient.id=settings.registeredClientId
-    LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
-    ON affiliation.properties.companyCode=tokenSettings.properties.companyCode
-    AND affiliation.properties.division=tokenSettings.properties.division
+    LEFT OUTER JOIN RegisteredClientTokenSettingsData tokenSettings
+    ON registeredClient.id=tokenSettings.registeredClientId
     WHERE registeredClient.id=:registeredClientId
-    AND password.latestVersion=true
+    GROUP BY secret.id
+    HAVING MAX(secret.id)=secret.id
     """)
-    Optional<RegisteredClientDefaultConfig> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+    Optional<RegisteredClientGenericConfig> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientDefaultConfig(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
     registeredClient.clientId,
     user.username,
-    password.id,
-    password.value,
-    password.expirePeriod,
+    secret,
     tokenSettings.authorizationCodeExpirePeriod,
     tokenSettings.accessTokenExpirePeriod,
     tokenSettings.accessTokenFormat,
@@ -80,17 +76,17 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     FROM RegisteredClientData registeredClient
     LEFT OUTER JOIN UserData user
     ON registeredClient.userId=user.id
-    LEFT OUTER JOIN UserPasswordData password
-    ON registeredClient.userId=password.userId
     LEFT OUTER JOIN AffiliationData affiliation
     ON registeredClient.userId=affiliation.userId
+    LEFT OUTER JOIN RegisteredClientSecretData secret
+    ON registeredClient.id=secret.registeredClientId
     LEFT OUTER JOIN RegisteredClientSettingsData settings
     ON registeredClient.id=settings.registeredClientId
-    LEFT OUTER JOIN AffiliationBasedTokenSettingsData tokenSettings
-    ON affiliation.properties.companyCode=tokenSettings.properties.companyCode
-    AND affiliation.properties.division=tokenSettings.properties.division
-    WHERE user.username=:username
-    AND password.latestVersion=true
+    LEFT OUTER JOIN RegisteredClientTokenSettingsData tokenSettings
+    ON registeredClient.id=tokenSettings.registeredClientId
+    WHERE registeredClient.clientId=:username
+    GROUP BY secret.id
+    HAVING MAX(secret.id)=secret.id
     """)
-    Optional<RegisteredClientDefaultConfig> selectRegisteredClientConfigByClientId(@Param("username") String username);
+    Optional<RegisteredClientGenericConfig> selectRegisteredClientConfigByClientId(@Param("username") String username);
 }

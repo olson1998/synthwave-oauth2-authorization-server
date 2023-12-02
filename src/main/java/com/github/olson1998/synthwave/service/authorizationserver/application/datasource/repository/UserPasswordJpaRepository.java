@@ -22,10 +22,4 @@ interface UserPasswordJpaRepository extends JpaRepository<UserPasswordData, TSID
            """)
     Optional<UserPasswordData> selectPasswordByClientId(@Param("clientId") String clientId);
 
-    @Query("SELECT password.id FROM UserPasswordData password WHERE password.latestVersion=true AND password.userId=:userId")
-    Optional<TSID> selectLatestPasswordIdByUserId(@Param("userId") TSID userId);
-
-    @Modifying
-    @Query("UPDATE UserPasswordData password SET password.latestVersion=false WHERE password.id=:passwordId")
-    int updatePasswordLatestVersionFalse(@Param("passwordId") TSID passwordId);
 }

@@ -1,20 +1,19 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientSettings;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientTokenSettings;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2Client;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
 import io.hypersistence.tsid.TSID;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+
+import java.util.Optional;
 
 public interface RegisteredClientRepository {
 
-    boolean isExistingRegisteredClientForUser(String username);
+    Optional<RegisteredClient> findRegisteredClientById(TSID id);
 
-    TSID saveRegisteredClient(OAuth2Client OAuth2Client);
+    Optional<RegisteredClient> findRegisteredClientByClientId(String clientId);
 
-    void saveClientSecret(TSID registeredClientId, ClientSecret clientSecret);
+    RegisteredClient saveRegisteredClient(RegisteredClient registeredClient);
 
-    void saveClientSettings(RegisteredClientSettings registeredClientSettings);
+    AbstractSynthWaveRegisteredClient saveSynthWaveRegisteredClient(AbstractSynthWaveRegisteredClient abstractSynthWaveRegisteredClient);
 
-    void saveTokenSettings(RegisteredClientTokenSettings registeredClientTokenSettings);
 }

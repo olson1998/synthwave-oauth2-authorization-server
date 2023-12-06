@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class ClientAuthenticationMethodJpaRepositoryProxy implements ClientAuthe
     private final ClientAuthenticationMethodJpaRepository clientAuthenticationMethodJpaRepository;
 
     @Override
-    public Collection<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(@NonNull TSID registeredClientId) {
+    public Set<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(@NonNull TSID registeredClientId) {
         return clientAuthenticationMethodJpaRepository.selectClientAuthenticationMethodByRegisteredClientId(registeredClientId);
     }
 

@@ -7,27 +7,42 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.o
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AffiliationRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
-public class DefaultUserProvisioningService implements UserProvisioningRepository {
+public class SynthWaveUserDetailsService implements UserDetailsRepository {
 
     private final PasswordRepository passwordRepository;
 
     private final AffiliationRepository affiliationRepository;
 
-    private final UserDataSourceRepository userDataSourceRepository;
+    protected final UserDataSourceRepository userDataSourceRepository;
 
     @Override
-    public boolean isProvisioningRequired(String username) {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDataSourceRepository.getUserDetailsByUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User: '%s' has not been found".formatted(username)));
+    }
+
+    @Override
+    public boolean existsUserDetailsForUsername(String username) {
         return userDataSourceRepository.existsUserWithGivenUsername(username);
     }
 
     @Override
-    public UserMetadata provision(SynthWaveUserProperties synthWaveUserProperties){
+    public Optional<UserMetadata> getUserMetadataByUsername(String username) {
+        return userDataSourceRepository.getUserMetadataByUsername(username);
+    }
+
+    @Override
+    public UserMetadata saveUser(SynthWaveUserProperties synthWaveUserProperties) {
         var username = synthWaveUserProperties.getUsername();
         var password = synthWaveUserProperties.getUserPassword();
         var companyCode = synthWaveUserProperties.getCompanyCode();
@@ -53,4 +68,5 @@ public class DefaultUserProvisioningService implements UserProvisioningRepositor
         passwordRepository.save(passwordObj);
         return new UserMetadaModel(userId, username, companyCode, division);
     }
+
 }

@@ -5,10 +5,11 @@ import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface AuthorizationGrantTypeBindDataSourceRepository {
 
-    Collection<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(TSID registeredClientId);
+    Set<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(TSID registeredClientId);
 
     void save(AuthorizationGrantTypeBinding authorizationGrantTypeBinding);
 

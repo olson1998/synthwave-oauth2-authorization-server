@@ -5,10 +5,11 @@ import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface ClientAuthenticationMethodBindDataSourceRepository {
 
-    Collection<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(TSID registeredClientId);
+    Set<ClientAuthenticationMethod> getClientAuthenticationMethodsByRegisteredClientId(TSID registeredClientId);
 
     void save(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding);
 

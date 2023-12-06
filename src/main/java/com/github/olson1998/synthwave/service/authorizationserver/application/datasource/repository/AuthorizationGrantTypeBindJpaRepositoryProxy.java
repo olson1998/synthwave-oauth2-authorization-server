@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class AuthorizationGrantTypeBindJpaRepositoryProxy implements Authorizati
     private final AuthorizationGrantTypeBindJpaRepository authorizationGrantTypeBindJpaRepository;
 
     @Override
-    public Collection<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(@NonNull TSID registeredClientId) {
+    public Set<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(@NonNull TSID registeredClientId) {
         return authorizationGrantTypeBindJpaRepository.selectAuthorizationGrantTypeByRegisteredClientId(registeredClientId);
     }
 

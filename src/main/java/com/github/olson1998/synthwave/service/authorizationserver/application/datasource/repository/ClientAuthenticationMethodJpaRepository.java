@@ -10,14 +10,15 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodBoundData, ClientAuthenticationMethodBinding> {
 
     @Query("""
-           SELECT clientAuthenticationMethod.binding.clientAuthenticationMethod
+           SELECT DISTINCT clientAuthenticationMethod.binding.clientAuthenticationMethod
            FROM ClientAuthenticationMethodBoundData clientAuthenticationMethod
            WHERE clientAuthenticationMethod.binding.registeredClientId=:registeredClientId
            """)
-    List<ClientAuthenticationMethod> selectClientAuthenticationMethodByRegisteredClientId(@Param("registeredClientId")TSID registeredClientId);
+    Set<ClientAuthenticationMethod> selectClientAuthenticationMethodByRegisteredClientId(@Param("registeredClientId")TSID registeredClientId);
 }

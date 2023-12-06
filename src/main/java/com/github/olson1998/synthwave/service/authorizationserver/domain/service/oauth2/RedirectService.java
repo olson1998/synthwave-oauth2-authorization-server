@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
@@ -7,8 +7,8 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectClientBound;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +21,16 @@ import static java.util.Map.entry;
 @Slf4j
 
 @RequiredArgsConstructor
-public class RedirectRequestService implements RedirectRepository {
+public class RedirectService implements RedirectRepository {
 
     private final RedirectDataSourceRepository redirectDataSourceRepository;
 
     private final RedirectClientBoundDataSourceRepository redirectClientBoundDataSourceRepository;
+
+    @Override
+    public Collection<RedirectEntity> getRedirectByRegisteredClientId(TSID registeredClientId) {
+        return redirectDataSourceRepository.getRedirectByRegisteredClientId(registeredClientId);
+    }
 
     @Override
     public Collection<RedirectEntity> saveAll(Collection<Redirect> redirectsCollection) {

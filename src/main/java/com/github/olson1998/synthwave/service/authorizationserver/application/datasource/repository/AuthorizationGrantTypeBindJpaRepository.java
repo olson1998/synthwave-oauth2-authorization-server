@@ -10,14 +10,15 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 interface AuthorizationGrantTypeBindJpaRepository extends JpaRepository<AuthorizationGrantTypeBindData, AuthorizationGrantTypeBinding> {
 
     @Query("""
-           SELECT authorizationGrantType.binding.authorizationGrantType
+           SELECT DISTINCT authorizationGrantType.binding.authorizationGrantType
            FROM AuthorizationGrantTypeBindData authorizationGrantType
            WHERE authorizationGrantType.binding.registeredClientId=:registeredClientId
            """)
-    List<AuthorizationGrantType> selectAuthorizationGrantTypeByRegisteredClientId(@Param("registeredClientId")TSID registeredClientId);
+    Set<AuthorizationGrantType> selectAuthorizationGrantTypeByRegisteredClientId(@Param("registeredClientId")TSID registeredClientId);
 }

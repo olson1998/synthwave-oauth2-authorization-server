@@ -13,6 +13,8 @@ public interface RedirectDataSourceRepository {
 
     Collection<RedirectEntity> getRedirectFromURISet(Set<String> redirectURISet, Set<String> postLogoutRedirectURISet);
 
+    RedirectEntity save(Redirect redirect);
+
     Collection<RedirectEntity> saveAll(Collection<Redirect> redirectSet);
 
 }

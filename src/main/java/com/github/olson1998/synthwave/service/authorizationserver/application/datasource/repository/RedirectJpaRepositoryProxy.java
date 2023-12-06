@@ -33,6 +33,11 @@ public class RedirectJpaRepositoryProxy implements RedirectDataSourceRepository 
     }
 
     @Override
+    public RedirectEntity save(Redirect redirect) {
+        return redirectJpaRepository.save(new RedirectData(redirect));
+    }
+
+    @Override
     public Collection<RedirectEntity> saveAll(@NonNull Collection<Redirect> redirectCollection) {
         var data = redirectCollection.stream()
                 .map(RedirectData::new)

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.AuthorizationServerOAuth2EndpointsProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.AuthorizationServerProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 @RequiredArgsConstructor
 public class OAuth2AuthorizationServerSettingsConfig {
 
-    private final AuthorizationServerOAuth2EndpointsProperties endpointsProperties;
+    private final AuthorizationServerProperties endpointsProperties;
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(){

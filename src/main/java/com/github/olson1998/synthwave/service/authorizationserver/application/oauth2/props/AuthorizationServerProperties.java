@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Configuration
 @ConfigurationProperties(prefix = "synthwave.service.authorizationserver")
-public class AuthorizationServerOAuth2EndpointsProperties {
+public class AuthorizationServerProperties {
 
     private final OAuth2EndpointsProperties oauth2 = new OAuth2EndpointsProperties();
 

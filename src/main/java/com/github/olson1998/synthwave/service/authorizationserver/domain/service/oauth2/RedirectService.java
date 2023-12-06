@@ -33,6 +33,11 @@ public class RedirectService implements RedirectRepository {
     }
 
     @Override
+    public RedirectEntity save(Redirect redirect) {
+        return redirectDataSourceRepository.save(redirect);
+    }
+
+    @Override
     public Collection<RedirectEntity> saveAll(Collection<Redirect> redirectsCollection) {
         var redirectMap = createRedirectMap(redirectsCollection);
         var redirectEntities = redirectDataSourceRepository.getRedirectFromURISet(

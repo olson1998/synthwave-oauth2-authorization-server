@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.StartupProvisioningRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
@@ -17,11 +18,18 @@ import static com.github.olson1998.synthwave.support.springbootstarter.async.con
 @ConditionalOnProperty(value = "synthwave.service.authorizationserver.oauth2.provisioning.type", havingValue = "async")
 public class StartupProvisioningAsyncExecutor {
 
+    @Value("#{defaultStartupProvisioningProperties.enabled}")
+    private boolean enabled;
+
     private final StartupProvisioningRepository startupProvisioningRepository;
 
     @Async(ASYNC_TASK_EXEC)
     @EventListener(ApplicationStartedEvent.class)
     public CompletableFuture<Void> provisionRegistrationClientAsync(){
-        return startupProvisioningRepository.provisionAsync();
+        if(enabled){
+            return startupProvisioningRepository.provisionAsync();
+        }else {
+            return CompletableFuture.completedFuture(null);
+        }
     }
 }

@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientIdentifiers;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2Client;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,25 +19,25 @@ public class RegisteredClientJpaRepositoryProxy implements RegisteredClientDataS
     private final RegisteredClientJpaRepository registeredClientDataJpaRepository;
 
     @Override
-    public Optional<String> getClientIdByUserId(TSID userId) {
-        return registeredClientDataJpaRepository.selectClientIdByUserId(userId);
+    public boolean existsRegisteredClientForUsername(@NonNull String username) {
+        return registeredClientDataJpaRepository.selectCaseWhenCountRegisteredClientWithUsernameIsGreaterThanZero(username);
     }
 
     @Override
-    public Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(String clientId) {
+    public Optional<RegisteredClientConfig> getRegisteredClientConfigByClientId(@NonNull String clientId) {
         return registeredClientDataJpaRepository.selectRegisteredClientConfigByClientId(clientId)
                 .map(RegisteredClientConfig.class::cast);
     }
 
     @Override
-    public Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(TSID registeredClientId) {
+    public Optional<RegisteredClientConfig> getRegisteredClientConfigByRegisteredClientId(@NonNull TSID registeredClientId) {
         return registeredClientDataJpaRepository.selectSynthWaveRegisteredClientByRegisteredClientId(registeredClientId)
                 .map(RegisteredClientConfig.class::cast);
     }
 
     @Override
-    public RegisteredClientEntity save(@NonNull RegisteredClientIdentifiers registeredClientIdentifiers) {
-        var data = new RegisteredClientData(registeredClientIdentifiers);
+    public RegisteredClientEntity save(@NonNull OAuth2Client OAuth2Client) {
+        var data = new RegisteredClientData(OAuth2Client);
         return registeredClientDataJpaRepository.save(data);
     }
 

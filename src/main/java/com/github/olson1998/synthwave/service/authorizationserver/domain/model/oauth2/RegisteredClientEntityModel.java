@@ -4,24 +4,17 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString
-@EqualsAndHashCode
-@RequiredArgsConstructor
-public class RegisteredClientEntityModel implements RegisteredClientEntity {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class RegisteredClientEntityModel extends OAuth2ClientModel implements RegisteredClientEntity {
 
     private final TSID id;
 
-    private final String clientId;
-
-    private final TSID userId;
-
-    public RegisteredClientEntityModel(TSID userId, String clientId) {
-        this.id = null;
-        this.clientId = clientId;
-        this.userId = userId;
+    public RegisteredClientEntityModel(TSID id, TSID userId, String clientId) {
+        super(userId, clientId);
+        this.id = id;
     }
 }

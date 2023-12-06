@@ -2,6 +2,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserPassword;
+import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
 import org.springframework.data.domain.Persistable;
 
@@ -46,20 +49,14 @@ public class UserPasswordData implements PasswordEntity, Persistable<TSID> {
     private String value;
 
     @Column(name = "PSSEXP")
-    @JavaType(PeriodJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private Period expirePeriod;
+    @JavaType(MutableDateTimeJavaType.class)
+    private MutableDateTime expireDateTime;
 
-    public UserPasswordData(@NonNull Password password) {
-        this.userId = password.getUserId();
-        this.value = password.getValue();
-        this.expirePeriod = password.getExpirePeriod();
-    }
-
-    public UserPasswordData(TSID userId, String value, Period expirePeriod) {
-        this.userId = userId;
-        this.value = value;
-        this.expirePeriod = expirePeriod;
+    public UserPasswordData(@NonNull UserPassword userPassword) {
+        this.userId = userPassword.getUserId();
+        this.value = userPassword.getValue();
+        this.expireDateTime = userPassword.getExpireDateTime();
     }
 
     @Override

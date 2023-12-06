@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RegisteredClientEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientIdentifiers;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.OAuth2Client;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
@@ -40,9 +40,9 @@ public class RegisteredClientData implements RegisteredClientEntity, Persistable
     @Column(name = "RCLCID", nullable = false)
     private String clientId;
 
-    public RegisteredClientData(@NonNull RegisteredClientIdentifiers registeredClientIdentifiers) {
-        this.userId = registeredClientIdentifiers.getUserId();
-        this.clientId = registeredClientIdentifiers.getClientId();
+    public RegisteredClientData(@NonNull OAuth2Client OAuth2Client) {
+        this.userId = OAuth2Client.getUserId();
+        this.clientId = OAuth2Client.getClientId();
     }
 
     @Override

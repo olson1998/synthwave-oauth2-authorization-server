@@ -1,17 +1,20 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.request.service;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLoginRedirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PostLogoutRedirect;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RedirectClientBoundModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectClientBoundDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectClientBound;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
-import lombok.NonNull;
+import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Map.entry;
 
@@ -22,48 +25,94 @@ public class RedirectRequestService implements RedirectRepository {
 
     private final RedirectDataSourceRepository redirectDataSourceRepository;
 
+    private final RedirectClientBoundDataSourceRepository redirectClientBoundDataSourceRepository;
+
     @Override
-    public Collection<RedirectEntity> saveAll(@NonNull Collection<Redirect> redirectsCollection) {
-        var resolveRedirects = resolveRedirectScopes(redirectsCollection);
-        var redirects = resolveRedirects.get(1);
-        var postLogoutRedirects = resolveRedirects.get(2);
-        var presentEntities = redirectDataSourceRepository.getRedirectByRedirectAndPostLogoutURISet(
-                redirects,
-                postLogoutRedirects
+    public Collection<RedirectEntity> saveAll(Collection<Redirect> redirectsCollection) {
+        var redirectMap = createRedirectMap(redirectsCollection);
+        var redirectEntities = redirectDataSourceRepository.getRedirectFromURISet(
+                redirectMap.get(PostLoginRedirect.class),
+                redirectMap.get(PostLogoutRedirect.class)
         );
-        if(!presentEntities.isEmpty()){
-            log.warn("Redirects: {} already present", presentEntities);
-        }
-        var toPersist = resolveRedirectToPersist(redirectsCollection, presentEntities);
-        return redirectDataSourceRepository.saveAll(toPersist);
+        var notPresentRedirects = createNotPresentRedirectSet(redirectMap, redirectEntities);
+        return redirectDataSourceRepository.saveAll(notPresentRedirects);
     }
 
-    private Map<Integer, Set<String>> resolveRedirectScopes(Collection<Redirect> redirectCollection){
-        var redirects = new HashSet<String>();
-        var postLogoutRedirects = new HashSet<String>();
-        redirectCollection.forEach(redirect -> {
+    @Override
+    public void saveAllBindings(TSID registeredClientId, Set<String> redirectURISet, Set<String> postLogoutRedirectURISet) {
+        var redirectEntities = redirectDataSourceRepository.getRedirectFromURISet(
+                redirectURISet,
+                postLogoutRedirectURISet
+        );
+        var redirectBindings = createRedirectClientBindingSet(registeredClientId, redirectEntities);
+        redirectClientBoundDataSourceRepository.saveAll(redirectBindings);
+    }
+
+    private Set<RedirectClientBound> createRedirectClientBindingSet(TSID registeredClientId, Collection<RedirectEntity> redirectEntities){
+        return redirectEntities.stream()
+                .map(redirectEntity -> new RedirectClientBoundModel(redirectEntity.getId(), registeredClientId))
+                .collect(Collectors.toSet());
+    }
+
+    private Map<Class<? extends Redirect>, Set<String>> createRedirectMap(Collection<Redirect> redirectCollection){
+        var redirectURISet = new HashSet<String>();
+        var postLogoutRedirectURISet = new HashSet<String>();
+        for(Redirect redirect : redirectCollection){
             var uri = redirect.getUri();
-            if(redirect.isPostLogout()){
-                postLogoutRedirects.add(uri);
-            } else if (redirect.isPostLogin()) {
-                redirects.add(uri);
+            if(redirect.isPostLogin()){
+                redirectURISet.add(uri);
+            }else if (redirect.isPostLogout()){
+                postLogoutRedirectURISet.add(uri);
             }
-        });
+        }
         return Map.ofEntries(
-                entry(1, redirects),
-                entry(2, postLogoutRedirects)
+                entry(PostLoginRedirect.class, redirectURISet),
+                entry(PostLogoutRedirect.class, postLogoutRedirectURISet)
         );
     }
 
-    private Collection<Redirect> resolveRedirectToPersist(Collection<Redirect> redirectsCollection, Collection<RedirectEntity> presentEntities){
-        return redirectsCollection.stream()
-                .filter(redirect -> presentEntities.stream().anyMatch(redirectEntity -> isRedirectEntityMatching(redirectEntity, redirect)))
-                .toList();
+    private Set<Redirect> createNotPresentRedirectSet(Map<Class<? extends Redirect>, Set<String>> redirectsToPersist, Collection<RedirectEntity> presentEntities){
+        return redirectsToPersist.entrySet().stream()
+                .map(redirectEntry -> mapToNotPresentRedirectEntry(redirectEntry, presentEntities))
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
-    private boolean isRedirectEntityMatching(RedirectEntity redirectEntity, Redirect redirect){
-        return redirectEntity.getUri().equals(redirect.getUri()) &&
-                (redirectEntity.isPostLogin() && redirect.isPostLogout()) ||
-                (redirectEntity.isPostLogout() && redirect.isPostLogout());
+    private Set<Redirect> mapToNotPresentRedirectEntry(Map.Entry<Class<? extends Redirect>, Set<String>> redirectEntry,
+                                                       Collection<RedirectEntity> presentEntities){
+        var type = redirectEntry.getKey();
+        var uriSet = redirectEntry.getValue();
+        return uriSet.stream()
+                .filter(uri -> isRedirectPresent(uri, type, presentEntities))
+                .map(uri -> mapToRedirect(uri, type))
+                .collect(Collectors.toSet());
     }
+
+    private boolean isRedirectPresent(String uri, Class<? extends Redirect> redirectClass, Collection<RedirectEntity> presentEntities){
+        return presentEntities.stream()
+                .anyMatch(redirectEntity -> isEqualRedirect(redirectEntity, redirectClass, uri));
+    }
+
+    private boolean isEqualRedirect(RedirectEntity redirectEntity, Class<? extends Redirect> redirectClass, String uri){
+        boolean sameType;
+        if(redirectClass.equals(PostLoginRedirect.class)){
+            sameType =redirectEntity.isPostLogin();
+        } else if (redirectClass.equals(PostLogoutRedirect.class)) {
+            sameType = redirectEntity.isPostLogout();
+        }else {
+            throw new UnknownError();
+        }
+        return sameType && redirectEntity.getUri().equals(uri);
+    }
+
+    private Redirect mapToRedirect(String uri, Class<? extends Redirect> redirectClass){
+        if(redirectClass.equals(PostLoginRedirect.class)){
+            return new PostLoginRedirect(uri);
+        } else if (redirectClass.equals(PostLogoutRedirect.class)) {
+            return new PostLogoutRedirect(uri);
+        }else {
+            throw new UnknownError();
+        }
+    }
+
 }

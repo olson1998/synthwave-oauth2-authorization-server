@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.ClientAuthenticationMethodBindDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RegisteredClientDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientProvisioningRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.SynthWaveRegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
 import io.hypersistence.tsid.TSID;
@@ -56,14 +56,7 @@ public class DefaultRegisteredClientService implements SynthWaveRegisteredClient
 
     private RegisteredClientConfig appendRegisteredClientConfigs(RegisteredClientConfig registeredClientConfig){
         var id = registeredClientConfig.getId();
-        var code = registeredClientConfig.getCompanyCode();
-        var divi = registeredClientConfig.getDivision();
-        var redirectEntities = redirectDataSourceRepository.getRedirectByRedirectAndPostLogoutURISetAndAffiliation(
-                registeredClientConfig.getRedirectUris(),
-                registeredClientConfig.getPostLogoutRedirectUris(),
-                code,
-                divi
-        );
+        var redirectEntities = redirectDataSourceRepository.getRedirectByRegisteredClientId(registeredClientConfig.getId());
         var authorizationGrantTypes =
                 authorizationGrantTypeBindDataSourceRepository.getAuthorizationGrantTypesByRegisteredClientId(id);
         var clientAuthenticationMethods =

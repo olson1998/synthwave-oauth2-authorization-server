@@ -2,27 +2,26 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientRequestSupplier;
 import com.github.olson1998.synthwave.support.jackson.exception.IORuntimeException;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashSet;
 
-@RequiredArgsConstructor
-public class RegistrationClientRequestFileSupplier implements RegistrationClientRequestSupplier {
+@RequiredArgsConstructor(access = AccessLevel.MODULE)
+abstract class ProvisioningFileSupplier<T> {
 
     private final String configFileLocation;
 
     private final ObjectMapper objectMapper;
 
-    @Override
-    public LinkedHashSet<RegisteredClient> get() {
-        var configFile = getConfigFile();
-        return readConfigFileJSON(configFile);
+    private final TypeReference<T> mappingTypeRef;
+
+    T supplyFromFile(){
+        var provisioningFile = getConfigFile();
+        return readConfigFileJSON(provisioningFile);
     }
 
     private File getConfigFile(){
@@ -33,10 +32,9 @@ public class RegistrationClientRequestFileSupplier implements RegistrationClient
         }
     }
 
-    private LinkedHashSet<RegisteredClient> readConfigFileJSON(File configFile) {
+    private T readConfigFileJSON(File configFile) {
         try{
-            return objectMapper.readValue(configFile, new TypeReference<>() {
-            });
+            return objectMapper.readValue(configFile, mappingTypeRef);
         }catch(IOException e){
             throw new IORuntimeException(e);
         }

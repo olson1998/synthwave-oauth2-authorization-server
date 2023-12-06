@@ -1,8 +1,10 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.provisioning;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientProvisioningRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientRequestSupplier;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RedirectProvisioningSupplier;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.StartupProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegistrationClientProvisioningSupplier;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.support.pipeline.JobResult;
 import com.github.olson1998.synthwave.support.pipeline.Pipeline;
 import com.github.olson1998.synthwave.support.pipeline.PipelineInitializer;
@@ -16,34 +18,26 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor
-public class RegistrationClientProvisioningService implements RegistrationClientProvisioningRepository {
+public class StartupProvisioningService implements StartupProvisioningRepository {
 
-    private final RegistrationClientRequestSupplier registrationClientRequestSupplier;
+    private final RedirectProvisioningSupplier redirectProvisioningSupplier;
+
+    private final RegistrationClientProvisioningSupplier registrationClientProvisioningSupplier;
+
+    private final RedirectRepository redirectRepository;
 
     private final RegisteredClientProvisioningRepository registeredClientProvisioningRepository;
 
     @Override
     public void provision() {
-        var registeredClientSet = registrationClientRequestSupplier.get();
+        var redirectsSet = redirectProvisioningSupplier.get();
+        var registeredClientSet = registrationClientProvisioningSupplier.get();
         registeredClientSet.forEach(registeredClientProvisioningRepository::provision);
     }
 
     @Override
     public CompletableFuture<Void> provisionAsync() {
-        LinkedHashSet<RegisteredClient> registeredClients;
-        try{
-            registeredClients = registrationClientRequestSupplier.get();
-        }catch (Exception e){
-            log.error("Failed to obtain registration client, reason:", e);
-            registeredClients = new LinkedHashSet<>();
-        }
-        var provisioningPipes = registeredClients.stream()
-                .map(this::getRegisteredClientProvisioningPipeInit)
-                .map(Pipeline::initialJob)
-                .toList();
-        return Pipeline.combinePipelines(provisioningPipes)
-                .thenAcceptJob(this::logJobResults)
-                .toFuture();
+
     }
 
     private Void provisionRegisteredClient(RegisteredClient registeredClient){

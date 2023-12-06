@@ -2,8 +2,10 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import io.hypersistence.tsid.TSID;
 
-public interface RegisteredClientSecret extends ClientSecret {
+public interface OAuth2Client {
 
-    TSID getRegisteredClientId();
+    String getClientId();
+
+    TSID getUserId();
 
 }

@@ -1,45 +1,38 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSecretModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSettingsModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserMetadaModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PasswordModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ClientSecretModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.OAuth2ClientModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientTokenSettingsModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AffiliationRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.provisioning.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.AuthorizationGrantTypeBindDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.ClientAuthenticationMethodBindDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RegisteredClientProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.repository.RedirectRepository;
 import com.github.olson1998.synthwave.support.joda.converter.JavaInstantConverter;
+import io.hypersistence.tsid.TSID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
+import java.util.HashSet;
 import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DefaultRegisteredClientProvisioningService implements RegisteredClientProvisioningRepository {
 
-    private final PasswordRepository passwordRepository;
+    private final RedirectRepository redirectRepository;
 
-    private final AffiliationRepository affiliationRepository;
+    private final UserDetailsRepository userDetailsRepository;
 
-    private final UserDataSourceRepository userDataSourceRepository;
-
-    private final RegisteredClientDataSourceRepository registeredClientDataSourceRepository;
-
-    private final RegisteredClientSecretDataSourceRepository registeredClientSecretDataSourceRepository;
-
-    private final RegisteredClientSettingsDataSourceRepository registeredClientSettingsDataSourceRepository;
-
-    private final RegisteredClientTokenSettingsDataSourceRepository registeredClientTokenSettingsDataSourceRepository;
+    private final RegisteredClientRepository registeredClientRepository;
 
     private final AuthorizationGrantTypeBindDataSourceRepository authorizationGrantTypeBindDataSourceRepository;
 
@@ -59,28 +52,34 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 registeredClient.getClientName(),
                 "Client id is required property of registered client"
         );
-        var userMetadata = userDataSourceRepository.getUserMetadataByUsername(username)
+        var userMetadata = userDetailsRepository.getUserMetadataByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username: '%s' has not been found".formatted(username)));
-        var clientSecret = new RegisteredClientSecretModel(
-                null,
+        var clientSecret = new ClientSecretModel(
                 registeredClient.getClientSecret(),
                 new JavaInstantConverter(registeredClient.getClientSecretExpiresAt()).toMutableDateTime()
         );
-        saveRegisteredClient(registeredClient,clientSecret, userMetadata);
+        doProvisionRegisteredClient(registeredClient, clientSecret, userMetadata);
         return registeredClient;
     }
 
     @Override
     public void provisionSynthWaveClient(AbstractSynthWaveRegisteredClient synthWaveRegisteredClient) {
         var username = synthWaveRegisteredClient.getClientName();
-        var userMetadata = userDataSourceRepository.getUserMetadataByUsername(username)
-                .orElseGet(()-> saveNewUser(synthWaveRegisteredClient));
-        saveRegisteredClient(synthWaveRegisteredClient, synthWaveRegisteredClient.getRegisteredClientSecret(), userMetadata);
+        var userMetadata = userDetailsRepository.getUserMetadataByUsername(username)
+                .orElseGet(()-> userDetailsRepository.saveUser(synthWaveRegisteredClient));
+        doProvisionRegisteredClient(synthWaveRegisteredClient, synthWaveRegisteredClient.getClientSecretObject(), userMetadata);
     }
 
-    private void saveRegisteredClient(RegisteredClient registeredClient,
-                                      RegisteredClientSecret registeredClientSecret,
-                                      UserMetadata userMetadata){
+    private void doProvisionRegisteredClient(RegisteredClient registeredClient, ClientSecret clientSecret, UserMetadata userMetadata){
+        var username = userMetadata.getUsername();
+        if(!registeredClientRepository.isExistingRegisteredClientForUser(username)){
+            saveRegisteredClient(registeredClient, clientSecret, userMetadata);
+        }else {
+            log.info("Registered client for user: '{}' already exists", username);
+        }
+    }
+
+    private void saveRegisteredClient(RegisteredClient registeredClient, ClientSecret clientSecret, UserMetadata userMetadata){
         var clientId = registeredClient.getClientId();
         var username = userMetadata.getUsername();
         if(clientId.equals("{?}")){
@@ -88,17 +87,12 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                     userMetadata.getDivision().toLowerCase() + ".com";
         }
         var userId = userMetadata.getUserId();
-        var registeredClientProps = new RegisteredClientEntityModel(userId, clientId);
-        var registeredClientEntity = registeredClientDataSourceRepository.save(registeredClientProps);
-        var registeredClientId = registeredClientEntity.getId();
-        var authorizationGrantTypes = authorizationGrantTypesBoundMapper.mapToAuthorizationGrantTypeBindings(
+        var clientModel = new OAuth2ClientModel(userId, clientId);
+        var registeredClientId = registeredClientRepository.saveRegisteredClient(clientModel);
+        var registeredClientSecret = new RegisteredClientSecretModel(
                 registeredClientId,
-                registeredClient.getAuthorizationGrantTypes()
-        );
-        var clientSecret = new RegisteredClientSecretModel(
-                registeredClientId,
-                registeredClientSecret.getValue(),
-                registeredClientSecret.getExpiresDateTime()
+                clientSecret.getValue(),
+                clientSecret.getExpiresDateTime()
         );
         var clientSettings = registeredClient.getClientSettings();
         var registeredClientSettings = new RegisteredClientSettingsModel(
@@ -110,34 +104,37 @@ public class DefaultRegisteredClientProvisioningService implements RegisteredCli
                 registeredClientId,
                 registeredClient.getTokenSettings()
         );
+        var authorizationGrantTypes = authorizationGrantTypesBoundMapper.mapToAuthorizationGrantTypeBindings(
+                registeredClientId,
+                registeredClient.getAuthorizationGrantTypes()
+        );
         var clientAuthenticationMethodBounds = clientAuthenticationMethodBoundMapper.map(
                 registeredClientId,
                 registeredClient.getClientAuthenticationMethods()
         );
-        registeredClientSecretDataSourceRepository.save(clientSecret);
-        registeredClientSettingsDataSourceRepository.save(registeredClientSettings);
-        registeredClientTokenSettingsDataSourceRepository.save(clientTokenSettings);
+        registeredClientRepository.saveClientSecret(registeredClientId, clientSecret);
+        registeredClientRepository.saveClientSettings(registeredClientSettings);
+        registeredClientRepository.saveTokenSettings(clientTokenSettings);
+        saveRedirectBindings(registeredClient, registeredClientId);
         authorizationGrantTypeBindDataSourceRepository.saveAll(authorizationGrantTypes);
         clientAuthenticationMethodBindDataSourceRepository.saveAll(clientAuthenticationMethodBounds);
     }
 
-    private UserMetadata saveNewUser(AbstractSynthWaveRegisteredClient synthWaveRegisteredClient){
-        var username = synthWaveRegisteredClient.getClientName();
-        var password = synthWaveRegisteredClient.getUserPassword();
-        var companyCode = synthWaveRegisteredClient.getCompanyCode();
-        var division = synthWaveRegisteredClient.getDivision();
-        var userProps = new UserPropertiesModel(
-                username,
-                true,
-                null
+    private void saveRedirectBindings(RegisteredClient registeredClient, TSID registeredClientId){
+        var requestedRedirectURI = Objects.requireNonNullElseGet(
+                registeredClient.getRedirectUris(),
+                ()-> new HashSet<String>()
         );
-        var userEntity = userDataSourceRepository.save(userProps);
-        var userId = userEntity.getId();
-        var affiliation = new AffiliationEntityModel(userId, companyCode, division);
-        affiliationRepository.save(affiliation);
-        var passwordObj = new PasswordModel(password.getValue(), userId, password.getExpirePeriod());
-        passwordRepository.save(passwordObj);
-        return new UserMetadaModel(userId, username, companyCode, division);
+        var requestedPostLogoutRedirectURI = Objects.requireNonNullElseGet(
+                registeredClient.getPostLogoutRedirectUris(),
+                ()-> new HashSet<String>()
+        );
+        redirectRepository.saveAllBindings(
+                registeredClientId,
+                requestedRedirectURI,
+                requestedPostLogoutRedirectURI
+        );
     }
+
 
 }

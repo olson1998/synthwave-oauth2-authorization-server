@@ -2,9 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import io.hypersistence.tsid.TSID;
 
-public interface RegisteredClientIdentifiers {
-
-    String getClientId();
+public interface UserPassword extends Password{
 
     TSID getUserId();
 }

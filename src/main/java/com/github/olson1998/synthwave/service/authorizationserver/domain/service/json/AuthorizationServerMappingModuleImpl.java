@@ -28,6 +28,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         //entities
         mappings.addSerializer(Password.class, new PasswordStdSerializer());
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
+        mappings.addSerializer(UserPassword.class, new UserPasswordStdSerializer());
+        mappings.addDeserializer(UserPassword.class, new UserPasswordStdDeserializer());
         mappings.addDeserializer(PasswordEntity.class, new PasswordEntityStdDeserializer());
         mappings.addSerializer(PasswordEntity.class, new PasswordEntityStdSerializer());
         mappings.addDeserializer(Redirect.class, new RedirectStdDeserializer());
@@ -46,6 +48,8 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(UserProperties.class, new UserPropertiesStdDeserializer());
         mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
         mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
+        mappings.addDeserializer(ClientSecret.class, new ClientSecretStdDeserializer());
+        mappings.addSerializer(ClientSecret.class, new ClientSecretStdSerializer());
         mappings.addSerializer(RegisteredClientSecret.class, new RegisteredClientSecretStdSerializer());
         mappings.addDeserializer(RegisteredClientSecret.class, new RegisteredClientSecretStdDeserializer());
         //Registered client

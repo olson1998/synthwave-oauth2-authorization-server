@@ -1,8 +1,9 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
-import lombok.*;
-import org.joda.time.Period;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.joda.time.MutableDateTime;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class UserPropertiesModel implements UserProperties {
 
     private final String username;
 
-    private final boolean enabled;
+    private final Boolean enabled;
 
-    private final Period expirePeriod;
+    private final MutableDateTime expireDateTime;
 }

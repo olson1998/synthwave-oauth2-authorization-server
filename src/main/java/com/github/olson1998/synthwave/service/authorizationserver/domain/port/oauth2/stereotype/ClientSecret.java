@@ -2,9 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import org.joda.time.MutableDateTime;
 
-public interface Password {
+public interface ClientSecret {
 
     String getValue();
 
-    MutableDateTime getExpireDateTime();
+    MutableDateTime getExpiresDateTime();
 }

@@ -1,25 +1,22 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.PasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AffiliationRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSavingRequest;
-import lombok.NonNull;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserProvisioningRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class DefaultUserDetailsService implements UserDetailsRepository {
 
     private final UserDataSourceRepository userDataSourceRepository;
 
-    private final PasswordRepository passwordRepository;
-
-    private final AffiliationRepository affiliationRepository;
+    private final UserProvisioningRepository userProvisioningRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,22 +30,13 @@ public class DefaultUserDetailsService implements UserDetailsRepository {
     }
 
     @Override
-    public void saveUser(@NonNull UserSavingRequest userSavingRequest) {
-        var user = userDataSourceRepository.save(userSavingRequest.getUser());
-        var affiliation = userSavingRequest.getAffiliation();
-        var password = userSavingRequest.getPassword();
-        var userId = user.getId();
-        var affiliationObj = new AffiliationEntityModel(
-                userId,
-                affiliation.getCompanyCode(),
-                affiliation.getDivision()
-        );
-        var passwordObj = new PasswordModel(
-                password.getValue(),
-                userId,
-                password.getExpirePeriod()
-        );
-        affiliationRepository.save(affiliationObj);
-        passwordRepository.save(passwordObj);
+    public Optional<UserMetadata> getUserMetadataByUsername(String username) {
+        return userDataSourceRepository.getUserMetadataByUsername(username);
     }
+
+    @Override
+    public UserMetadata saveUser(SynthWaveUserProperties synthWaveUserProperties) {
+        return userProvisioningRepository.provision(synthWaveUserProperties);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
+import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.PeriodJavaType;
 import com.github.olson1998.synthwave.support.hibernate.javatype.TSIDJavaType;
 import io.hypersistence.tsid.TSID;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
 import org.springframework.data.domain.Persistable;
 
@@ -39,17 +41,17 @@ public class UserData implements UserEntity, Persistable<TSID> {
     private String username;
 
     @Column(name = "USRENB", nullable = false)
-    private boolean enabled;
+    private Boolean enabled;
 
     @Column(name = "USREXP")
-    @JavaType(PeriodJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private Period expirePeriod;
+    @JavaType(MutableDateTimeJavaType.class)
+    private MutableDateTime expireDateTime;
 
     public UserData(@NonNull UserProperties userProperties) {
         this.username = userProperties.getUsername();
-        this.enabled = userProperties.isEnabled();
-        this.expirePeriod = userProperties.getExpirePeriod();
+        this.enabled = userProperties.getEnabled();
+        this.expireDateTime = userProperties.getExpireDateTime();
     }
 
 

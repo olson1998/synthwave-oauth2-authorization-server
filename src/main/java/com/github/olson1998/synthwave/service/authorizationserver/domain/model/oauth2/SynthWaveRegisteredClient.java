@@ -1,12 +1,13 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -16,8 +17,8 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import java.time.Instant;
 import java.util.Set;
 
-@ToString(exclude = {"registeredClientSecret", "userPassword"})
-@EqualsAndHashCode(callSuper = true, exclude = {"registeredClientSecret","userPassword"})
+@ToString(exclude = {"clientSecretObject", "userPassword"})
+@EqualsAndHashCode(callSuper = true, exclude = {"clientSecretObject","userPassword"})
 @RequiredArgsConstructor
 public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient {
 
@@ -39,7 +40,7 @@ public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient
     private final RegisteredClient registeredClient;
 
     @Getter
-    private final RegisteredClientSecret registeredClientSecret;
+    private final ClientSecret clientSecretObject;
 
     @Override
     public String getId() {
@@ -106,4 +107,18 @@ public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient
         return registeredClient.getTokenSettings();
     }
 
+    @Override
+    public String getUsername() {
+        return getClientName();
+    }
+
+    @Override
+    public Boolean getEnabled() {
+        return null;
+    }
+
+    @Override
+    public MutableDateTime getExpireDateTime() {
+        return null;
+    }
 }

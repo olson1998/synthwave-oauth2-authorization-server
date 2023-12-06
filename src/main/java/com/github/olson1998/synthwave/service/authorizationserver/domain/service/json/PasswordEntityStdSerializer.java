@@ -19,11 +19,8 @@ class PasswordEntityStdSerializer extends AbstractObjectStdSerializer<PasswordEn
     protected void serializeObject(PasswordEntity passwordEntity, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         writeField(PASSWORD_ID_JSON_FIELD, passwordEntity.getId(), jsonGenerator);
         writeField(PASSWORD_USER_ID_JSON_FIELD, passwordEntity.getUserId(), jsonGenerator);
-        writeField(PASSWORD_EXPIRE_PERIOD_JSON_FILED, passwordEntity.getExpirePeriod(), jsonGenerator, false);
-    }
-
-    private boolean isNotLatestVer(){
-        return false;
+        writeField(PASSWORD_VALUE_JSON_FILED, passwordEntity.getValue(), jsonGenerator);
+        writeField(PASSWORD_EXPIRE_DATE_TIME_JSON_FILED, passwordEntity.getExpireDateTime(), jsonGenerator, false);
     }
 
 }

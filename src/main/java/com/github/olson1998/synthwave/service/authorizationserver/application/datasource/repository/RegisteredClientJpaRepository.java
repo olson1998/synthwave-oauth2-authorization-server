@@ -14,11 +14,13 @@ import java.util.Optional;
 interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientData, TSID> {
 
     @Query("""
-           SELECT registeredClient.clientId
+           SELECT CASE WHEN COUNT(registeredClient.id)>0 THEN true ELSE false END
            FROM RegisteredClientData registeredClient
-           WHERE registeredClient.userId=:userId
+           LEFT OUTER JOIN UserData user
+           ON registeredClient.userId=user.id
+           WHERE user.username=:username
            """)
-    Optional<String> selectClientIdByUserId(@Param("userId") TSID userId);
+    boolean selectCaseWhenCountRegisteredClientWithUsernameIsGreaterThanZero(@Param("username") String username);
 
     @Query("""
     SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig(

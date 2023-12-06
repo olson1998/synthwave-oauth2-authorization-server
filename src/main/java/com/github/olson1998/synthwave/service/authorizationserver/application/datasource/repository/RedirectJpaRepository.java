@@ -16,40 +16,21 @@ interface RedirectJpaRepository extends JpaRepository<RedirectData, TSID> {
     @Query("""
            SELECT redirect
            FROM RedirectData redirect
-           LEFT OUTER JOIN RedirectBoundData bound
-           ON redirect.id=bound.properties.redirectId
-           WHERE bound.properties.affiliationProperties.companyCode=:code
-           AND bound.properties.affiliationProperties.division=:divi
-           """)
-    List<RedirectData> selectRedirectByCompanyCodeAndDivision(@Param("code") String companyCode, @Param("divi")String division);
-
-    @Query("""
-           SELECT redirect
-           FROM RedirectData redirect
            WHERE
            (redirect.uri IN :redirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGIN)
            OR
            (redirect.uri IN :postLogoutRedirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGOUT)
            """)
-    List<RedirectData> selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(@Param("redirects") Set<String> redirects,
-                                                                                      @Param("postLogoutRedirects") Set<String> postLogoutRedirects);
+    List<RedirectData> selectRedirectByRedirectAndPostLogoutURI(@Param("redirects") Set<String> redirects,
+                                                                @Param("postLogoutRedirects") Set<String> postLogoutRedirects);
 
     @Query("""
            SELECT redirect
            FROM RedirectData redirect
-           LEFT OUTER JOIN RedirectBoundData bound
-           ON redirect.id=bound.properties.redirectId
-           WHERE
-           (redirect.uri IN :redirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGIN)
-           OR
-           (redirect.uri IN :postLogoutRedirects AND redirect.scope=com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope.POST_LOGOUT)
-           AND
-           bound.properties.affiliationProperties.companyCode=:code
-           AND
-           bound.properties.affiliationProperties.division=:divi
+           LEFT OUTER JOIN RedirectClientBoundData client
+           ON redirect.id=client.binding.redirectId
+           WHERE client.binding.registeredClientId=:registeredClientId
            """)
-    List<RedirectData> selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(@Param("redirects") Set<String> redirects,
-                                                                                      @Param("postLogoutRedirects") Set<String> postLogoutRedirects,
-                                                                                      @Param("code") String comapnyCode,
-                                                                                      @Param("divi") String division);
+    List<RedirectData> selectRedirectByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+
 }

@@ -5,6 +5,6 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import java.util.LinkedHashSet;
 import java.util.function.Supplier;
 
-public interface RegistrationClientRequestSupplier extends Supplier<LinkedHashSet<RegisteredClient>> {
+public interface RegistrationClientProvisioningSupplier extends Supplier<LinkedHashSet<RegisteredClient>> {
 
 }

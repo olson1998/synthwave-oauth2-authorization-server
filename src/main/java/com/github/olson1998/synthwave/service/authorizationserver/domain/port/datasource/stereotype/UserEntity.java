@@ -7,6 +7,4 @@ public interface UserEntity extends UserProperties {
 
     TSID getId();
 
-    boolean isEnabled();
-
 }

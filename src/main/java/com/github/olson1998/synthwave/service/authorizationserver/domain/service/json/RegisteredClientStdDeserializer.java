@@ -6,12 +6,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
+import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import com.github.olson1998.synthwave.support.web.model.PathVariables;
 import com.github.olson1998.synthwave.support.web.util.URIModel;
-import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -41,7 +41,7 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
         var division = readJsonProperty(REGISTERED_CLIENT_DIVISION_JSON_PROPERTY, objectNode, objectCodec, String.class);
         var clientId = Optional.ofNullable(readJsonProperty(REGISTERED_CLIENT_CLIENT_ID_JSON_PROPERTY, objectNode, objectCodec, String.class))
                 .orElse("{?}");
-        var clientSecret = readJsonProperty(REGISTERED_CLIENT_SECRET_JSON_PROPERTY, objectNode, objectCodec, RegisteredClientSecret.class);
+        var clientSecret = readJsonProperty(REGISTERED_CLIENT_SECRET_JSON_PROPERTY, objectNode, objectCodec, ClientSecret.class);
         var username = readJsonProperty(REGISTERED_CLIENT_NAME_JSON_PROPERTY, objectNode, objectCodec, String.class, true);
         var password = readJsonProperty(REGISTERED_CLIENT_USER_PASSWORD_JSON_PROPERTY, objectNode, objectCodec, Password.class);
         var tokenSettings =readJsonProperty(REGISTERED_CLIENT_TOKEN_SETTINGS_JSON_PROPERTY, objectNode, objectCodec, TokenSettings.class);

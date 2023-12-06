@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.RedirectDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Redirect;
+import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,30 +19,15 @@ public class RedirectJpaRepositoryProxy implements RedirectDataSourceRepository 
     private final RedirectJpaRepository redirectJpaRepository;
 
     @Override
-    public Collection<RedirectEntity> getRedirectByAffiliation(@NonNull String companyCode,@NonNull String division) {
-        return redirectJpaRepository.selectRedirectByCompanyCodeAndDivision(companyCode, division).stream()
+    public Collection<RedirectEntity> getRedirectByRegisteredClientId(TSID registeredClientId) {
+        return redirectJpaRepository.selectRedirectByRegisteredClientId(registeredClientId).stream()
                 .map(RedirectEntity.class::cast)
                 .toList();
     }
 
     @Override
-    public Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISet(Set<String> redirects, Set<String> postLogoutRedirects) {
-        return redirectJpaRepository.selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(redirects, postLogoutRedirects).stream()
-                .map(RedirectEntity.class::cast)
-                .toList();
-    }
-
-    @Override
-    public Collection<RedirectEntity> getRedirectByRedirectAndPostLogoutURISetAndAffiliation(@NonNull Set<String> redirects,
-                                                                                             @NonNull Set<String> postLogoutRedirects,
-                                                                                             @NonNull String companyCode,
-                                                                                             @NonNull String division) {
-        return redirectJpaRepository.selectRedirectByRedirectAndPostLogoutURICompanyCodeAndDivision(
-                redirects,
-                postLogoutRedirects,
-                companyCode,
-                division
-        ).stream()
+    public Collection<RedirectEntity> getRedirectFromURISet(Set<String> redirectURISet, Set<String> postLogoutRedirectURISet) {
+        return redirectJpaRepository.selectRedirectByRedirectAndPostLogoutURI(redirectURISet, postLogoutRedirectURISet).stream()
                 .map(RedirectEntity.class::cast)
                 .toList();
     }

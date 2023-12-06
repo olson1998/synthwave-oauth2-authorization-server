@@ -9,6 +9,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.d
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdDeserializer;
 import io.hypersistence.tsid.TSID;
+import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
 
 import java.io.IOException;
@@ -23,15 +24,15 @@ class PasswordEntityStdDeserializer extends AbstractObjectStdDeserializer<Passwo
 
     @Override
     protected PasswordEntity deserializeObjectNode(ObjectNode objectNode, ObjectCodec objectCodec, JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
-        var id = readJsonProperty(PASSWORD_ID_JSON_FIELD, objectNode, objectCodec, TSID.class);
+        var id = readJsonProperty(PASSWORD_ID_JSON_FIELD, objectNode, objectCodec, TSID.class, true);
         var userId= readJsonProperty(PASSWORD_USER_ID_JSON_FIELD, objectNode, objectCodec, TSID.class, true);
         var value = readJsonProperty(PASSWORD_VALUE_JSON_FILED, objectNode, objectCodec, String.class, true);
-        var expirePeriod = readJsonProperty(PASSWORD_EXPIRE_PERIOD_JSON_FILED, objectNode, objectCodec, Period.class);
+        var expireDate = readJsonProperty(PASSWORD_EXPIRE_DATE_TIME_JSON_FILED, objectNode, objectCodec, MutableDateTime.class);
         return new PasswordEntityModel(
                 id,
                 userId,
                 value,
-                expirePeriod
+                expireDate
         );
     }
 }

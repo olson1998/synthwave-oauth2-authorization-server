@@ -1,10 +1,10 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserPassword;
 
 public interface PasswordRepository {
 
-    void save(Password password);
+    void save(UserPassword userPassword);
 
     String encode(String password);
 }

@@ -6,7 +6,7 @@ import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.joda.time.Period;
+import org.joda.time.MutableDateTime;
 
 @Getter
 @ToString
@@ -19,8 +19,8 @@ public class UserEntityModel extends UserPropertiesModel implements UserEntity {
 
     private final TSID id;
 
-    public UserEntityModel(TSID id, String username, boolean enabled, Period expirePeriod) {
-        super(username,enabled, expirePeriod);
+    public UserEntityModel(TSID id, String username, Boolean enabled, MutableDateTime expireDateTime) {
+        super(username, enabled, expireDateTime);
         this.id = id;
     }
 }

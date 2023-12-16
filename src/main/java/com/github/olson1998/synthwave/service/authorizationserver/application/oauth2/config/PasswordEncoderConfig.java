@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.Argon2Properties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.properties.Argon2Properties;
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

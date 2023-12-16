@@ -34,7 +34,9 @@ public class RedirectService implements RedirectRepository {
 
     @Override
     public RedirectEntity save(Redirect redirect) {
-        return redirectDataSourceRepository.save(redirect);
+        return saveAll(List.of(redirect)).stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

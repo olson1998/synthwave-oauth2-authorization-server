@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Affiliation;
 import io.hypersistence.tsid.TSID;
 import lombok.*;
+import org.joda.time.MutableDateTime;
 import org.joda.time.Period;
 
 @Getter
@@ -16,9 +17,9 @@ public class AffiliatedUserModel implements UserEntity, Affiliation {
     
     private final String username;
     
-    private final boolean enabled;
+    private final Boolean enabled;
     
-    private final Period expirePeriod;
+    private final MutableDateTime expireDateTime;
     
     private final String companyCode;
     

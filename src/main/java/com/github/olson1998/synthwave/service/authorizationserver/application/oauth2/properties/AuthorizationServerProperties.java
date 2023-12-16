@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props;
+package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

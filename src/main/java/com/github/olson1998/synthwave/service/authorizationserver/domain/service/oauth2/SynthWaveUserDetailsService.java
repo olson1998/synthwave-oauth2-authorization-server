@@ -32,11 +32,6 @@ public class SynthWaveUserDetailsService implements UserDetailsRepository {
     }
 
     @Override
-    public boolean existsUserDetailsForUsername(String username) {
-        return userDataSourceRepository.existsUserWithGivenUsername(username);
-    }
-
-    @Override
     public Optional<UserMetadata> getUserMetadataByUsername(String username) {
         return userDataSourceRepository.getUserMetadataByUsername(username);
     }

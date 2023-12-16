@@ -18,6 +18,6 @@ class PasswordStdSerializer extends AbstractObjectStdSerializer<Password> {
     @Override
     protected void serializeObject(Password password, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         writeField(PASSWORD_VALUE_JSON_FILED, password.getValue(), jsonGenerator);
-        writeField(PASSWORD_EXPIRE_PERIOD_JSON_FILED, password.getExpirePeriod(), jsonGenerator, false);
+        writeField(PASSWORD_EXPIRE_DATE_TIME_JSON_FILED, password.getExpireDateTime(), jsonGenerator, false);
     }
 }

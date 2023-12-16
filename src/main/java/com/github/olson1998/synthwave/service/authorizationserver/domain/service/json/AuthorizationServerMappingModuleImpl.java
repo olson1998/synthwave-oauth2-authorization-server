@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.json.AuthorizationServerMappingModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSavingRequest;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.request.stereotype.UserSchema;
 import lombok.Getter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -46,8 +44,6 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(UserEntity.class, new UserEntityStdDeserializer());
         mappings.addSerializer(UserProperties.class, new UserPropertiesStdSerializer());
         mappings.addDeserializer(UserProperties.class, new UserPropertiesStdDeserializer());
-        mappings.addSerializer(UserSchema.class, new UserSchemaStdSerializer());
-        mappings.addDeserializer(UserSchema.class, new UserSchemaStdDeserializer());
         mappings.addDeserializer(ClientSecret.class, new ClientSecretStdDeserializer());
         mappings.addSerializer(ClientSecret.class, new ClientSecretStdSerializer());
         mappings.addSerializer(RegisteredClientSecret.class, new RegisteredClientSecretStdSerializer());
@@ -67,8 +63,6 @@ public class AuthorizationServerMappingModuleImpl implements AuthorizationServer
         mappings.addDeserializer(ClientSettings.class, new ClientSettingsStdDeserializer());
         mappings.addSerializer(JwsAlgorithm.class, new JwsAlgorithmStdSerializer());
         mappings.addDeserializer(JwsAlgorithm.class, new JwsAlgorithmStdDeserializer());
-        //Request
-        mappings.addDeserializer(UserSavingRequest.class, new UserSavingRequestStdDeserializer());
         this.module = mappings;
     }
 }

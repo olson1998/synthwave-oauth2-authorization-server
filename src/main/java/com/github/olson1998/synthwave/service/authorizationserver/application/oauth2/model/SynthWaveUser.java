@@ -4,11 +4,10 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import io.hypersistence.tsid.TSID;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import org.joda.time.Period;
+import org.joda.time.MutableDateTime;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -32,16 +31,15 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
                          String division,
                          String username,
                          boolean enabled,
-                         Period accountExpirePeriod,
+                         MutableDateTime accountExpDate,
                          PasswordEntity passwordEntityData,
                          boolean accountNonLocked) {
         super(userId, username, companyCode, division);
         this.enabled = enabled;
         this.passwordEntityData = passwordEntityData;
         this.accountNonLocked = accountNonLocked;
-        this.accountNonExpired =
-                isNonExpired(userId.getInstant(), accountExpirePeriod);
-        this.credentialsNonExpired = isPasswordNonExpired(passwordEntityData);
+        this.accountNonExpired = isBeforeNow(passwordEntityData.getExpireDateTime());
+        this.credentialsNonExpired = isBeforeNow(passwordEntityData.getExpireDateTime());
     }
 
     @Override
@@ -54,21 +52,10 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
         return passwordEntityData.getValue();
     }
 
-    private boolean isPasswordNonExpired(PasswordEntity passwordEntity){
-        var issueInstant = passwordEntity.getId().getInstant();
-        return Optional.ofNullable(passwordEntity.getExpirePeriod())
-                .map(period -> isNonExpired(issueInstant, period))
+    private boolean isBeforeNow(MutableDateTime mutableDateTime){
+        return Optional.ofNullable(mutableDateTime)
+                .map(dateTime -> dateTime.isBefore(MutableDateTime.now()))
                 .orElse(true);
-    }
-
-    private boolean isNonExpired(Instant issueInstant, Period expirePeriod){
-        return Optional.ofNullable(expirePeriod)
-                .map(period ->{
-                    var jodaInstant =
-                            org.joda.time.Instant.ofEpochMilli(issueInstant.toEpochMilli());
-                    var expireInstant = jodaInstant.plus(period.toStandardDuration());
-                    return expireInstant.isAfterNow();
-                }).orElse(true);
     }
 
     @Override

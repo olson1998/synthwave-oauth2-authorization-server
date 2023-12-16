@@ -3,7 +3,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.RegisteredClientSecretModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ClientSecretModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
 import com.github.olson1998.synthwave.support.jackson.AbstractObjectStdSerializer;
 import com.github.olson1998.synthwave.support.joda.converter.JavaInstantConverter;
@@ -37,17 +39,16 @@ class RegisteredClientStdSerializer extends AbstractObjectStdSerializer<Register
     }
 
     private void serializeClientSecret(RegisteredClient registeredClient, JsonGenerator jsonGenerator){
-        RegisteredClientSecret registeredClientSecret;
+        ClientSecret clientSecret;
         if(registeredClient instanceof AbstractSynthWaveRegisteredClient synthWaveRegisteredClient){
-            registeredClientSecret = synthWaveRegisteredClient.getRegisteredClientSecret();
+            clientSecret = synthWaveRegisteredClient.getClientSecretObject();
         }else {
-            registeredClientSecret = new RegisteredClientSecretModel(
-                    null,
+            clientSecret = new ClientSecretModel(
                     registeredClient.getClientSecret(),
                     new JavaInstantConverter(registeredClient.getClientSecretExpiresAt()).toMutableDateTime()
             );
         }
-        writeField(REGISTERED_CLIENT_SECRET_JSON_PROPERTY, registeredClientSecret, jsonGenerator, false);
+        writeField(REGISTERED_CLIENT_SECRET_JSON_PROPERTY, clientSecret, jsonGenerator, false);
     }
 
     private TSID readTsid(String stringValue){

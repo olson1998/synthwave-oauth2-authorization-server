@@ -20,6 +20,6 @@ class UserPropertiesStdSerializer extends AbstractObjectStdSerializer<UserProper
     @Override
     protected void serializeObject(UserProperties userProperties, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         writeField(USER_NAME_JSON_FIELD, userProperties.getUsername(), jsonGenerator);
-        writeField(USER_EXP_PERIOD_JSON_FIELD, userProperties.getExpirePeriod(), jsonGenerator, false);
+        writeField(USER_EXP_PERIOD_JSON_FIELD, userProperties.getExpireDateTime(), jsonGenerator, false);
     }
 }

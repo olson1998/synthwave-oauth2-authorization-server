@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.AuthorizationServerProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.properties.AuthorizationServerProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

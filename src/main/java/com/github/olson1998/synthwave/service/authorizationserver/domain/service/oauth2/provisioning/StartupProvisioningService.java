@@ -34,7 +34,7 @@ public class StartupProvisioningService implements StartupProvisioningRepository
 
     @Override
     public void provision() {
-        var supplySuccessRef = new AtomicBoolean(false);
+        var supplySuccessRef = new AtomicBoolean(true);
         var redirects = supplyProvisionedRedirect(supplySuccessRef);
         provisionDataSync(supplySuccessRef.get(), redirects, this::provisionRedirect);
         var registrationClients =supplyProvisionedRegisteredClient(supplySuccessRef);
@@ -47,25 +47,13 @@ public class StartupProvisioningService implements StartupProvisioningRepository
     }
 
     private LinkedHashSet<Redirect> supplyProvisionedRedirect(AtomicBoolean supplySuccessRef){
-        try{
-            return redirectProvisioningSupplier.get();
-        }catch (Exception e){
-            fire(e, startupProvisioningProperties.getRedirectProvisioningProperties().isThrowException());
-            log.error("Failed to obtain redirects for provisioning, reason:", e);
-            supplySuccessRef.set(false);
-            return null;
-        }
+        return redirectProvisioningSupplier.get()
+                .orElse(null);
     }
 
     private LinkedHashSet<RegisteredClient> supplyProvisionedRegisteredClient(AtomicBoolean supplySuccessRef){
-        try{
-            return registrationClientProvisioningSupplier.get();
-        }catch (Exception e){
-            fire(e, startupProvisioningProperties.getRegistrationClientProvisioningProperties().isThrowException());
-            log.error("Failed to obtain registered clients for provisioning, reason:", e);
-            supplySuccessRef.set(false);
-            return null;
-        }
+        return registrationClientProvisioningSupplier.get()
+                .orElse(null);
     }
 
     private <T> void provisionDataSync(boolean provision,

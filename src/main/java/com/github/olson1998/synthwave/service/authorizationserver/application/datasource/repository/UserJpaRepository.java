@@ -39,7 +39,7 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
     affiliation.properties.division,
     user.username,
     user.enabled,
-    user.expirePeriod,
+    user.expireDateTime,
     password,
     CASE WHEN (COUNT(lock.id) > 0) THEN false ELSE true END
     )

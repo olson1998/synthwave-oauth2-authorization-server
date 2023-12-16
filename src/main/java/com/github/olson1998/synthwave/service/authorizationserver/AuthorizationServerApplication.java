@@ -15,10 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableConfigurationProperties
 
 @SpringBootApplication
-public class Oauth2AuthorizationServerApplication {
+public class AuthorizationServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Oauth2AuthorizationServerApplication.class, args);
+        SpringApplication.run(AuthorizationServerApplication.class, args);
     }
 
 }

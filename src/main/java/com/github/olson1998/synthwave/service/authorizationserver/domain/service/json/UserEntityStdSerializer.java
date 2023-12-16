@@ -19,7 +19,7 @@ class UserEntityStdSerializer extends AbstractObjectStdSerializer<UserEntity> {
     protected void serializeObject(UserEntity userEntity, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         writeField(USER_ID_JSON_FIELD, userEntity.getId(), jsonGenerator);
         writeField(USER_NAME_JSON_FIELD, userEntity.getUsername(), jsonGenerator);
-        writeField(USER_ENABLED_JSON_FIELD, userEntity.isEnabled(), jsonGenerator);
-        writeField(USER_EXP_PERIOD_JSON_FIELD, userEntity.getExpirePeriod(), jsonGenerator, false);
+        writeField(USER_ENABLED_JSON_FIELD, userEntity.getEnabled(), jsonGenerator);
+        writeField(USER_EXP_PERIOD_JSON_FIELD, userEntity.getExpireDateTime(), jsonGenerator, false);
     }
 }

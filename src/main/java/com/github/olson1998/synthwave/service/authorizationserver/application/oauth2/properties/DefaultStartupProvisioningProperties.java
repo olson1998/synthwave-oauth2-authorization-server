@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props;
+package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.properties;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.properties.ProvisioningProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.properties.StartupProvisioningProperties;
@@ -22,20 +22,6 @@ public class DefaultStartupProvisioningProperties implements StartupProvisioning
     private ProvisioningType type = ProvisioningType.SYNC;
 
     private ProvisioningSource source = ProvisioningSource.FILE;
-
-    private final RedirectProvisioningProperties redirectUri = new RedirectProvisioningProperties();
-
-    private final RegistrationClientProvisioningProperties registrationClient = new RegistrationClientProvisioningProperties();
-
-    @Override
-    public ProvisioningProperties getRedirectProvisioningProperties() {
-        return redirectUri;
-    }
-
-    @Override
-    public ProvisioningProperties getRegistrationClientProvisioningProperties() {
-        return registrationClient;
-    }
 
     public enum ProvisioningSource{
         FILE

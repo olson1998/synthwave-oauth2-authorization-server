@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface UserDetailsRepository extends UserDetailsService {
 
-    boolean existsUserDetailsForUsername(String username);
-
     Optional<UserMetadata> getUserMetadataByUsername(String username);
 
     UserMetadata saveUser(SynthWaveUserProperties synthWaveUserProperties);

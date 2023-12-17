@@ -58,29 +58,21 @@ public class StartupProvisioningService implements StartupProvisioningRepository
 
     private <T> void provisionDataSync(boolean provision,
                                        LinkedHashSet<T> provisionedData,
-                                       BiConsumer<T, Boolean> provisionConsumer){
+                                       BiConsumer<LinkedHashSet<T>, Boolean> provisionConsumer){
         Optional.ofNullable(provisionedData).ifPresent(provisionObjectSet ->{
-            provisionObjectSet.forEach(object -> provisionConsumer.accept(object, provision));
+            provisionConsumer.accept(provisionedData, provision);
         });
     }
 
-    private void provisionRedirect(Redirect redirect, boolean provision){
+    private void provisionRedirect(LinkedHashSet<Redirect> redirects, boolean provision){
         if(provision){
-            try{
-                redirectRepository.save(redirect);
-            }catch (Exception e){
-                log.error("Failed to provision redirect, reason:", e);
-            }
+            redirectRepository.saveAll(redirects);
         }
     }
 
-    private void provisionRegistrationClient(RegisteredClient registeredClient, boolean provision){
+    private void provisionRegistrationClient(LinkedHashSet<RegisteredClient> registeredClients, boolean provision){
         if(provision){
-            try{
-                registeredClientRepository.saveRegisteredClient(registeredClient);
-            }catch (Exception e){
-                log.error("Failed to provision registration clients, reason:", e);
-            }
+            registeredClients.forEach(registeredClientRepository::saveRegisteredClient);
         }
     }
 

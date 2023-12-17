@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.AbstractSynthWaveRegisteredClient;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.ClientSecret;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.Password;
+import com.github.olson1998.synthwave.support.web.util.URIModel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,10 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
+import java.net.URI;
 import java.time.Instant;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @ToString(exclude = {"clientSecretObject", "userPassword"})
 @EqualsAndHashCode(callSuper = true, exclude = {"clientSecretObject","userPassword"})
@@ -41,6 +44,12 @@ public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient
 
     @Getter
     private final ClientSecret clientSecretObject;
+
+    @Getter
+    private final Set<URIModel> redirectUriModels;
+
+    @Getter
+    private final Set<URIModel> postLogoutRedirectModels;
 
     @Override
     public String getId() {
@@ -120,5 +129,14 @@ public class SynthWaveRegisteredClient extends AbstractSynthWaveRegisteredClient
     @Override
     public MutableDateTime getExpireDateTime() {
         return null;
+    }
+
+    private void fillVariables(URIModel uriModel){
+        var path = uriModel.getPath();
+        path.customize(pathVariables -> {
+            if(pathVariables.containsVariable("${clientId}")){
+                pathVariables.setValue("${clientId}", registeredClient.getClientId());
+            }
+        });
     }
 }

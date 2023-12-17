@@ -11,8 +11,6 @@ public interface RedirectRepository {
 
     Collection<RedirectEntity> getRedirectByRegisteredClientId(TSID registeredClientId);
 
-    RedirectEntity save(Redirect redirect);
-
     Collection<RedirectEntity> saveAll(Collection<Redirect> redirectsCollection);
 
     void saveAllBindings(TSID registeredClientId, Set<String> redirectURISet, Set<String> postLogoutRedirectURISet);

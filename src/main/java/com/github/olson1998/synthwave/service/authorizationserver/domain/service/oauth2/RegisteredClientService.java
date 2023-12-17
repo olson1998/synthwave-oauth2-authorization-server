@@ -18,15 +18,15 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
 import com.github.olson1998.synthwave.support.joda.converter.JavaInstantConverter;
+import com.github.olson1998.synthwave.support.web.util.URIModel;
 import io.hypersistence.tsid.TSID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class RegisteredClientService implements RegisteredClientRepository {
@@ -167,14 +167,21 @@ public class RegisteredClientService implements RegisteredClientRepository {
     }
 
     private void saveRedirectBindings(RegisteredClient registeredClient, TSID registeredClientId){
-        var requestedRedirectURI = Objects.requireNonNullElseGet(
-                registeredClient.getRedirectUris(),
-                ()-> new HashSet<String>()
-        );
-        var requestedPostLogoutRedirectURI = Objects.requireNonNullElseGet(
-                registeredClient.getPostLogoutRedirectUris(),
-                ()-> new HashSet<String>()
-        );
+        Set<String> requestedRedirectURI;
+        Set<String> requestedPostLogoutRedirectURI;
+        if(registeredClient instanceof AbstractSynthWaveRegisteredClient synthWaveRegisteredClient){
+            requestedRedirectURI = transformUriModels(synthWaveRegisteredClient.getRedirectUriModels());
+            requestedPostLogoutRedirectURI = transformUriModels(synthWaveRegisteredClient.getPostLogoutRedirectModels());
+        }else {
+            requestedRedirectURI = Objects.requireNonNullElseGet(
+                    registeredClient.getRedirectUris(),
+                    Collections::emptySet
+            );
+            requestedPostLogoutRedirectURI = Objects.requireNonNullElseGet(
+                    registeredClient.getPostLogoutRedirectUris(),
+                    Collections::emptySet
+            );
+        }
         redirectRepository.saveAllBindings(
                 registeredClientId,
                 requestedRedirectURI,
@@ -185,6 +192,12 @@ public class RegisteredClientService implements RegisteredClientRepository {
     private ClientSecret encodeClientSecret(ClientSecret clientSecret) {
         var encodedSecret = passwordEncoder.encode(clientSecret.getValue());
         return new ClientSecretModel(encodedSecret, clientSecret.getExpiresDateTime());
+    }
+
+    private Set<String> transformUriModels(Set<URIModel> uriModelSet){
+        return uriModelSet.stream()
+                .map(URIModel::toModel)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table
+@Table(name = "O2EUCB")
 public class RedirectClientBoundData implements Persistable<RedirectClientBinding>, RedirectClientBound {
 
     @EmbeddedId

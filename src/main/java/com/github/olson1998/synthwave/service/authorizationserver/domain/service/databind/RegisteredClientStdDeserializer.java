@@ -73,7 +73,15 @@ class RegisteredClientStdDeserializer extends AbstractObjectStdDeserializer<Regi
         });
         var registeredClient = registeredClientBuilder.build();
         if(division != null && companyCode != null){
-            return new SynthWaveRegisteredClient(companyCode, division,password, registeredClient, clientSecret);
+            return new SynthWaveRegisteredClient(
+                    companyCode,
+                    division,
+                    password,
+                    registeredClient,
+                    clientSecret,
+                    redirectUriModelSet,
+                    postLogoutRedirectModelUris
+            );
         }else {
             return registeredClient;
         }

@@ -33,13 +33,6 @@ public class RedirectService implements RedirectRepository {
     }
 
     @Override
-    public RedirectEntity save(Redirect redirect) {
-        return saveAll(List.of(redirect)).stream()
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
     public Collection<RedirectEntity> saveAll(Collection<Redirect> redirectsCollection) {
         var redirectMap = createRedirectMap(redirectsCollection);
         var redirectEntities = redirectDataSourceRepository.getRedirectFromURISet(
@@ -95,7 +88,7 @@ public class RedirectService implements RedirectRepository {
         var type = redirectEntry.getKey();
         var uriSet = redirectEntry.getValue();
         return uriSet.stream()
-                .filter(uri -> isRedirectPresent(uri, type, presentEntities))
+                .filter(uri -> !isRedirectPresent(uri, type, presentEntities))
                 .map(uri -> mapToRedirect(uri, type))
                 .collect(Collectors.toSet());
     }

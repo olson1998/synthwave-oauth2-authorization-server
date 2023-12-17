@@ -45,8 +45,8 @@ class RegisteredClientMapper {
                 .clientId(clientId)
                 .clientName(props.getUsername())
                 .clientIdIssuedAt(id.getInstant())
-                .redirectUris(uris -> uris.addAll(redirectURI))
-                .postLogoutRedirectUris(uris -> uris.addAll(postLogoutURI))
+                .redirectUris(uris -> uris.addAll(transformURIModels(redirectURI, props)))
+                .postLogoutRedirectUris(uris -> transformURIModels(postLogoutURI, props))
                 .tokenSettings(tokenSettings)
                 .clientSettings(clientSettings)
                 .authorizationGrantTypes(authorizationGrantTypes -> authorizationGrantTypes.addAll(authorizationGrantTypesSet))
@@ -64,7 +64,9 @@ class RegisteredClientMapper {
                 divi,
                 null,
                 registeredClientBuilder.build(),
-                secret
+                secret,
+                redirectURI,
+                postLogoutURI
         );
     }
 
@@ -75,11 +77,8 @@ class RegisteredClientMapper {
         return builder.build();
     }
 
-    private Set<String> writeRedirectURISet(Set<String> redirectUriSet, RegisteredClientConfig registeredClientConfig){
-        return redirectUriSet.stream()
-                .map(this::buildModelSafely)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+    private Set<String> transformURIModels(Set<URIModel> uriModelSet, RegisteredClientConfig registeredClientConfig){
+        return uriModelSet.stream()
                 .map(uriModel -> customizeURIModel(uriModel, registeredClientConfig))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -87,6 +86,17 @@ class RegisteredClientMapper {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(URI::toString)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private Set<URIModel> writeRedirectURISet(Set<String> redirectUriSet, RegisteredClientConfig registeredClientConfig){
+        return redirectUriSet.stream()
+                .map(this::buildModelSafely)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(uriModel -> customizeURIModel(uriModel, registeredClientConfig))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toSet());
     }
 

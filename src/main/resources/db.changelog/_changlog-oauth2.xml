@@ -196,18 +196,15 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectBoundData" author="${server.hostname}">
-        <createTable tableName="O2ERUB">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectClientBoundData" author="${server.hostname}">
+        <createTable tableName="O2EUCB">
+            <column name="RCLID" type="bigint">
+                <constraints foreignKeyName="UCLCID" referencedTableName="O2ERCL" referencedColumnNames="RCLID" nullable="false"/>
+            </column>
             <column name="URIID" type="bigint">
-                <constraints foreignKeyName="RUBURI" referencedTableName="O2EURI" referencedColumnNames="URIID" nullable="false"/>
-            </column>
-            <column name="CODE" type="varchar(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DIVI" type="varchar(3)">
-                <constraints nullable="false"/>
+                <constraints foreignKeyName="UCLURI" referencedTableName="O2EURI" referencedColumnNames="URIID" nullable="false"/>
             </column>
         </createTable>
-        <addUniqueConstraint constraintName="RUBBND" tableName="O2ERUB" columnNames="URIID,CODE,DIVI"/>
+        <addUniqueConstraint constraintName="UCLBND" tableName="O2EUCB" columnNames="RCLID,URIID"/>
     </changeSet>
 </databaseChangeLog>

@@ -81,20 +81,6 @@
             <column name="AGTVAL">urn:ietf:params:oauth:grant-type:device_code</column>
         </insert>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope" author="${server.hostname}">
-        <createTable tableName="O2IURI">
-            <column name="URISCP" type="varchar(11)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addUniqueConstraint constraintName="URI" tableName="O2IURI" columnNames="URISCP"/>
-        <insert tableName="O2IURI">
-            <column name="URISCP">POST_LOGIN</column>
-        </insert>
-        <insert tableName="O2IURI">
-            <column name="URISCP">POST_LOGOUT</column>
-        </insert>
-    </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData" author="${server.hostname}">
         <createTable tableName="O2ERCL">
             <column name="RCLID" type="bigint">
@@ -182,6 +168,19 @@
             <column name="RCLAM" type="varchar(80)"/>
         </createTable>
         <addUniqueConstraint constraintName="RCLCAM" tableName="O2ECAM" columnNames="RCLID,RCLAM"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.constant.RedirectScope" author="${server.hostname}">
+        <createTable tableName="O2IURI">
+            <column name="URISCP" type="varchar(11)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="O2IURI">
+            <column name="URISCP">POST_LOGIN</column>
+        </insert>
+        <insert tableName="O2IURI">
+            <column name="URISCP">POST_LOGOUT</column>
+        </insert>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RedirectData" author="${server.hostname}">
         <createTable tableName="O2EURI">

@@ -53,7 +53,7 @@ public class RedirectData implements Persistable<TSID>, RedirectEntity {
 
     @Override
     public boolean isPostLogout() {
-        return scope == RedirectScope.POST_LOGIN;
+        return scope == RedirectScope.POST_LOGOUT;
     }
 
     @Override

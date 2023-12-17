@@ -40,6 +40,9 @@ public class RedirectService implements RedirectRepository {
                 redirectMap.get(POST_LOGIN),
                 redirectMap.get(POST_LOGOUT)
         );
+        if(!redirectEntities.isEmpty()){
+            log.warn("Redirects: {} already registered", redirectEntities);
+        }
         var notPresentRedirects = createNotPresentRedirectSet(redirectMap, redirectEntities);
         return redirectDataSourceRepository.saveAll(notPresentRedirects);
     }

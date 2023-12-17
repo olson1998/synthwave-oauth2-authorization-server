@@ -1,10 +1,10 @@
 [
   {
-    "type": "POST_LOGIN",
+    "scope": "POST_LOGIN",
     "uri": "http://localhost:8081/login/{clientId}"
   },
   {
-    "type": "POST_LOGOUT",
+    "scope": "POST_LOGOUT",
     "uri": "http://localhost:8081/logout/{clientId}"
   }
 ]

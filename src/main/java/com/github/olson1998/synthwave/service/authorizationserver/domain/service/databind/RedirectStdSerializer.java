@@ -25,6 +25,8 @@ class RedirectStdSerializer extends AbstractObjectStdSerializer<Redirect> {
             writeField(REDIRECT_SCOPE_JSON_FIELD, POST_LOGIN, jsonGenerator);
         } else if (redirect.isPostLogout()) {
             writeField(REDIRECT_SCOPE_JSON_FIELD, POST_LOGOUT, jsonGenerator);
+        }else {
+            writeField(REDIRECT_SCOPE_JSON_FIELD, null, jsonGenerator);
         }
     }
 }

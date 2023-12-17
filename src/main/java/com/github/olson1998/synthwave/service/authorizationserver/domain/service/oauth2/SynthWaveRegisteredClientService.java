@@ -22,7 +22,7 @@ public class SynthWaveRegisteredClientService implements SynthWaveRegisteredClie
     @Override
     public RegisteredClient findById(String id) {
         log.debug("Searching client: '%s'".formatted(id));
-        var longId = Long.getLong(id);
+        var longId = Long.parseLong(id);
         var tsid = TSID.from(longId);
         return registeredClientRepository.findRegisteredClientById(tsid)
                 .orElse(null);

@@ -1,10 +1,10 @@
 [
   {
     "type": "POST_LOGIN",
-    "uri": "http://localhost:8095/path/to/redirect/{clientId}"
+    "uri": "http://localhost:8081/login/{clientId}"
   },
   {
     "type": "POST_LOGOUT",
-    "uri": "http://localhost:8095/path/to/logout/{clientId}"
+    "uri": "http://localhost:8081/logout/{clientId}"
   }
 ]

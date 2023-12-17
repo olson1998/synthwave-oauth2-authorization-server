@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserMetadaModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.UserMetadataModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.UserPropertiesModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
@@ -61,7 +61,7 @@ public class SynthWaveUserDetailsService implements UserDetailsRepository {
                 password.getExpireDateTime()
         );
         passwordRepository.save(passwordObj);
-        return new UserMetadaModel(userId, username, companyCode, division);
+        return new UserMetadataModel(userId, username, companyCode, division);
     }
 
 }

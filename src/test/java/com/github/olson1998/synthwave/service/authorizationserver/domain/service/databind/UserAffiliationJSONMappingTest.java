@@ -1,6 +1,5 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.databind;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.AffiliationEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.AffiliationEntity;
 import io.hypersistence.tsid.TSID;
 

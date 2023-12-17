@@ -24,22 +24,20 @@ public class AuthorizationServerModuleImpl implements AuthorizationServerModule 
         var registeredClientStdSerializer = new RegisteredClientStdSerializer();
         var registeredClientStdDeserializer = new RegisteredClientStdDeserializer();
         //entities
+        var redirectStdSerializer = new RedirectStdSerializer();
+        var redirectStdDeserializer = new RedirectStdDeserializer();
         mappings.addSerializer(Password.class, new PasswordStdSerializer());
         mappings.addDeserializer(Password.class, new PasswordStdDeserializer());
         mappings.addSerializer(UserPassword.class, new UserPasswordStdSerializer());
         mappings.addDeserializer(UserPassword.class, new UserPasswordStdDeserializer());
-        mappings.addDeserializer(PasswordEntity.class, new PasswordEntityStdDeserializer());
-        mappings.addSerializer(PasswordEntity.class, new PasswordEntityStdSerializer());
-        mappings.addDeserializer(Redirect.class, new RedirectStdDeserializer());
-        mappings.addSerializer(Redirect.class, new RedirectStdSerializer());
+        mappings.addSerializer(Redirect.class, redirectStdSerializer);
+        mappings.addDeserializer(Redirect.class, redirectStdDeserializer);
+        mappings.addSerializer(RedirectEntity.class, new RedirectEntityStdSerializer(redirectStdSerializer));
+        mappings.addDeserializer(RedirectEntity.class, new RedirectEntityStdDeserializer(redirectStdDeserializer));
         mappings.addSerializer(Affiliation.class, new UserAffiliationStdSerializer());
         mappings.addDeserializer(Affiliation.class, new UserAffiliationStdDeserializer());
-        mappings.addDeserializer(AffiliationEntity.class, new UserAffiliationEntityStdDeserializer());
-        mappings.addSerializer(AffiliationEntity.class, new UserAffiliationEntityStdSerializer());
         mappings.addSerializer(UserAccountLock.class, new UserAccountLockStdSerializer());
         mappings.addDeserializer(UserAccountLock.class, new UserAccountLockStdDeserializer());
-        mappings.addSerializer(UserAccountLockEntity.class, new UserAccountLockEntityStdSerializer());
-        mappings.addDeserializer(UserAccountLockEntity.class, new UserAccountLockEntityStdDeserializer());
         mappings.addSerializer(UserEntity.class, new UserEntityStdSerializer());
         mappings.addDeserializer(UserEntity.class, new UserEntityStdDeserializer());
         mappings.addSerializer(UserProperties.class, new UserPropertiesStdSerializer());

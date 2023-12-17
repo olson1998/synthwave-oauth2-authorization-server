@@ -1,6 +1,5 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.databind;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.dto.PasswordEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.PasswordEntity;
 import io.hypersistence.tsid.TSID;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtGenerat
 import org.springframework.security.oauth2.server.authorization.web.authentication.JwtClientAssertionAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
@@ -62,8 +63,10 @@ public class OAuth2FilterChainConfig {
     public SecurityFilterChain loginPageSecurityFilterChain(@NonNull HttpSecurity httpSecurity,
                                                             @NonNull UserDetailsRepository userDetailsRepository) throws Exception {
         return httpSecurity
-                .securityMatcher("/login")
+                .securityMatcher(LOGIN_PATH + "/**", LOGIN_PROCESS_ENDPOINT + "/**")
+                .formLogin(Customizer.withDefaults())
                 .formLogin(formLoginConfigurer -> {
+                    formLoginConfigurer.failureForwardUrl(LOGIN_PATH);
                     formLoginConfigurer.loginProcessingUrl(LOGIN_PROCESS_ENDPOINT);
                 })
                 .userDetailsService(userDetailsRepository)

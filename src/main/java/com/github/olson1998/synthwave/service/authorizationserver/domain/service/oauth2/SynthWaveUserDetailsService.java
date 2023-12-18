@@ -9,7 +9,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.PasswordRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.UserDetailsRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.SynthWaveUserProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,12 +32,12 @@ public class SynthWaveUserDetailsService implements UserDetailsRepository {
     }
 
     @Override
-    public Optional<UserMetadata> getUserMetadataByUsername(String username) {
+    public Optional<UserAffiliation> getUserMetadataByUsername(String username) {
         return userDataSourceRepository.getUserMetadataByUsername(username);
     }
 
     @Override
-    public UserMetadata saveUser(SynthWaveUserProperties synthWaveUserProperties) {
+    public UserAffiliation saveUser(SynthWaveUserProperties synthWaveUserProperties) {
         var username = synthWaveUserProperties.getUsername();
         var password = synthWaveUserProperties.getUserPassword();
         var companyCode = synthWaveUserProperties.getCompanyCode();

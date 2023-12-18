@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.o
 
 import io.hypersistence.tsid.TSID;
 
-public interface UserMetadata extends Affiliation{
+public interface UserAffiliation extends Affiliation{
 
     TSID getUserId();
 

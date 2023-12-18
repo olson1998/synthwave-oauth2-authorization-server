@@ -1,8 +1,9 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.OidcUserInfoPropertiesData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.UserPropertiesData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.UserAffiliationData;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,7 +20,7 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
     Optional<UserData> selectUserById(@Param("id") TSID id);
 
     @Query("""
-           SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUserMetadata(
+           SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.UserMetadataData(
            user.id,
            user.username,
            affiliation.properties.companyCode,
@@ -30,10 +31,10 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
            ON user.id=affiliation.userId
            WHERE user.username=:username
            """)
-    Optional<SynthWaveUserMetadata> selectUserMetadataByUsername(@Param("username") String username);
+    Optional<UserAffiliationData> selectUserMetadataByUsername(@Param("username") String username);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.SynthWaveUser(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.UserPropertiesData(
     user.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -54,7 +55,33 @@ interface UserJpaRepository extends JpaRepository<UserData, TSID> {
     GROUP BY password.id
     HAVING MAX(password.id)=password.id
     """)
-    Optional<SynthWaveUser> selectSynthWaveUserByUsername(@Param("username") String username);
+    Optional<UserPropertiesData> selectSynthWaveUserByUsername(@Param("username") String username);
+
+    @Query("""
+           SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.OidcUserInfoPropertiesData(
+           user.id,
+           user.username,
+           user.expireDateTime,
+           email.emailAddress,
+           email.verified,
+           phone.phoneNumber,
+           phone.verified,
+           info.name,
+           info.middleName,
+           info.givenName,
+           info.userGender,
+           info.userZoneId
+           )
+           FROM UserData user
+           LEFT OUTER JOIN UserInfoData info
+           ON user.id=info.userId
+           LEFT OUTER JOIN UserPhoneData phone
+           ON user.id=phone.userId
+           LEFT OUTER JOIN UserEmailData email
+           ON user.id=email.userId
+           WHERE user.username=:username
+           """)
+    Optional<OidcUserInfoPropertiesData> selectOidcUserInfoByUsername(@Param("username") String username);
 
     @Query("SELECT CASE WHEN COUNT(user.id) >0 THEN true ELSE false END FROM UserData user WHERE user.username=:username")
     boolean selectExistsUserWithUsername(@Param("username") String username);

@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.RedirectEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientSecret;
 import io.hypersistence.tsid.TSID;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Getter
 @ToString
 @RequiredArgsConstructor
-public class RegisteredClientGenericConfig implements RegisteredClientConfig {
+public class RegisteredClientPropertiesData implements RegisteredClientProperties {
 
     private final TSID id;
 
@@ -73,19 +73,19 @@ public class RegisteredClientGenericConfig implements RegisteredClientConfig {
     }
 
     @Override
-    public RegisteredClientConfig withRedirectEntities(Collection<RedirectEntity> redirectUris) {
+    public RegisteredClientProperties withRedirectEntities(Collection<RedirectEntity> redirectUris) {
         appendUnresolvedUris(redirectUris);
         return this;
     }
 
     @Override
-    public RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
+    public RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes) {
         this.authorizationGrantTypes.addAll(authorizationGrantTypes);
         return this;
     }
 
     @Override
-    public RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
+    public RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods) {
         this.clientAuthenticationMethods.addAll(clientAuthenticationMethods);
         return this;
     }

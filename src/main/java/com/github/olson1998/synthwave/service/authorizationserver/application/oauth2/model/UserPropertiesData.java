@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails {
+public class UserPropertiesData extends UserAffiliationData implements UserDetails {
 
     private final PasswordEntity passwordEntityData;
 
@@ -26,19 +26,19 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
 
     private final boolean credentialsNonExpired;
 
-    public SynthWaveUser(TSID userId,
-                         String companyCode,
-                         String division,
-                         String username,
-                         boolean enabled,
-                         MutableDateTime accountExpDate,
-                         PasswordEntity passwordEntityData,
-                         boolean accountNonLocked) {
+    public UserPropertiesData(TSID userId,
+                              String companyCode,
+                              String division,
+                              String username,
+                              boolean enabled,
+                              MutableDateTime accountExpDate,
+                              PasswordEntity passwordEntityData,
+                              boolean accountNonLocked) {
         super(userId, username, companyCode, division);
         this.enabled = enabled;
         this.passwordEntityData = passwordEntityData;
         this.accountNonLocked = accountNonLocked;
-        this.accountNonExpired = isBeforeNow(passwordEntityData.getExpireDateTime());
+        this.accountNonExpired = isBeforeNow(accountExpDate);
         this.credentialsNonExpired = isBeforeNow(passwordEntityData.getExpireDateTime());
     }
 
@@ -64,7 +64,7 @@ public class SynthWaveUser extends SynthWaveUserMetadata implements UserDetails 
                 .map(PasswordEntity::getId)
                 .map(String::valueOf)
                 .orElse("?");
-        return "SynthWaveUser(" +
+        return "UserPropertiesData(" +
                 "userId=" + super.getUserId() +
                 ", companyCode='" + super.getCompanyCode() + '\'' +
                 ", division='" + super.getDivision() + '\'' +

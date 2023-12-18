@@ -8,11 +8,15 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 
 import java.util.Optional;
 
-public class JWTAuthenticationProvidingService implements OidcUserInfoJWTAuthenticationProvider {
+public class OidcUserInfoJwtAuthenticationService implements OidcUserInfoJWTAuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        return new OidcUserInfoAuthenticationToken(authentication);
+        if(authentication instanceof JwtAuthenticationToken jwtAuthenticationToken){
+            return new OidcUserInfoAuthenticationToken(authentication);
+        }else {
+            return new OidcUserInfoAuthenticationToken(authentication);
+        }
     }
 
     @Override

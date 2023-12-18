@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.UserData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.UserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.UserEntity;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserMetadata;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserAffiliation;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.UserProperties;
 import io.hypersistence.tsid.TSID;
 import lombok.NonNull;
@@ -32,9 +32,9 @@ public class UserJpaRepositoryProxy implements UserDataSourceRepository {
     }
 
     @Override
-    public Optional<UserMetadata> getUserMetadataByUsername(String username) {
+    public Optional<UserAffiliation> getUserMetadataByUsername(String username) {
         return userJpaRepository.selectUserMetadataByUsername(username)
-                .map(UserMetadata.class::cast);
+                .map(UserAffiliation.class::cast);
     }
 
     @Override

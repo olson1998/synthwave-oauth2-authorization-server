@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.BearerJWTConvertingService;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.JWTAuthenticationProvidingService;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OidcUserInfoJwtAuthenticationService;
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ public class OAuth2FilterChainConfig {
 
     @Bean
     public OidcUserInfoJWTAuthenticationProvider jwtAuthenticationProvider(){
-        return new JWTAuthenticationProvidingService();
+        return new OidcUserInfoJwtAuthenticationService();
     }
 
     @Bean

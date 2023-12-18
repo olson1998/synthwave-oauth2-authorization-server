@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.SynthWaveRegisteredClient;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import com.github.olson1998.synthwave.support.web.exception.PathVariableWritingException;
 import com.github.olson1998.synthwave.support.web.exception.URIReadingException;
@@ -27,7 +27,7 @@ class RegisteredClientMapper {
 
     private final TokenSettingsMapper tokenSettingsMapper = new TokenSettingsMapper();
 
-    RegisteredClient map(RegisteredClientConfig props){
+    RegisteredClient map(RegisteredClientProperties props){
         var code = props.getCompanyCode();
         var divi = props.getDivision();
         var id = props.getId();
@@ -70,16 +70,16 @@ class RegisteredClientMapper {
         );
     }
 
-    private ClientSettings buildClientSettings(RegisteredClientConfig registeredClientConfig){
+    private ClientSettings buildClientSettings(RegisteredClientProperties registeredClientProperties){
         var builder = ClientSettings.builder();
-        registeredClientConfig.findRequireProofKey().ifPresent(builder::requireProofKey);
-        registeredClientConfig.findRequireAuthorizationConsent().ifPresent(builder::requireAuthorizationConsent);
+        registeredClientProperties.findRequireProofKey().ifPresent(builder::requireProofKey);
+        registeredClientProperties.findRequireAuthorizationConsent().ifPresent(builder::requireAuthorizationConsent);
         return builder.build();
     }
 
-    private Set<String> transformURIModels(Set<URIModel> uriModelSet, RegisteredClientConfig registeredClientConfig){
+    private Set<String> transformURIModels(Set<URIModel> uriModelSet, RegisteredClientProperties registeredClientProperties){
         return uriModelSet.stream()
-                .map(uriModel -> customizeURIModel(uriModel, registeredClientConfig))
+                .map(uriModel -> customizeURIModel(uriModel, registeredClientProperties))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(this::writeRedirectURI)
@@ -89,12 +89,12 @@ class RegisteredClientMapper {
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    private Set<URIModel> writeRedirectURISet(Set<String> redirectUriSet, RegisteredClientConfig registeredClientConfig){
+    private Set<URIModel> writeRedirectURISet(Set<String> redirectUriSet, RegisteredClientProperties registeredClientProperties){
         return redirectUriSet.stream()
                 .map(this::buildModelSafely)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(uriModel -> customizeURIModel(uriModel, registeredClientConfig))
+                .map(uriModel -> customizeURIModel(uriModel, registeredClientProperties))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
@@ -109,7 +109,7 @@ class RegisteredClientMapper {
         }
     }
 
-    private Optional<URIModel> customizeURIModel(URIModel uriModel, RegisteredClientConfig clientConfig){
+    private Optional<URIModel> customizeURIModel(URIModel uriModel, RegisteredClientProperties clientConfig){
         try{
             uriModel.getPath().customize(pathVariables -> fillPathVariables(pathVariables, clientConfig));
             return Optional.of(uriModel);
@@ -119,7 +119,7 @@ class RegisteredClientMapper {
         }
     }
 
-    private void fillPathVariables(PathVariables pathVariables, RegisteredClientConfig clientConfig){
+    private void fillPathVariables(PathVariables pathVariables, RegisteredClientProperties clientConfig){
         if(pathVariables.containsVariable("{clientId}")){
             pathVariables.setValue("{clientId}", clientConfig.getClientId());
         }

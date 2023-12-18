@@ -7,14 +7,12 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-public interface RegisteredClientConfig {
+public interface RegisteredClientProperties {
 
     TSID getId();
 
@@ -56,10 +54,10 @@ public interface RegisteredClientConfig {
 
     Set<ClientAuthenticationMethod> getClientAuthenticationMethods();
 
-    RegisteredClientConfig withRedirectEntities(Collection<RedirectEntity> redirectUris);
+    RegisteredClientProperties withRedirectEntities(Collection<RedirectEntity> redirectUris);
 
-    RegisteredClientConfig withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
+    RegisteredClientProperties withAuthorizationGrantTypes(Collection<AuthorizationGrantType> authorizationGrantTypes);
 
-    RegisteredClientConfig withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
+    RegisteredClientProperties withClientAuthenticationMethods(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
 
 }

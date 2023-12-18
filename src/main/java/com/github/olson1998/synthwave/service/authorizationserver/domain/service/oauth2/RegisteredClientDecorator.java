@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AuthorizationGrantTypeRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ClientAuthenticationMethodRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,14 @@ class RegisteredClientDecorator {
 
     private final RegisteredClientMapper registeredClientMapper = new RegisteredClientMapper();
 
-    RegisteredClient decorateRegisteredClient(RegisteredClientConfig registeredClientConfig){
-        var id = registeredClientConfig.getId();
+    RegisteredClient decorateRegisteredClient(RegisteredClientProperties registeredClientProperties){
+        var id = registeredClientProperties.getId();
         var redirectEntities = redirectRepository.getRedirectByRegisteredClientId(id);
         var authorizationGrantTypes =
                 authorizationGrantTypeRepository.getAuthorizationGrantTypesByRegisteredClientId(id);
         var clientAuthenticationMethods =
                 clientAuthenticationMethodRepository.getClientAuthenticationMethodByRegisteredClientId(id);
-        var config = registeredClientConfig
+        var config = registeredClientProperties
                 .withRedirectEntities(redirectEntities)
                 .withAuthorizationGrantTypes(authorizationGrantTypes)
                 .withClientAuthenticationMethods(clientAuthenticationMethods);

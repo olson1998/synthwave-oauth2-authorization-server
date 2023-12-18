@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.RegisteredClientData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig;
+import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesData;
 import io.hypersistence.tsid.TSID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +23,7 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     boolean selectCaseWhenCountRegisteredClientWithUsernameIsGreaterThanZero(@Param("username") String username);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesData(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -55,10 +55,10 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     GROUP BY secret.id
     HAVING MAX(secret.id)=secret.id
     """)
-    Optional<RegisteredClientGenericConfig> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
+    Optional<RegisteredClientPropertiesData> selectSynthWaveRegisteredClientByRegisteredClientId(@Param("registeredClientId") TSID registeredClientId);
 
     @Query("""
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientGenericConfig(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.model.RegisteredClientPropertiesData(
     registeredClient.id,
     affiliation.properties.companyCode,
     affiliation.properties.division,
@@ -90,5 +90,5 @@ interface RegisteredClientJpaRepository extends JpaRepository<RegisteredClientDa
     GROUP BY secret.id
     HAVING MAX(secret.id)=secret.id
     """)
-    Optional<RegisteredClientGenericConfig> selectRegisteredClientConfigByClientId(@Param("username") String username);
+    Optional<RegisteredClientPropertiesData> selectRegisteredClientConfigByClientId(@Param("username") String username);
 }

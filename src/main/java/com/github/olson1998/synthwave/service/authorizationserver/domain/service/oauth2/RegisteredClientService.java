@@ -129,18 +129,18 @@ public class RegisteredClientService implements RegisteredClientRepository {
         registeredClientTokenSettingsDataSourceRepository.save(registeredClientTokenSettings);
     }
 
-    private void saveRegisteredClient(RegisteredClient registeredClient, ClientSecret clientSecret, UserMetadata userMetadata){
+    private void saveRegisteredClient(RegisteredClient registeredClient, ClientSecret clientSecret, UserAffiliation userAffiliation){
         var clientId = registeredClient.getClientId();
-        var username = userMetadata.getUsername();
+        var username = userAffiliation.getUsername();
         if(registeredClientDataSourceRepository.existsRegisteredClientForUsername(username)){
             log.info("Registered client for user: '{}' already exists", username);
             return;
         }
         if(clientId.equals("{?}")){
-            clientId = username + "@synthwave." + userMetadata.getCompanyCode().toLowerCase() +
-                    userMetadata.getDivision().toLowerCase() + ".com";
+            clientId = username + "@synthwave." + userAffiliation.getCompanyCode().toLowerCase() +
+                    userAffiliation.getDivision().toLowerCase() + ".com";
         }
-        var userId = userMetadata.getUserId();
+        var userId = userAffiliation.getUserId();
         var clientModel = new OAuth2ClientModel(userId, clientId);
         var registeredClientId = registeredClientDataSourceRepository.save(clientModel)
                 .getId();

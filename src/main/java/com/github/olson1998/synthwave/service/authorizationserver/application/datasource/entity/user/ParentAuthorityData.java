@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.emb.ParentAuthorityValue;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.user.ParentAuthority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -12,6 +13,8 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
 
+import java.util.Optional;
+
 @Getter
 @Setter
 @ToString
@@ -20,7 +23,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "PAUDTA")
-public class ParentAuthorityData {
+public class ParentAuthorityData implements ParentAuthority {
 
     @EmbeddedId
     private ParentAuthorityValue value;
@@ -33,10 +36,24 @@ public class ParentAuthorityData {
     @Column(name = "PAETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime expiresOn;
+    private MutableDateTime expireOn;
 
     @Column(name = "PAATMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime activeFrom;
+
+    @Override
+    public Long getAuthorityId() {
+        return Optional.ofNullable(value)
+                .map(ParentAuthorityValue::getAuthorityId)
+                .orElse(null);
+    }
+
+    @Override
+    public Long getUpperAuthorityId() {
+        return Optional.ofNullable(value)
+                .map(ParentAuthorityValue::getUpperAuthorityId)
+                .orElse(null);
+    }
 }

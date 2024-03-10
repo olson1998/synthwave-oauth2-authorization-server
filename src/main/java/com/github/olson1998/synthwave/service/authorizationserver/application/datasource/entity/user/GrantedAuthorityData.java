@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.user.GrantedAuthority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "AUTDTA")
-public class GrantedAuthorityData {
+public class GrantedAuthorityData implements GrantedAuthority {
 
     @Id
     @Column(name = "AUID")
@@ -36,7 +37,7 @@ public class GrantedAuthorityData {
     @Column(name = "AUETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime expiresOn;
+    private MutableDateTime expireOn;
 
     @Column(name = "AUATMP")
     @JavaType(MutableDateTimeJavaType.class)

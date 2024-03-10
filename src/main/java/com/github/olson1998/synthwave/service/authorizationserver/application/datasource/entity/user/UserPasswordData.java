@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.user.UserPassword;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "PSSDTA")
-public class UserPasswordData {
+public class UserPasswordData implements UserPassword {
 
     @Id
     @Column(name = "PSID")
@@ -39,6 +40,6 @@ public class UserPasswordData {
     @Column(name = "PSETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime expiresOn;
+    private MutableDateTime expireOn;
 
 }

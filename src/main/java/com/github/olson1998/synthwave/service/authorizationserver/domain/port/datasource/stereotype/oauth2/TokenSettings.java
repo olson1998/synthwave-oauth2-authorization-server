@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2;
 
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 

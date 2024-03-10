@@ -1,6 +1,6 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.common.CreatedOn;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 
 public interface ClientSettings extends CreatedOn {

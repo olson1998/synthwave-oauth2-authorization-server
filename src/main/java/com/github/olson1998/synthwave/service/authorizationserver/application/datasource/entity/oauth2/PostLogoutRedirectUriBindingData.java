@@ -1,10 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.emb.UriBindingValue;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.PostLogoutRedirectUri;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.UriBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.UriBinding;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import com.github.olson1998.synthwave.support.web.util.URIModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

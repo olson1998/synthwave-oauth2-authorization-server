@@ -1,0 +1,12 @@
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository;
+
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientPropertiesDataSourceRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class RegisteredClientPropertiesJpaRepositoryWrapper implements RegisteredClientPropertiesDataSourceRepository {
+
+    private final RegisteredClientPropertiesJpaRepository registeredClientPropertiesJpaRepository;
+}

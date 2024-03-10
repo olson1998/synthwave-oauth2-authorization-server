@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.AuthorizationGrantTypeJavaType;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.AuthorizationGrantTypeWrapper;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 @Entity
 @Table(name = "AGTDTA")
-public class AuthorizationGrantTypeData {
+public class AuthorizationGrantTypeData implements AuthorizationGrantTypeWrapper {
 
     @Id
     @Column(name = "AGID")
@@ -31,7 +32,7 @@ public class AuthorizationGrantTypeData {
     @Column(name = "AGVAL")
     @JavaType(AuthorizationGrantTypeJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private AuthorizationGrantType value;
+    private AuthorizationGrantType grantType;
 
     @Column(name = "AGCTMP")
     @JavaType(MutableDateTimeJavaType.class)

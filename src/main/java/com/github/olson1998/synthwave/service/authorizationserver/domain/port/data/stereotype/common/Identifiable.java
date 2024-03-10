@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.common;
 
-public interface RegisteredClientId {
+public interface Identifiable<T> {
 
-    Long getRegisteredClientId();
+    T getId();
 }

@@ -1,10 +1,13 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.emb.AuthorizationGrantTypeBindingValue;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.AuthorizationGrantTypeBinding;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
+
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -14,8 +17,22 @@ import lombok.*;
 
 @Entity
 @Table(name = "AGBDTA")
-public class AuthorizationGrantTypeBindingData {
+public class AuthorizationGrantTypeBindingData implements AuthorizationGrantTypeBinding {
 
     @EmbeddedId
     private AuthorizationGrantTypeBindingValue binding;
+
+    @Override
+    public Long getRegisteredClientId() {
+        return Optional.ofNullable(binding)
+                .map(AuthorizationGrantTypeBindingValue::getRegisteredClientId)
+                .orElse(null);
+    }
+
+    @Override
+    public Long getAuthorizationGrantTypeId() {
+        return Optional.ofNullable(binding)
+                .map(AuthorizationGrantTypeBindingValue::getAuthorizationGrantTypeId)
+                .orElse(null);
+    }
 }

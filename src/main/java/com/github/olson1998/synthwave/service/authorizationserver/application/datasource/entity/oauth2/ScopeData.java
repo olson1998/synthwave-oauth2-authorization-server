@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.Scope;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "SCPDTA")
-public class ScopeData {
+public class ScopeData implements Scope {
 
     @Id
     @Column(name = "SCID")

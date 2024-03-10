@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.OAuth2TokenFormatJavaType;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.TokenSettings;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,7 +22,7 @@ import java.time.Duration;
 
 @Entity
 @Table(name = "TSSDTA")
-public class TokenSettingsData {
+public class TokenSettingsData implements TokenSettings {
 
     @Id
     @Column(name = "RCID")

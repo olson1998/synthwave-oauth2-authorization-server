@@ -21,5 +21,5 @@ public class UriBindingValue implements Serializable {
     private Long registeredClientId;
 
     @Column(name = "RUID")
-    private Long redirectUriId;
+    private Long uriId;
 }

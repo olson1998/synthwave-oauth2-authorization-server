@@ -2,10 +2,10 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.common.CreatedOn;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.common.ExpireOn;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.common.Identifiable;
 
-public interface UserPassword extends CreatedOn, ExpireOn {
+public interface UserPassword extends Identifiable<Long>, CreatedOn, ExpireOn {
 
-    Long getId();
 
     String getValue();
 

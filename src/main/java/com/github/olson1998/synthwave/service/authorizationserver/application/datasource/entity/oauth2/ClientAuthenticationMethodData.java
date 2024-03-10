@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.ClientAuthenticationMethodJavaType;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.data.stereotype.oauth2.ClientAuthenticationMethodWrapper;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 @Entity
 @Table(name = "CAMDTA")
-public class ClientAuthenticationMethodData {
+public class ClientAuthenticationMethodData implements ClientAuthenticationMethodWrapper {
 
     @Id
     @Column(name = "CMID")
@@ -31,7 +32,7 @@ public class ClientAuthenticationMethodData {
     @Column(name = "CMVAL")
     @JavaType(ClientAuthenticationMethodJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private ClientAuthenticationMethod value;
+    private ClientAuthenticationMethod method;
 
     @Column(name = "CMCTMP")
     @JavaType(MutableDateTimeJavaType.class)

@@ -31,7 +31,7 @@ public class ScopeBindingData implements ScopeBinding {
     @Column(name = "SBCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime cratedOn;
+    private MutableDateTime createdOn;
 
     @Override
     public Long getRegisteredClientId() {

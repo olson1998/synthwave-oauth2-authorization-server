@@ -37,12 +37,12 @@ public class RegisteredClientPropertiesData implements RegisteredClientPropertie
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
-    @Column(name = "RCCTMP")
+    @Column(name = "RCETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;
 
-    @Column(name = "RCCTMP")
+    @Column(name = "RCATMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime activeFrom;

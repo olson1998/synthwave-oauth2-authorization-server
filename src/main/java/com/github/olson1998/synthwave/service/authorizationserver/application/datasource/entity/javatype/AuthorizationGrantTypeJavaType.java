@@ -8,8 +8,8 @@ import java.lang.reflect.Type;
 
 public class AuthorizationGrantTypeJavaType extends AbstractJavaType<AuthorizationGrantType> {
 
-    protected AuthorizationGrantTypeJavaType(Type type) {
-        super(type);
+    protected AuthorizationGrantTypeJavaType() {
+        super(AuthorizationGrantType.class);
     }
 
     @Override

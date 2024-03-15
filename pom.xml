@@ -30,6 +30,20 @@
         </dependency>
         <dependency>
             <groupId>com.github.olson1998.synthwave.support</groupId>
+            <artifactId>synthwave-master-item-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.olson1998.synthwave.support</groupId>
+            <artifactId>synthwave-master-item-transaction-rest</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.olson1998.synthwave.support</groupId>
             <artifactId>synthwave-jackson-test</artifactId>
             <scope>test</scope>
         </dependency>

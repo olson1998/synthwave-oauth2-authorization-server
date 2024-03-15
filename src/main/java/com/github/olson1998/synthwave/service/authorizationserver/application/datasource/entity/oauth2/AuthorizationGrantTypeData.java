@@ -37,5 +37,5 @@ public class AuthorizationGrantTypeData implements AuthorizationGrantTypeWrapper
     @Column(name = "AGCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime cratedOn;
+    private MutableDateTime createdOn;
 }

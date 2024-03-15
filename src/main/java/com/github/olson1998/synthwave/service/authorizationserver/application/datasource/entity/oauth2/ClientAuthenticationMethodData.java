@@ -37,5 +37,5 @@ public class ClientAuthenticationMethodData implements ClientAuthenticationMetho
     @Column(name = "CMCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    private MutableDateTime cratedOn;
+    private MutableDateTime createdOn;
 }

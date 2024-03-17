@@ -3,15 +3,14 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetailsSearchQueryResult;
 import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +21,11 @@ import java.util.Optional;
 public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataSourceRepository {
 
     private final ApplicationUserJpaRepository applicationUserJpaRepository;
+
+    @Override
+    public Optional<ApplicationUserDetailsSearchQueryResult> getUserByUsername(String username) {
+        return Optional.empty();
+    }
 
     @Override
     public List<ApplicationUser> getByExample(@NonNull ApplicationUser applicationUser, Integer limit) {

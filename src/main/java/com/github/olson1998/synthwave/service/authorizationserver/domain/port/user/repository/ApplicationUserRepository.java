@@ -1,16 +1,17 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.masteritem.repository.user;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionParam;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionPayload;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionRouting;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
 import static com.github.olson1998.synthwave.support.masteritem.model.MiTransactions.*;
 
-public interface ApplicationUserRepository {
+public interface ApplicationUserRepository extends UserDetailsService {
 
     @TransactionRouting(method = "GET", transaction = LIST, item = "ApplicationUser")
     List<ApplicationUser> getUsersByQuery(@TransactionParam(name = "id") String id,

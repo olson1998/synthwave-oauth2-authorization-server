@@ -11,7 +11,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientAuthenticationMethodModel implements ClientAuthenticationMethodEntity {
+public class ClientAuthenticationMethodEntityModel implements ClientAuthenticationMethodEntity {
 
     @JsonProperty(value = "ID")
     private Long id;

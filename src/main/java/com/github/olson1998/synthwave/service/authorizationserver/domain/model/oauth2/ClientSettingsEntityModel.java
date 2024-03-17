@@ -12,7 +12,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientSettingsModel implements ClientSettingsEntity {
+public class ClientSettingsEntityModel implements ClientSettingsEntity {
 
     @JsonProperty("ID")
     private Long registeredClientId;

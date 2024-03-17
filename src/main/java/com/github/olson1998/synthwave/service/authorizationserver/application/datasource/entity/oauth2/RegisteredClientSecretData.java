@@ -27,7 +27,7 @@ public class RegisteredClientSecretData implements RegisteredClientSecret {
     private Long id;
 
     @Column(name = "RCLID")
-    private Long clientId;
+    private Long registeredClientId;
 
     @Column(name = "SCVAL")
     private String value;

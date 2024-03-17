@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 
-public interface ClientSettings extends CreatedOn {
+public interface ClientSettingsProperties extends CreatedOn {
 
     Long getRegisteredClientId();
 

@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.JwsAlgorithmJavaType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientSettings;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientSettingsProperties;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 
 @Entity
 @Table(name = "OA2CSS")
-public class ClientSettingsData implements ClientSettings {
+public class ClientSettingsData implements ClientSettingsProperties {
 
     @Id
     @Column(name = "RCID")

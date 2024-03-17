@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.result;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.query;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetailsSearchQueryResult;
 import lombok.Data;

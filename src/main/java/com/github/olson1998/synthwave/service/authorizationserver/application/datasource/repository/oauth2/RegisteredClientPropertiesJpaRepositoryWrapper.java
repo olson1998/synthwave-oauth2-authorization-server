@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientDataSourceRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.query.RegisteredClientSearchQueryResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +14,14 @@ public class RegisteredClientPropertiesJpaRepositoryWrapper implements Registere
     private final RegisteredClientPropertiesJpaRepository registeredClientPropertiesJpaRepository;
 
     @Override
-    public Optional<RegisteredClientProperties> findRegisteredClientByClientId(String clientId) {
-        return Optional.empty();
+    public Optional<RegisteredClientSearchQueryResult> findRegisteredClientByClientId(String clientId) {
+        return registeredClientPropertiesJpaRepository.selectPropertiesByClientId(clientId)
+                .map(RegisteredClientSearchQueryResult.class::cast);
     }
 
     @Override
-    public Optional<RegisteredClientProperties> findRegisteredClientById(Long id) {
-        return Optional.empty();
+    public Optional<RegisteredClientSearchQueryResult> findRegisteredClientById(Long id) {
+        return registeredClientPropertiesJpaRepository.selectPropertiesByRegisteredClientId(id)
+                .map(RegisteredClientSearchQueryResult.class::cast);
     }
 }

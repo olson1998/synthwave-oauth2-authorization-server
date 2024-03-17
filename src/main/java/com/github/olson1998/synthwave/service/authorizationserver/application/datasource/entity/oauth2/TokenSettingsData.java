@@ -2,14 +2,12 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.OAuth2TokenFormatJavaType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.TokenSettings;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 
 import java.time.Duration;
@@ -27,6 +25,10 @@ public class TokenSettingsData implements TokenSettings {
     @Id
     @Column(name = "RCID")
     private Long registeredClientId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TSIDAG")
+    private SignatureAlgorithm idTokenSignatureAlgorithm;
 
     @Column(name = "TSTF")
     @JavaType(OAuth2TokenFormatJavaType.class)

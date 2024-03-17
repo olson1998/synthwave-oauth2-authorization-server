@@ -12,6 +12,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 import java.util.Optional;
 
@@ -22,11 +23,11 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2SCB")
-public class ScopeBindingData implements ScopeBinding {
+@Table(name = "OAU2SCPB")
+public class ScopeBindingData implements Persistable<ScopeBindingValue>, ScopeBinding {
 
     @EmbeddedId
-    private ScopeBindingValue binding;
+    private ScopeBindingValue properties;
 
     @Column(name = "SBCTMP")
     @JavaType(MutableDateTimeJavaType.class)
@@ -35,15 +36,25 @@ public class ScopeBindingData implements ScopeBinding {
 
     @Override
     public Long getRegisteredClientId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(ScopeBindingValue::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public Long getScopeId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(ScopeBindingValue::getScopeId)
                 .orElse(null);
+    }
+
+    @Override
+    public ScopeBindingValue getId() {
+        return null;
+    }
+
+    @Override
+    public boolean isNew() {
+        return false;
     }
 }

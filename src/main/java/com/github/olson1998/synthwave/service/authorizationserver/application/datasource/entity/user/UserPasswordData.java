@@ -19,7 +19,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "ASLPSS")
+@Table(name = "USERPASS")
 public class UserPasswordData implements UserPassword {
 
     @Id

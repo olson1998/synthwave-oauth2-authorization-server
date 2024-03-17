@@ -24,5 +24,14 @@ public class RedirectUriModel implements RedirectUri {
     @JsonProperty(value = "ETMP")
     private MutableDateTime expireOn;
 
+    public RedirectUriModel(RedirectUri redirectUri) {
+        this.id = redirectUri.getId();
+        this.value = redirectUri.getValue();
+        this.createdOn = redirectUri.getCreatedOn();
+        this.expireOn = redirectUri.getExpireOn();
+    }
 
+    public RedirectUriModel(String value) {
+        this.value = value;
+    }
 }

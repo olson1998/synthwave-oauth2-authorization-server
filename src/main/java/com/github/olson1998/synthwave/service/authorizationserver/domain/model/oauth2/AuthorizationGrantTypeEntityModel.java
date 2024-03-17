@@ -21,4 +21,14 @@ public class AuthorizationGrantTypeEntityModel implements AuthorizationGrantType
 
     @JsonProperty(value = "CTMP")
     private MutableDateTime createdOn;
+
+    public AuthorizationGrantTypeEntityModel(AuthorizationGrantTypeEntity authorizationGrantType) {
+        this.id = authorizationGrantType.getId();
+        this.grantType = authorizationGrantType.getGrantType();
+        this.createdOn = authorizationGrantType.getCreatedOn();
+    }
+
+    public AuthorizationGrantTypeEntityModel(AuthorizationGrantType grantType) {
+        this.grantType = grantType;
+    }
 }

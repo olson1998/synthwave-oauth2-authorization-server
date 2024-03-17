@@ -12,6 +12,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 import java.util.Optional;
 
@@ -22,11 +23,11 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2RUB")
-public class RedirectUriBindingData implements UriBinding {
+@Table(name = "OAU2RUIB")
+public class RedirectUriBindingData implements Persistable<UriBindingValue>, UriBinding {
 
     @EmbeddedId
-    private UriBindingValue binding;
+    private UriBindingValue properties;
 
     @Column(name = "RUCTMP")
     @JavaType(MutableDateTimeJavaType.class)
@@ -35,15 +36,25 @@ public class RedirectUriBindingData implements UriBinding {
 
     @Override
     public Long getRegisteredClientId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(UriBindingValue::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public Long getUriId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(UriBindingValue::getUriId)
                 .orElse(null);
+    }
+
+    @Override
+    public UriBindingValue getId() {
+        return properties;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 }

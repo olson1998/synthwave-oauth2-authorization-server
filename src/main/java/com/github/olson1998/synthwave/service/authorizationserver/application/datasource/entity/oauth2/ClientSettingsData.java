@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2CSS")
+@Table(name = "OAU2CLST")
 public class ClientSettingsData implements ClientSettingsEntity {
 
     @Id

@@ -32,6 +32,24 @@ public class ClientSettingsEntityModel implements ClientSettingsEntity {
     @JsonProperty(value = "CTMP")
     private MutableDateTime createdOn;
 
+    public ClientSettingsEntityModel(ClientSettingsEntity clientSettings) {
+        this.registeredClientId = clientSettings.getRegisteredClientId();
+        this.requireProofKey = clientSettings.getRequireProofKey();
+        this.requireAuthorizationConsent = clientSettings.getRequireAuthorizationConsent();
+        this.jwkSetUrl = clientSettings.getJwkSetUrl();
+        this.jwsAlgorithm = clientSettings.getJwsAlgorithm();
+        this.createdOn = clientSettings.getCreatedOn();
+    }
+
+    public ClientSettingsEntityModel(ClientSettings clientSettings) {
+        this.registeredClientId = null;
+        this.requireProofKey = clientSettings.isRequireProofKey();
+        this.requireAuthorizationConsent = clientSettings.isRequireAuthorizationConsent();
+        this.jwkSetUrl = clientSettings.getJwkSetUrl();
+        this.jwsAlgorithm = clientSettings.getTokenEndpointAuthenticationSigningAlgorithm();
+        this.createdOn = null;
+    }
+
     @Override
     public ClientSettings toSettings() {
         return ClientSettings.builder()

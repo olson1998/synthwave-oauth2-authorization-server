@@ -50,7 +50,8 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         if(registeredClient instanceof RegisteredClientModel registeredClientModel) {
             saveRegisteredClientModel(registeredClientModel);
         } else {
-            saveRegisteredClient(registeredClient);
+            var model = new RegisteredClientModel(registeredClient);
+            saveRegisteredClientModel(model);
         }
     }
 

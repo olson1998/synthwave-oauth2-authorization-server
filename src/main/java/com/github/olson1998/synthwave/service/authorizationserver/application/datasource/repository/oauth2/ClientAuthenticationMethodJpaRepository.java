@@ -17,8 +17,8 @@ interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAu
     SELECT clientAuthenticationMethod
     FROM ClientAuthenticationMethodData clientAuthenticationMethod
     LEFT OUTER JOIN ClientAuthenticationMethodBindingData binding
-    ON clientAuthenticationMethod.id=binding.binding.clientAuthenticationMethodId
-    WHERE binding.binding.registeredClientId=:registeredClientId
+    ON clientAuthenticationMethod.id=binding.properties.clientAuthenticationMethodId
+    WHERE binding.properties.registeredClientId=:registeredClientId
     """
     )
     Set<ClientAuthenticationMethod> selectClientAuthenticationMethodsByRegisteredClientId(@Param("registeredClientId") Long registeredClientId);

@@ -17,8 +17,8 @@ interface AuthorizationGrantTypeJpaRepository extends JpaRepository<Authorizatio
     SELECT authorizationGrantType
     FROM AuthorizationGrantTypeData authorizationGrantType
     LEFT OUTER JOIN AuthorizationGrantTypeBindingData binding
-    ON authorizationGrantType.id = binding.binding.authorizationGrantTypeId
-    WHERE binding.binding.registeredClientId=:registeredClientId
+    ON authorizationGrantType.id = binding.properties.authorizationGrantTypeId
+    WHERE binding.properties.registeredClientId=:registeredClientId
     """
     )
     Set<AuthorizationGrantType> selectAuthorizationGrantTypeByRegisteredClientId(@Param("registeredClientId") Long registeredClientId);

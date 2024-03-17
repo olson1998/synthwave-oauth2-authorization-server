@@ -16,22 +16,22 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2CMB")
+@Table(name = "OAU2CAMB")
 public class ClientAuthenticationMethodBindingData implements ClientAuthenticationMethodBinding {
 
     @EmbeddedId
-    private ClientAuthenticationMethodBindingValue binding;
+    private ClientAuthenticationMethodBindingValue properties;
 
     @Override
     public Long getRegisteredClientId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(ClientAuthenticationMethodBindingValue::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public Long getClientAuthenticationMethodId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(ClientAuthenticationMethodBindingValue::getClientAuthenticationMethodId)
                 .orElse(null);
     }

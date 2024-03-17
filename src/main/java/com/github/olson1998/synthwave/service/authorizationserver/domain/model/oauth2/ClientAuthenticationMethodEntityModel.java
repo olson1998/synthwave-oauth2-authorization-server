@@ -21,4 +21,14 @@ public class ClientAuthenticationMethodEntityModel implements ClientAuthenticati
 
     @JsonProperty(value = "CTMP")
     private MutableDateTime createdOn;
+
+    public ClientAuthenticationMethodEntityModel(ClientAuthenticationMethodEntity clientAuthenticationMethod) {
+        this.id = clientAuthenticationMethod.getId();
+        this.method = clientAuthenticationMethod.getMethod();
+        this.createdOn = clientAuthenticationMethod.getCreatedOn();
+    }
+
+    public ClientAuthenticationMethodEntityModel(ClientAuthenticationMethod method) {
+        this.method = method;
+    }
 }

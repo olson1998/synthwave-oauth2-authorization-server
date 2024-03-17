@@ -23,7 +23,7 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2RU")
+@Table(name = "OAU2RURI")
 public class RedirectUriData implements Persistable<Long>, RedirectUri {
 
     @Id
@@ -44,6 +44,13 @@ public class RedirectUriData implements Persistable<Long>, RedirectUri {
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;
+
+    public RedirectUriData(RedirectUri redirectUri) {
+        this.id = redirectUri.getId();
+        this.value = redirectUri.getValue();
+        this.createdOn = redirectUri.getCreatedOn();
+        this.expireOn = redirectUri.getExpireOn();
+    }
 
     @Override
     public boolean isNew() {

@@ -16,22 +16,22 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2AGB")
+@Table(name = "OAU2AGTB")
 public class AuthorizationGrantTypeBindingData implements AuthorizationGrantTypeBinding {
 
     @EmbeddedId
-    private AuthorizationGrantTypeBindingValue binding;
+    private AuthorizationGrantTypeBindingValue properties;
 
     @Override
     public Long getRegisteredClientId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(AuthorizationGrantTypeBindingValue::getRegisteredClientId)
                 .orElse(null);
     }
 
     @Override
     public Long getAuthorizationGrantTypeId() {
-        return Optional.ofNullable(binding)
+        return Optional.ofNullable(properties)
                 .map(AuthorizationGrantTypeBindingValue::getAuthorizationGrantTypeId)
                 .orElse(null);
     }

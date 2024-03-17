@@ -8,9 +8,9 @@ import java.util.Set;
 
 public interface RedirectUriDataSourceRepository {
 
-    Collection<RedirectUri> getRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples);
+    Collection<? extends RedirectUri> getRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples);
 
-    Collection<RedirectUri> getPostLogoutRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples);
+    Collection<? extends RedirectUri> getPostLogoutRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples);
 
     Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId);
 

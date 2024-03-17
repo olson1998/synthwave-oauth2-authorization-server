@@ -23,7 +23,7 @@ public class TokenSettingsEntityModel implements TokenSettingsEntity {
     private SignatureAlgorithm idTokenSignatureAlgorithm;
 
     @JsonProperty(value = "TFMT")
-    private OAuth2TokenFormat oAuth2TokenFormat;
+    private OAuth2TokenFormat accessTokenFormat;
 
     @JsonProperty(value = "ATTL")
     private Duration accessTokenTimeToLive;
@@ -40,6 +40,28 @@ public class TokenSettingsEntityModel implements TokenSettingsEntity {
     @JsonProperty(value = "ACTL")
     private Duration authorizationCodeTimeToLive;
 
+    public TokenSettingsEntityModel(TokenSettingsEntity tokenSettings) {
+        this.registeredClientId = null;
+        this.idTokenSignatureAlgorithm = tokenSettings.getIdTokenSignatureAlgorithm();
+        this.accessTokenFormat = tokenSettings.getAccessTokenFormat();
+        this.accessTokenTimeToLive = tokenSettings.getAccessTokenTimeToLive();
+        this.refreshTokenTimeToLive = tokenSettings.getRefreshTokenTimeToLive();
+        this.reuseRefreshTokens = tokenSettings.getReuseRefreshTokens();
+        this.deviceCodeTimeToLive = tokenSettings.getDeviceCodeTimeToLive();
+        this.authorizationCodeTimeToLive = tokenSettings.getAuthorizationCodeTimeToLive();
+    }
+
+    public TokenSettingsEntityModel(TokenSettings tokenSettings) {
+        this.registeredClientId = null;
+        this.idTokenSignatureAlgorithm = tokenSettings.getIdTokenSignatureAlgorithm();
+        this.accessTokenFormat = tokenSettings.getAccessTokenFormat();
+        this.accessTokenTimeToLive = tokenSettings.getAccessTokenTimeToLive();
+        this.refreshTokenTimeToLive = tokenSettings.getRefreshTokenTimeToLive();
+        this.reuseRefreshTokens = tokenSettings.isReuseRefreshTokens();
+        this.deviceCodeTimeToLive = tokenSettings.getDeviceCodeTimeToLive();
+        this.authorizationCodeTimeToLive = tokenSettings.getAuthorizationCodeTimeToLive();
+    }
+
     @Override
     public TokenSettings toSettings() {
         return TokenSettings.builder()
@@ -47,7 +69,7 @@ public class TokenSettingsEntityModel implements TokenSettingsEntity {
                 .reuseRefreshTokens(reuseRefreshTokens)
                 .refreshTokenTimeToLive(refreshTokenTimeToLive)
                 .accessTokenTimeToLive(accessTokenTimeToLive)
-                .accessTokenFormat(oAuth2TokenFormat)
+                .accessTokenFormat(accessTokenFormat)
                 .deviceCodeTimeToLive(deviceCodeTimeToLive)
                 .authorizationCodeTimeToLive(authorizationCodeTimeToLive)
                 .build();

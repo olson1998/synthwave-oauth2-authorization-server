@@ -15,6 +15,6 @@ public class AuthorizationGrantTypeJpaRepositoryWrapper implements Authorization
 
     @Override
     public Set<AuthorizationGrantType> getAuthorizationGrantTypeSetByRegisteredClientId(Long registeredClientId) {
-        return null;
+        return authorizationGrantTypeJpaRepository.selectAuthorizationGrantTypeByRegisteredClientId(registeredClientId);
     }
 }

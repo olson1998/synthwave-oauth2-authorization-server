@@ -3,11 +3,13 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.joda.time.MutableDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisteredClientPropertiesModel implements RegisteredClientProperties {

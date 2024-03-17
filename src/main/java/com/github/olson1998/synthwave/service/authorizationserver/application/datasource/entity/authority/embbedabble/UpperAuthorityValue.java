@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.embbedabble;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedabble;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class ParentAuthorityValue implements Serializable {
+public class UpperAuthorityValue implements Serializable {
 
     private static final long serialVersionUID = -950627239149362390L;
 

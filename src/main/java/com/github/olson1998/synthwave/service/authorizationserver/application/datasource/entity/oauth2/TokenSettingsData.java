@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.springframework.data.domain.Persistable;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
@@ -20,8 +21,8 @@ import java.time.Duration;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2TSS")
-public class TokenSettingsData implements TokenSettingsEntity {
+@Table(name = "OAU2TSST")
+public class TokenSettingsData implements Persistable<Long>, TokenSettingsEntity {
 
     @Id
     @Column(name = "RCID")
@@ -34,7 +35,7 @@ public class TokenSettingsData implements TokenSettingsEntity {
     @Column(name = "TSTFMT")
     @JavaType(OAuth2TokenFormatJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private OAuth2TokenFormat oAuth2TokenFormat;
+    private OAuth2TokenFormat accessTokenFormat;
 
     @Column(name = "TSATTL")
     private Duration accessTokenTimeToLive;
@@ -58,9 +59,19 @@ public class TokenSettingsData implements TokenSettingsEntity {
                 .reuseRefreshTokens(reuseRefreshTokens)
                 .refreshTokenTimeToLive(refreshTokenTimeToLive)
                 .accessTokenTimeToLive(accessTokenTimeToLive)
-                .accessTokenFormat(oAuth2TokenFormat)
+                .accessTokenFormat(accessTokenFormat)
                 .deviceCodeTimeToLive(deviceCodeTimeToLive)
                 .authorizationCodeTimeToLive(authorizationCodeTimeToLive)
                 .build();
+    }
+
+    @Override
+    public Long getId() {
+        return registeredClientId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 }

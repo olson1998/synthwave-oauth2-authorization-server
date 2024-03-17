@@ -18,9 +18,8 @@ public class RegisteredClientPropertiesJpaRepositoryWrapper implements Registere
     private final RegisteredClientPropertiesJpaRepository registeredClientPropertiesJpaRepository;
 
     @Override
-    public Optional<AbstractRegisteredClientBuilderWrapper> findRegisteredClientByClientIdWithTimestamp(String clientId, MutableDateTime timestamp) {
-        return registeredClientPropertiesJpaRepository.selectPropertiesByClientId(clientId, timestamp)
-                .map(AbstractRegisteredClientBuilderWrapper.class::cast);
+    public Optional<? extends AbstractRegisteredClientBuilderWrapper> findRegisteredClientByClientIdWithTimestamp(String clientId, MutableDateTime timestamp) {
+        return registeredClientPropertiesJpaRepository.selectPropertiesByClientId(clientId, timestamp);
     }
 
     @Override

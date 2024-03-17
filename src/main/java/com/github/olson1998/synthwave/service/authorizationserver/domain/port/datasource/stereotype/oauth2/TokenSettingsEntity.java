@@ -12,7 +12,7 @@ public interface TokenSettingsEntity {
 
     SignatureAlgorithm getIdTokenSignatureAlgorithm();
 
-    OAuth2TokenFormat getOAuth2TokenFormat();
+    OAuth2TokenFormat getAccessTokenFormat();
 
     Duration getAccessTokenTimeToLive();
 

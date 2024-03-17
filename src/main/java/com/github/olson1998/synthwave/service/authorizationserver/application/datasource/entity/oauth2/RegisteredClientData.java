@@ -20,7 +20,7 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2RCL")
+@Table(name = "OAU2RCL")
 public class RegisteredClientData implements Persistable<Long>, RegisteredClientProperties {
 
     @Id

@@ -20,4 +20,14 @@ public class ScopeModel implements Scope {
 
     @JsonProperty(value = "CTMP")
     private MutableDateTime createdOn;
+
+    public ScopeModel(Scope scope) {
+        this.id = scope.getId();
+        this.name = scope.getName();
+        this.createdOn = scope.getCreatedOn();
+    }
+
+    public ScopeModel(String name) {
+        this.name = name;
+    }
 }

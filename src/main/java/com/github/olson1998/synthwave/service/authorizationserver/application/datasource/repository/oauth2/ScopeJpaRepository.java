@@ -15,8 +15,8 @@ interface ScopeJpaRepository extends JpaRepository<ScopeData, Long> {
     """
     SELECT scope.name FROM ScopeData scope
     LEFT OUTER JOIN ScopeBindingData binding
-    ON binding.binding.scopeId = scope.id
-    WHERE binding.binding.registeredClientId=:registeredClientId
+    ON binding.properties.scopeId = scope.id
+    WHERE binding.properties.registeredClientId=:registeredClientId
     """
     )
     Set<String> selectScopeNameByRegisteredClientId(@Param("registeredClientId") Long registeredClientId);

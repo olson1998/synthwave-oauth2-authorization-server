@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2AGT")
+@Table(name = "OAU2AGT")
 public class AuthorizationGrantTypeData implements Persistable<Long>, AuthorizationGrantTypeEntity {
 
     @Id

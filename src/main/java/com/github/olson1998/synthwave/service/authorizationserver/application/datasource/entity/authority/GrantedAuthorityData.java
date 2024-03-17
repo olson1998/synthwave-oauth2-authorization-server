@@ -1,6 +1,6 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.GrantedAuthority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.GrantedAuthority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +11,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -19,8 +20,8 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "ASLAUT")
-public class GrantedAuthorityData implements GrantedAuthority {
+@Table(name = "AUTHDATA")
+public class GrantedAuthorityData implements Persistable<Long>, GrantedAuthority {
 
     @Id
     @Column(name = "AUID")
@@ -43,4 +44,9 @@ public class GrantedAuthorityData implements GrantedAuthority {
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime activeFrom;
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

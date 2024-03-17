@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.*;
+import com.github.olson1998.synthwave.support.joda.converter.JavaInstantConverter;
 import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import lombok.*;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -11,8 +12,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Instant;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,16 +25,16 @@ public class RegisteredClientModel extends RegisteredClient {
     @JsonProperty(value = "RCL", required = true)
     private RegisteredClientPropertiesModel propertiesModel;
 
-    @JsonProperty(value = "RCS", required = true)
+    @JsonProperty(value = "RCLS", required = true)
     private RegisteredClientSecretModel secretModel;
 
     @JsonProperty(value = "SCP", required = true)
     private Set<ScopeModel> scopeModels;
 
-    @JsonProperty(value = "RU", required = true)
+    @JsonProperty(value = "RURI", required = true)
     private Set<RedirectUriModel> redirectUriModels;
 
-    @JsonProperty(value = "LRU", required = true)
+    @JsonProperty(value = "LURI", required = true)
     private Set<RedirectUriModel> postLogoutRedirectUriModels;
 
     @JsonProperty(value = "AGT", required = true)
@@ -43,15 +43,54 @@ public class RegisteredClientModel extends RegisteredClient {
     @JsonProperty(value = "CAM", required = true)
     private Set<ClientAuthenticationMethodEntityModel> clientAuthenticationMethodsSet;
 
-    @JsonProperty(value = "CSS" ,required = true)
+    @JsonProperty(value = "CLST" ,required = true)
     private ClientSettingsEntityModel clientSettingsModel;
 
-    @JsonProperty(value = "TSS", required = true)
+    @JsonProperty(value = "TSST", required = true)
     private TokenSettingsEntityModel tokenSettingsModel;
+
+    public RegisteredClientModel(RegisteredClient registeredClient) {
+        this.propertiesModel = RegisteredClientPropertiesModel.builder()
+                .id(Long.parseLong(registeredClient.getId()))
+                .clientId(registeredClient.getClientId())
+                .name(registeredClient.getClientName())
+                .createdOn(new JavaInstantConverter(registeredClient.getClientIdIssuedAt()).toMutableDateTime())
+                .build();
+        this.secretModel = RegisteredClientSecretModel.builder()
+                .value(registeredClient.getClientSecret())
+                .expireOn(new JavaInstantConverter(registeredClient.getClientSecretExpiresAt()).toMutableDateTime())
+                .build();
+        this.scopeModels = Objects.requireNonNullElseGet(registeredClient.getScopes(), ()-> new HashSet<String>())
+                .stream()
+                .map(ScopeModel::new)
+                .collect(Collectors.toSet());
+        this.redirectUriModels = Objects.requireNonNullElseGet(registeredClient.getRedirectUris(), ()-> new HashSet<String>())
+                .stream()
+                .map(RedirectUriModel::new)
+                .collect(Collectors.toSet());
+        this.postLogoutRedirectUriModels = Objects.requireNonNullElseGet(registeredClient.getPostLogoutRedirectUris(), ()-> new HashSet<String>())
+                .stream()
+                .map(RedirectUriModel::new)
+                .collect(Collectors.toSet());
+        this.authorizationGrantTypesSet = Objects.requireNonNullElseGet(registeredClient.getAuthorizationGrantTypes(), ()-> new HashSet<AuthorizationGrantType>())
+                .stream()
+                .map(AuthorizationGrantTypeEntityModel::new)
+                .collect(Collectors.toSet());
+        this.clientAuthenticationMethodsSet = Objects.requireNonNullElseGet(registeredClient.getClientAuthenticationMethods(), ()-> new HashSet<ClientAuthenticationMethod>())
+                .stream()
+                .map(ClientAuthenticationMethodEntityModel::new)
+                .collect(Collectors.toSet());
+        this.clientSettingsModel = Optional.ofNullable(registeredClient.getClientSettings())
+                .map(ClientSettingsEntityModel::new)
+                .orElse(null);
+        this.tokenSettingsModel = Optional.ofNullable(registeredClient.getTokenSettings())
+                .map(TokenSettingsEntityModel::new)
+                .orElse(null);
+    }
 
     @Override
     public Instant getClientIdIssuedAt() {
-        return Optional.ofNullable(properties.getCreatedOn())
+        return Optional.ofNullable(propertiesModel.getCreatedOn())
                 .map(MutableDateTimeConverter::new)
                 .map(MutableDateTimeConverter::toJavaInstant)
                 .orElse(null);
@@ -59,7 +98,7 @@ public class RegisteredClientModel extends RegisteredClient {
 
     @Override
     public Instant getClientSecretExpiresAt() {
-        return Optional.ofNullable(secret.getExpireOn())
+        return Optional.ofNullable(secretModel.getExpireOn())
                 .map(MutableDateTimeConverter::new)
                 .map(MutableDateTimeConverter::toJavaInstant)
                 .orElse(null);
@@ -101,18 +140,23 @@ public class RegisteredClientModel extends RegisteredClient {
 
     @Override
     public String getId() {
-        return Optional.ofNullable(properties.getId())
+        return Optional.ofNullable(propertiesModel)
+                .map(RegisteredClientPropertiesModel::getId)
                 .map(String::valueOf)
                 .orElse(null);
     }
 
     @Override
     public String getClientId() {
-        return properties.getClientId();
+        return Optional.ofNullable(propertiesModel)
+                .map(RegisteredClientPropertiesModel::getClientId)
+                .orElse(null);
     }
 
     @Override
     public String getClientName() {
-        return properties.getName();
+        return Optional.ofNullable(propertiesModel)
+                .map(RegisteredClientPropertiesModel::getName)
+                .orElse(null);
     }
 }

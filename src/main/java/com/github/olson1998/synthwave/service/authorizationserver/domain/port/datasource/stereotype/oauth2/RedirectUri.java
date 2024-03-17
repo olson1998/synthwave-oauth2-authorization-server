@@ -7,5 +7,5 @@ import com.github.olson1998.synthwave.support.web.util.URIModel;
 
 public interface RedirectUri extends Identifiable<Long>, CreatedOn, ExpireOn {
 
-    URIModel getModel();
+    String getValue();
 }

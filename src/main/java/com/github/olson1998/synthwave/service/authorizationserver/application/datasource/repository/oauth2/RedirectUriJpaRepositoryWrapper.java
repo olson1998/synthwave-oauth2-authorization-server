@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RedirectUriDataSourceRepository;
-import com.github.olson1998.synthwave.support.web.util.URIModel;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
     private final RedirectUriJpaRepository redirectUriJpaRepository;
 
     @Override
-    public Set<URIModel> getRedirectUriByRegisteredClientId(Long registeredClientId) {
-        return redirectUriJpaRepository.selectRedirectUriModelByRegisteredClientId(registeredClientId);
+    public Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp) {
+        return redirectUriJpaRepository.selectRedirectUriByRegisteredClientId(registeredClientId, timestamp);
     }
 }

@@ -6,5 +6,5 @@ import com.github.olson1998.synthwave.support.web.util.URIModel;
 
 public interface PostLogoutRedirectUri  extends Identifiable<Long>, CreatedOn {
 
-    URIModel getModel();
+    String getValue();
 }

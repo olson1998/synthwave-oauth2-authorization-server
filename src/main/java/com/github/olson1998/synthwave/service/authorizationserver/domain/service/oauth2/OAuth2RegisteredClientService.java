@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.OAuth2RegisteredClientRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,17 +38,29 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
 
     @Override
     public RegisteredClient findById(String id) {
+        var timestamp = MutableDateTime.now();
         var longId = Long.parseLong(id);
-        var properties = registeredClientDataSourceRepository.findRegisteredClientById(longId);
-        return null;
+        var registeredClientBuilder = registeredClientDataSourceRepository.findRegisteredClientByIdWithTimestamp(longId, timestamp)
+                .orElseThrow();
+        appendAdditionalPropertiesAsync(registeredClientBuilder, longId, timestamp)
+                .collectList()
+                .block();
+        return registeredClientBuilder.build();
     }
 
     @Override
     public RegisteredClient findByClientId(String clientId) {
-        return null;
+        var timestamp = MutableDateTime.now();
+        var registeredClientBuilder = registeredClientDataSourceRepository.findRegisteredClientByClientIdWithTimestamp(clientId, timestamp)
+                .orElseThrow();
+        var id = registeredClientBuilder.getId();
+        appendAdditionalPropertiesAsync(registeredClientBuilder, id, timestamp)
+                .collectList()
+                .block();
+        return registeredClientBuilder.build();
     }
 
-    private void appendOneToManyEntities(RegisteredClient.Builder registeredClientBuilder, long id) {
+    private Flux<Void> appendAdditionalPropertiesAsync(RegisteredClient.Builder registeredClientBuilder, long id, MutableDateTime timestamp) {
         var appendGrantTypesMono = appendRegisteredClientValuesAsync(
                 registeredClientBuilder,
                 ()-> authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeSetByRegisteredClientId(id),
@@ -60,17 +73,13 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         );
         var appendRedirectUriMono = appendRegisteredClientValuesAsync(
                 registeredClientBuilder,
-                ()-> redirectUriDataSourceRepository.getRedirectUriByRegisteredClientId(id),
-                ((builder, uriModelSet) -> {
-                    var uriSet =
-                })
+                ()-> redirectUriDataSourceRepository.getRedirectUriByRegisteredClientIdWithTimestamp(id, timestamp),
+                ((builder, uriSet) -> builder.redirectUris(values -> values.addAll(uriSet)))
         );
         var appendPostLogoutRedirectUriMono = appendRegisteredClientValuesAsync(
                 registeredClientBuilder,
                 ()-> postLogoutRedirectUriDataSourceRepository.getPostLogoutRedirectUriByRegisteredClientId(id),
-                ((builder, uriModelSet) -> {
-                    var uriSet =
-                })
+                ((builder, uriSet) -> builder.postLogoutRedirectUris(values -> values.addAll(uriSet)))
         );
         var appendScopesMono = appendRegisteredClientValuesAsync(
                 registeredClientBuilder,
@@ -84,17 +93,15 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
                 appendPostLogoutRedirectUriMono,
                 appendScopesMono
         );
-        Mono.just(appendMonoList)
-                .flatMapMany(Flux::fromIterable)
-                .collectList()
-                .block();
+        return Flux.fromIterable(appendMonoList)
+                .flatMap(voidMono -> voidMono);
     }
 
     private <T> Mono<Void> appendRegisteredClientValuesAsync(RegisteredClient.Builder builder, Supplier<T> valueSupplier, BiConsumer<RegisteredClient.Builder, T> registeredClientValueConsumer) {
         return Mono.fromFuture(()-> CompletableFuture.runAsync(()-> {
             var values = valueSupplier.get();
             registeredClientValueConsumer.accept(builder, values);
-        }));
+        }, executor));
     }
 
 }

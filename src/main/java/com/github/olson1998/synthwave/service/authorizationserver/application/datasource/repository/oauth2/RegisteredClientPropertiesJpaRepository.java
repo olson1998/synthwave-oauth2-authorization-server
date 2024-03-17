@@ -1,7 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientPropertiesData;
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientPropertiesQuerySearchResultImpl;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientBuilderWrapper;
+import org.joda.time.MutableDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,13 +15,13 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
 
     @Query(
     """
-    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientPropertiesQuerySearchResultImpl(
+    SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientBuilderWrapper(
     registeredClient.id,
     registeredClient.clientId,
     registeredClient.createdOn,
     registeredClient.name,
-    secret.value,
-    secret.expireOn,
+    clientSecret.value,
+    clientSecret.expireOn,
     clientSettings.requireProofKey,
     clientSettings.requireAuthorizationConsent,
     clientSettings.jwkSetUrl,
@@ -34,26 +35,28 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
     tokenSettings.authorizationCodeTimeToLive
     )
     FROM RegisteredClientPropertiesData registeredClient
-    LEFT OUTER JOIN RegisteredClientSecretData secret
-    ON registeredClient.id=secret.registeredClientId
+    LEFT OUTER JOIN RegisteredClientSecretData clientSecret
+    ON registeredClient.id=clientSecret.registeredClientId
     LEFT OUTER JOIN ClientSettingsData clientSettings
     ON registeredClient.id=clientSettings.registeredClientId
     LEFT OUTER JOIN TokenSettingsData tokenSettings
     ON registeredClient.id=tokenSettings.registeredClientId
     WHERE registeredClient.id=:registeredClientId
+    AND (registeredClient.activeFrom IS NOT NULL AND registeredClient.activeFrom > :timestamp) OR (registeredClient.activeFrom IS NULL)
     """
     )
-    Optional<RegisteredClientPropertiesQuerySearchResultImpl> selectPropertiesByRegisteredClientId(@Param("registeredClientId") Long registeredClientId);
+    Optional<RegisteredClientBuilderWrapper> selectPropertiesByRegisteredClientId(@Param("registeredClientId") Long registeredClientId,
+                                                                                  @Param("timestamp") MutableDateTime timestamp);
 
     @Query(
             """
-            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientPropertiesQuerySearchResultImpl(
+            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientBuilderWrapper(
             registeredClient.id,
             registeredClient.clientId,
             registeredClient.createdOn,
             registeredClient.name,
-            secret.value,
-            secret.expireOn,
+            clientSecret.value,
+            clientSecret.expireOn,
             clientSettings.requireProofKey,
             clientSettings.requireAuthorizationConsent,
             clientSettings.jwkSetUrl,
@@ -67,14 +70,16 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
             tokenSettings.authorizationCodeTimeToLive
             )
             FROM RegisteredClientPropertiesData registeredClient
-            LEFT OUTER JOIN RegisteredClientSecretData secret
-            ON registeredClient.id=secret.registeredClientId
+            LEFT OUTER JOIN RegisteredClientSecretData clientSecret
+            ON registeredClient.id=clientSecret.registeredClientId
             LEFT OUTER JOIN ClientSettingsData clientSettings
             ON registeredClient.id=clientSettings.registeredClientId
             LEFT OUTER JOIN TokenSettingsData tokenSettings
             ON registeredClient.id=tokenSettings.registeredClientId
-            WHERE registeredClient.clientId=:clientId
+            WHERE registeredClient.id=:registeredClientId
+            AND (registeredClient.activeFrom IS NOT NULL AND registeredClient.activeFrom > :timestamp) OR (registeredClient.activeFrom IS NULL)
             """
     )
-    Optional<RegisteredClientPropertiesQuerySearchResultImpl> selectPropertiesByClientId(@Param("clientId") String clientId);
+    Optional<RegisteredClientBuilderWrapper> selectPropertiesByClientId(@Param("clientId") String clientId,
+                                                                        @Param("timestamp") MutableDateTime selectTimestamp);
 }

@@ -11,6 +11,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "OA2RCL")
-public class RegisteredClientPropertiesData implements RegisteredClientProperties {
+public class RegisteredClientPropertiesData implements Persistable<Long>, RegisteredClientProperties {
 
     @Id
     @Column(name = "RCID")
@@ -46,4 +47,18 @@ public class RegisteredClientPropertiesData implements RegisteredClientPropertie
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime activeFrom;
+
+    public RegisteredClientPropertiesData(@NonNull RegisteredClientProperties registeredClientProperties) {
+        this.id = registeredClientProperties.getId();
+        this.clientId = registeredClientProperties.getClientId();
+        this.name = registeredClientProperties.getName();
+        this.createdOn = registeredClientProperties.getCreatedOn();
+        this.expireOn = registeredClientProperties.getExpireOn();
+        this.activeFrom = registeredClientProperties.getActiveFrom();
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

@@ -31,7 +31,7 @@ public class RedirectUriData {
     @Column(name = "RUURI")
     @JavaType(URIModelJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private URIModel model;
+    private String value;
 
     @Column(name = "RUCTMP")
     @JavaType(MutableDateTimeJavaType.class)

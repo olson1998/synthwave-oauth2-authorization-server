@@ -32,7 +32,7 @@ public class PostLogoutRedirectUriData implements PostLogoutRedirectUri {
     @Column(name = "LUURI")
     @JavaType(URIModelJavaType.class)
     @JdbcType(VarcharJdbcType.class)
-    private URIModel model;
+    private String value;
 
     @Column(name = "LUCTMP")
     @JavaType(MutableDateTimeJavaType.class)

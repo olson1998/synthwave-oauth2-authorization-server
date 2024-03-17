@@ -16,7 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "AGBDTA")
+@Table(name = "OA2AGB")
 public class AuthorizationGrantTypeBindingData implements AuthorizationGrantTypeBinding {
 
     @EmbeddedId

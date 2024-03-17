@@ -22,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "PAUDTA")
+@Table(name = "ASLPAU")
 public class ParentAuthorityData implements ParentAuthority {
 
     @EmbeddedId

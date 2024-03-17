@@ -21,7 +21,7 @@ import java.time.Duration;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "TSSDTA")
+@Table(name = "OA2TSS")
 public class TokenSettingsData implements TokenSettings {
 
     @Id

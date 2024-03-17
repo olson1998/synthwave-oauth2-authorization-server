@@ -22,7 +22,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "LUIDTA")
+@Table(name = "OA2LUI")
 public class PostLogoutRedirectUriData implements PostLogoutRedirectUri {
 
     @Id

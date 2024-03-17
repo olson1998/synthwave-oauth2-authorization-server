@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CSSDTA")
+@Table(name = "OA2CSS")
 public class ClientSettingsData implements ClientSettings {
 
     @Id

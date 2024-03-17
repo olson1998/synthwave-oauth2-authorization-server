@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CAMDTA")
+@Table(name = "OA2CAM")
 public class ClientAuthenticationMethodData implements ClientAuthenticationMethodWrapper {
 
     @Id

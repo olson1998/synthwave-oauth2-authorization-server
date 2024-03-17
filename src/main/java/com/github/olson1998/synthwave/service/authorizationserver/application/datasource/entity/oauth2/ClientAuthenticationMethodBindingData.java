@@ -16,7 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "CMBDTA")
+@Table(name = "OA2CMB")
 public class ClientAuthenticationMethodBindingData implements ClientAuthenticationMethodBinding {
 
     @EmbeddedId

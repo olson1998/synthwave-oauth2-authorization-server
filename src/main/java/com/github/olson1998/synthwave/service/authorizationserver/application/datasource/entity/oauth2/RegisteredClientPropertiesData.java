@@ -19,7 +19,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RCLDTA")
+@Table(name = "OA2RCL")
 public class RegisteredClientPropertiesData implements RegisteredClientProperties {
 
     @Id

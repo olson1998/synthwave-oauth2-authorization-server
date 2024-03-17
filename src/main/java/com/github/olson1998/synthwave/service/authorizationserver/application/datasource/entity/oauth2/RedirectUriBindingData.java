@@ -22,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RUBDTA")
+@Table(name = "OA2RUB")
 public class RedirectUriBindingData implements UriBinding {
 
     @EmbeddedId

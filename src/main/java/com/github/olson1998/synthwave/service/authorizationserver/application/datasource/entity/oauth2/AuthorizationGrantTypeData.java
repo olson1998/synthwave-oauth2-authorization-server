@@ -22,7 +22,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "AGTDTA")
+@Table(name = "OA2AGT")
 public class AuthorizationGrantTypeData implements AuthorizationGrantTypeWrapper {
 
     @Id

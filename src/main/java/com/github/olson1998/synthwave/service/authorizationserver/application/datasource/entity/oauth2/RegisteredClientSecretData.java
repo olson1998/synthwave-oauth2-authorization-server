@@ -19,7 +19,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RSCDTA")
+@Table(name = "OA2RSC")
 public class RegisteredClientSecretData implements RegisteredClientSecret {
 
     @Id

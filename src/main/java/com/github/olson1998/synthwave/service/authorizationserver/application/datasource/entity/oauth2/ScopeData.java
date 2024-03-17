@@ -19,7 +19,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "SCPDTA")
+@Table(name = "OA2SCP")
 public class ScopeData implements Scope {
 
     @Id

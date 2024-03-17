@@ -21,7 +21,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "RUIDTA")
+@Table(name = "OA2RUI")
 public class RedirectUriData {
 
     @Id

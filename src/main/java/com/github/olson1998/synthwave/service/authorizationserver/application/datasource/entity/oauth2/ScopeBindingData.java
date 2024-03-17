@@ -22,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "SCBDTA")
+@Table(name = "OA2SCB")
 public class ScopeBindingData implements ScopeBinding {
 
     @EmbeddedId

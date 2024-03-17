@@ -19,7 +19,7 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "USRDTA")
+@Table(name = "ASLUSR")
 public class ApplicationUserData implements ApplicationUser {
 
     @Id

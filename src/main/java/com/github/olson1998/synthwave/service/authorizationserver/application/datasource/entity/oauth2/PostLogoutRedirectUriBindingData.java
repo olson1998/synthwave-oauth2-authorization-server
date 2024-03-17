@@ -22,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "LUBDTA")
+@Table(name = "OA2LUB")
 public class PostLogoutRedirectUriBindingData implements UriBinding {
 
     @EmbeddedId

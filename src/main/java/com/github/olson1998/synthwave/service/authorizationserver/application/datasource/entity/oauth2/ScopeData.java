@@ -11,6 +11,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ import org.joda.time.MutableDateTime;
 
 @Entity
 @Table(name = "OA2SCP")
-public class ScopeData implements Scope {
+public class ScopeData implements Persistable<Long>, Scope {
 
     @Id
     @Column(name = "SCID")
@@ -33,4 +34,9 @@ public class ScopeData implements Scope {
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

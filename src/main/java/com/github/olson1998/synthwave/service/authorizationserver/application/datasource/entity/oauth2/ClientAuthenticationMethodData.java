@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.ClientAuthenticationMethodJavaType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodWrapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 @Entity
 @Table(name = "OA2CAM")
-public class ClientAuthenticationMethodData implements ClientAuthenticationMethodWrapper {
+public class ClientAuthenticationMethodData implements ClientAuthenticationMethodEntity {
 
     @Id
     @Column(name = "CMID")

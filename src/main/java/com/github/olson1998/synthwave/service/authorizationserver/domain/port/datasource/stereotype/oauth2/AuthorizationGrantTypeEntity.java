@@ -2,9 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.Identifiable;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
-public interface ClientAuthenticationMethodWrapper extends Identifiable<Long>, CreatedOn {
+public interface AuthorizationGrantTypeEntity extends Identifiable<Long>, CreatedOn {
 
-    ClientAuthenticationMethod getMethod();
+    AuthorizationGrantType getGrantType();
 }

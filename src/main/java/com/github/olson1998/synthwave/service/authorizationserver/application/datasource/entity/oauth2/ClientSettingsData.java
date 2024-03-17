@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.JwsAlgorithmJavaType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientSettingsProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientSettingsEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +14,7 @@ import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 
 @Entity
 @Table(name = "OA2CSS")
-public class ClientSettingsData implements ClientSettingsProperties {
+public class ClientSettingsData implements ClientSettingsEntity {
 
     @Id
     @Column(name = "RCID")
@@ -35,10 +36,10 @@ public class ClientSettingsData implements ClientSettingsProperties {
     @Column(name = "CSRAC")
     private Boolean requireAuthorizationConsent;
 
-    @Column(name = "CSJURL")
+    @Column(name = "CSJWSU")
     private String jwkSetUrl;
 
-    @Column(name = "CSJALG")
+    @Column(name = "CSJWSA")
     @JavaType(JwsAlgorithmJavaType.class)
     @JdbcType(VarcharJdbcType.class)
     private JwsAlgorithm jwsAlgorithm;
@@ -47,4 +48,14 @@ public class ClientSettingsData implements ClientSettingsProperties {
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    @Override
+    public ClientSettings toSettings() {
+        return ClientSettings.builder()
+                .requireProofKey(requireProofKey)
+                .jwkSetUrl(jwkSetUrl)
+                .requireAuthorizationConsent(requireAuthorizationConsent)
+                .tokenEndpointAuthenticationSigningAlgorithm(jwsAlgorithm)
+                .build();
+    }
 }

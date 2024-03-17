@@ -2,10 +2,11 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Duration;
 
-public interface TokenSettings {
+public interface TokenSettingsEntity {
 
     Long getRegisteredClientId();
 
@@ -22,4 +23,6 @@ public interface TokenSettings {
     Duration getDeviceCodeTimeToLive();
 
     Duration getAuthorizationCodeTimeToLive();
+
+    TokenSettings toSettings();
 }

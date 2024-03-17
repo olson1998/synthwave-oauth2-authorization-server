@@ -2,9 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.Identifiable;
-import com.github.olson1998.synthwave.support.web.util.URIModel;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
-public interface PostLogoutRedirectUri  extends Identifiable<Long>, CreatedOn {
+public interface ClientAuthenticationMethodEntity extends Identifiable<Long>, CreatedOn {
 
-    String getValue();
+    ClientAuthenticationMethod getMethod();
 }

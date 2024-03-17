@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientPropertiesData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.query.AbstractRegisteredClientBuilderWrapper;
@@ -31,7 +31,7 @@ public class RegisteredClientPropertiesJpaRepositoryWrapper implements Registere
 
     @Override
     public RegisteredClientProperties saveRegisteredClientProperties(RegisteredClientProperties registeredClientProperties) {
-        var data = new RegisteredClientPropertiesData(registeredClientProperties);
+        var data = new RegisteredClientData(registeredClientProperties);
         return registeredClientPropertiesJpaRepository.save(data);
     }
 }

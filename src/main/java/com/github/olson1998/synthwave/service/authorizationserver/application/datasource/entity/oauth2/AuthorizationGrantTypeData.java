@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.AuthorizationGrantTypeJavaType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.AuthorizationGrantTypeWrapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.AuthorizationGrantTypeEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +13,7 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 @Getter
@@ -23,7 +24,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 @Entity
 @Table(name = "OA2AGT")
-public class AuthorizationGrantTypeData implements AuthorizationGrantTypeWrapper {
+public class AuthorizationGrantTypeData implements Persistable<Long>, AuthorizationGrantTypeEntity {
 
     @Id
     @Column(name = "AGID")
@@ -38,4 +39,9 @@ public class AuthorizationGrantTypeData implements AuthorizationGrantTypeWrapper
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

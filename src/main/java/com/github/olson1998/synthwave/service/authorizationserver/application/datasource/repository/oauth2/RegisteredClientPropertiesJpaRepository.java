@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientPropertiesData;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientBuilderWrapper;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface RegisteredClientPropertiesJpaRepository extends JpaRepository<RegisteredClientPropertiesData, Long> {
+interface RegisteredClientPropertiesJpaRepository extends JpaRepository<RegisteredClientData, Long> {
 
     @Query(
     """
@@ -34,7 +34,7 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
     tokenSettings.deviceCodeTimeToLive,
     tokenSettings.authorizationCodeTimeToLive
     )
-    FROM RegisteredClientPropertiesData registeredClient
+    FROM RegisteredClientData registeredClient
     LEFT OUTER JOIN RegisteredClientSecretData clientSecret
     ON registeredClient.id=clientSecret.registeredClientId
     LEFT OUTER JOIN ClientSettingsData clientSettings
@@ -69,7 +69,7 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
             tokenSettings.deviceCodeTimeToLive,
             tokenSettings.authorizationCodeTimeToLive
             )
-            FROM RegisteredClientPropertiesData registeredClient
+            FROM RegisteredClientData registeredClient
             LEFT OUTER JOIN RegisteredClientSecretData clientSecret
             ON registeredClient.id=clientSecret.registeredClientId
             LEFT OUTER JOIN ClientSettingsData clientSettings

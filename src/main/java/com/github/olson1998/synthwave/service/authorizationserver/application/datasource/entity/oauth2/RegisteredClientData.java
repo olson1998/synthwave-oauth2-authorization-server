@@ -21,7 +21,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "OA2RCL")
-public class RegisteredClientPropertiesData implements Persistable<Long>, RegisteredClientProperties {
+public class RegisteredClientData implements Persistable<Long>, RegisteredClientProperties {
 
     @Id
     @Column(name = "RCID")
@@ -48,7 +48,7 @@ public class RegisteredClientPropertiesData implements Persistable<Long>, Regist
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime activeFrom;
 
-    public RegisteredClientPropertiesData(@NonNull RegisteredClientProperties registeredClientProperties) {
+    public RegisteredClientData(@NonNull RegisteredClientProperties registeredClientProperties) {
         this.id = registeredClientProperties.getId();
         this.clientId = registeredClientProperties.getClientId();
         this.name = registeredClientProperties.getName();

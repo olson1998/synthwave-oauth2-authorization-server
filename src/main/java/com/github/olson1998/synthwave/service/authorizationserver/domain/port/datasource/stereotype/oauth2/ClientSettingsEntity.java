@@ -2,8 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
-public interface ClientSettingsProperties extends CreatedOn {
+public interface ClientSettingsEntity extends CreatedOn {
 
     Long getRegisteredClientId();
 
@@ -14,5 +15,7 @@ public interface ClientSettingsProperties extends CreatedOn {
     String getJwkSetUrl();
 
     JwsAlgorithm getJwsAlgorithm();
+
+    ClientSettings toSettings();
 
 }

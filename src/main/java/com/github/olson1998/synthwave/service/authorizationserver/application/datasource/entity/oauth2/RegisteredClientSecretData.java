@@ -11,6 +11,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -19,8 +20,8 @@ import org.joda.time.MutableDateTime;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OA2RSC")
-public class RegisteredClientSecretData implements RegisteredClientSecret {
+@Table(name = "OA2RCS")
+public class RegisteredClientSecretData implements Persistable<Long>, RegisteredClientSecret {
 
     @Id
     @Column(name = "SCID")
@@ -42,4 +43,8 @@ public class RegisteredClientSecretData implements RegisteredClientSecret {
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;
 
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

@@ -1,7 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.OAuth2TokenFormatJavaType;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.TokenSettings;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.TokenSettingsEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Duration;
 
@@ -20,7 +21,7 @@ import java.time.Duration;
 
 @Entity
 @Table(name = "OA2TSS")
-public class TokenSettingsData implements TokenSettings {
+public class TokenSettingsData implements TokenSettingsEntity {
 
     @Id
     @Column(name = "RCID")
@@ -30,7 +31,7 @@ public class TokenSettingsData implements TokenSettings {
     @Column(name = "TSIDAG")
     private SignatureAlgorithm idTokenSignatureAlgorithm;
 
-    @Column(name = "TSTF")
+    @Column(name = "TSTFMT")
     @JavaType(OAuth2TokenFormatJavaType.class)
     @JdbcType(VarcharJdbcType.class)
     private OAuth2TokenFormat oAuth2TokenFormat;
@@ -50,4 +51,16 @@ public class TokenSettingsData implements TokenSettings {
     @Column(name = "TSACTL")
     private Duration authorizationCodeTimeToLive;
 
+    @Override
+    public TokenSettings toSettings() {
+        return TokenSettings.builder()
+                .idTokenSignatureAlgorithm(idTokenSignatureAlgorithm)
+                .reuseRefreshTokens(reuseRefreshTokens)
+                .refreshTokenTimeToLive(refreshTokenTimeToLive)
+                .accessTokenTimeToLive(accessTokenTimeToLive)
+                .accessTokenFormat(oAuth2TokenFormat)
+                .deviceCodeTimeToLive(deviceCodeTimeToLive)
+                .authorizationCodeTimeToLive(authorizationCodeTimeToLive)
+                .build();
+    }
 }

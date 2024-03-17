@@ -6,6 +6,8 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 
 public interface RegisteredClientSecret extends Identifiable<Long>, CreatedOn, ExpireOn {
 
+    Long getRegisteredClientId();
+
     String getValue();
 
 }

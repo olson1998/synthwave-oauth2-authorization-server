@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.*;
 import com.github.olson1998.synthwave.support.joda.converter.MutableDateTimeConverter;
 import lombok.*;
-import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -12,6 +11,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,68 +22,59 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RegisteredClientModel extends RegisteredClient {
 
-    @JsonProperty(value = "ID", required = true)
-    private Long id;
-
-    @JsonProperty(value = "CID", required = true)
-    private String clientId;
-
-    @JsonProperty(value = "NAME", required = true)
-    private String clientName;
+    @JsonProperty(value = "RCL", required = true)
+    private RegisteredClientPropertiesModel propertiesModel;
 
     @JsonProperty(value = "RCS", required = true)
-    private RegisteredClientSecret clientSecret;
-
-    @JsonProperty(value = "CTMP")
-    private MutableDateTime createdOn;
-
-    @JsonProperty(value = "ETMP")
-    private MutableDateTime expireOn;
-
-    @JsonProperty(value = "ATMP")
-    private MutableDateTime activeFrom;
+    private RegisteredClientSecretModel secretModel;
 
     @JsonProperty(value = "SCP", required = true)
-    private Set<Scope> scopes;
+    private Set<ScopeModel> scopeModels;
 
     @JsonProperty(value = "RU", required = true)
-    private Set<RedirectUri> redirectUriSet;
+    private Set<RedirectUriModel> redirectUriModels;
 
     @JsonProperty(value = "LRU", required = true)
-    private Set<RedirectUri> postLogoutRedirectUriSet;
+    private Set<RedirectUriModel> postLogoutRedirectUriModels;
 
     @JsonProperty(value = "AGT", required = true)
-    private Set<AuthorizationGrantTypeEntity> authorizationGrantTypesSet;
+    private Set<AuthorizationGrantTypeEntityModel> authorizationGrantTypesSet;
 
     @JsonProperty(value = "CAM", required = true)
-    private Set<ClientAuthenticationMethodEntity> clientAuthenticationMethodsSet;
+    private Set<ClientAuthenticationMethodEntityModel> clientAuthenticationMethodsSet;
 
     @JsonProperty(value = "CSS" ,required = true)
-    private ClientSettingsEntity clientSettingsModel;
+    private ClientSettingsEntityModel clientSettingsModel;
 
     @JsonProperty(value = "TSS", required = true)
-    private TokenSettingsEntity tokenSettingsModel;
+    private TokenSettingsEntityModel tokenSettingsModel;
 
     @Override
     public Instant getClientIdIssuedAt() {
-        return new MutableDateTimeConverter(createdOn).toJavaInstant();
+        return Optional.ofNullable(properties.getCreatedOn())
+                .map(MutableDateTimeConverter::new)
+                .map(MutableDateTimeConverter::toJavaInstant)
+                .orElse(null);
     }
 
     @Override
     public Instant getClientSecretExpiresAt() {
-        return new MutableDateTimeConverter(clientSecret.getExpireOn()).toJavaInstant();
+        return Optional.ofNullable(secret.getExpireOn())
+                .map(MutableDateTimeConverter::new)
+                .map(MutableDateTimeConverter::toJavaInstant)
+                .orElse(null);
     }
 
     @Override
     public Set<String> getRedirectUris() {
-        return redirectUriSet.stream()
+        return redirectUriModels.stream()
                 .map(RedirectUri::getValue)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public Set<String> getPostLogoutRedirectUris() {
-        return postLogoutRedirectUriSet.stream()
+        return postLogoutRedirectUriModels.stream()
                 .map(RedirectUri::getValue)
                 .collect(Collectors.toUnmodifiableSet());
     }
@@ -106,5 +97,22 @@ public class RegisteredClientModel extends RegisteredClient {
     @Override
     public TokenSettings getTokenSettings() {
         return tokenSettingsModel.toSettings();
+    }
+
+    @Override
+    public String getId() {
+        return Optional.ofNullable(properties.getId())
+                .map(String::valueOf)
+                .orElse(null);
+    }
+
+    @Override
+    public String getClientId() {
+        return properties.getClientId();
+    }
+
+    @Override
+    public String getClientName() {
+        return properties.getName();
     }
 }

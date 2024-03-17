@@ -30,7 +30,7 @@ public class RegisteredClientPropertiesJpaRepositoryWrapper implements Registere
     }
 
     @Override
-    public RegisteredClientProperties saveRegisteredClientProperties(RegisteredClientProperties registeredClientProperties) {
+    public RegisteredClientProperties save(RegisteredClientProperties registeredClientProperties) {
         var data = new RegisteredClientData(registeredClientProperties);
         return registeredClientPropertiesJpaRepository.save(data);
     }

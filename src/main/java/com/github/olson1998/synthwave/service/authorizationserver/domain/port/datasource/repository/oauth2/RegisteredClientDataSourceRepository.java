@@ -13,5 +13,5 @@ public interface RegisteredClientDataSourceRepository {
 
     Optional<RegisteredClient.Builder> findRegisteredClientByIdWithTimestamp(Long id, MutableDateTime timestamp);
 
-    RegisteredClientProperties saveRegisteredClientProperties(RegisteredClientProperties registeredClientProperties);
+    RegisteredClientProperties save(RegisteredClientProperties registeredClientProperties);
 }

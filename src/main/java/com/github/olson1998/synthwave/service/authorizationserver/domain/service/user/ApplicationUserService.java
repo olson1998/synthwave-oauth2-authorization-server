@@ -1,10 +1,12 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.user;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authorities.AuthoritiesDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query.ApplicationUserDetailsSearchQueryResult;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.ApplicationUserRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetailsSearchQueryResult;
-import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
@@ -12,7 +14,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
 
 @TransactionProcessor("OA2USR")
@@ -22,26 +23,22 @@ public class ApplicationUserService implements ApplicationUserRepository {
 
     private final ApplicationUserDataSourceRepository applicationUserDataSourceRepository;
 
-    @Override
-    public List<ApplicationUser> getUsersByQuery(String id, String name, String displayName, Boolean active) {
-        return applicationUserDataSourceRepository.getByExample(null, null);
-    }
+    private final UserPasswordDataSourceRepository userPasswordDataSourceRepository;
 
-    @Override
-    public ApplicationUser saveUser(ApplicationUser applicationUser) {
-        return applicationUserDataSourceRepository.save(applicationUser);
-    }
-
-    @Override
-    public AffectedRows updateUser(ApplicationUser applicationUser) {
-        return null;
-    }
+    private final AuthoritiesDataSourceRepository authoritiesDataSourceRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return applicationUserDataSourceRepository.getUserByUsername(username)
                 .map(this::buildUserDetails)
                 .orElse(null);
+    }
+
+    @Override
+    public ApplicationUser saveApplicationUserDetails(ApplicationUserDetails applicationUserDetails) {
+        var applicationUser = applicationUserDataSourceRepository.save(applicationUserDetails.getApplicationUser());
+
+        return applicationUser;
     }
 
     private UserDetails buildUserDetails(ApplicationUserDetailsSearchQueryResult searchQueryResult) {
@@ -54,4 +51,5 @@ public class ApplicationUserService implements ApplicationUserRepository {
         Optional.ofNullable(searchQueryResult.getEnabled()).ifPresent(isEnabled -> builder.disabled(!isEnabled));
         return builder.build();
     }
+
 }

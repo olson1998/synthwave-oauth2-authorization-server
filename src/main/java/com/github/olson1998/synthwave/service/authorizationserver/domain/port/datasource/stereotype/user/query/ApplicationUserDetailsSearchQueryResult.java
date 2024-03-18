@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query;
 
 import org.joda.time.MutableDateTime;
 

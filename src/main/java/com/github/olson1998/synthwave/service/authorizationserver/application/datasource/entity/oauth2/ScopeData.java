@@ -35,6 +35,12 @@ public class ScopeData implements Persistable<Long>, Scope {
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
+    public ScopeData(Scope scope) {
+        this.id = scope.getId();
+        this.name = scope.getName();
+        this.createdOn = scope.getCreatedOn();
+    }
+
     @Override
     public boolean isNew() {
         return true;

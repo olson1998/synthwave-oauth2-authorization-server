@@ -1,12 +1,10 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ClientSettingsEntityModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientSecretModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.TokenSettingsEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUriBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.Scope;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.UriBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.OAuth2RegisteredClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
@@ -16,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
@@ -85,21 +82,19 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         saveRegisteredClientSecret(registeredClientId, registeredClientModel.getSecretModel());
         saveClientSettings(registeredClientId, registeredClientModel.getClientSettingsModel());
         saveTokenSettings(registeredClientId, registeredClientModel.getTokenSettingsModel());
-        var existingScopes = scopeDataSourceRepository.getScopesByExamples(registeredClientModel.getScopeModels());
-        var redirectUris = registeredClientModel.getRedirectUriModels();
-        var existingRedirectUris = redirectUriDataSourceRepository.getRedirectUriByExamples(registeredClientModel.getRedirectUriModels());
-        if(areAllMatchingExampleRedirectUri(existingRedirectUris, redirectUris)) {
-
-        } else {
-
-        }
-        var postLogoutRedirectUris = registeredClientModel.getPostLogoutRedirectUriModels();
-        var existingPostLogoutRedirectUris = redirectUriDataSourceRepository.getRedirectUriByExamples(postLogoutRedirectUris);
-        if(areAllMatchingExampleRedirectUri(existingPostLogoutRedirectUris, postLogoutRedirectUris)) {
-
-        } else {
-
-        }
+        saveScopes(registeredClientId, registeredClientModel.getScopeModels());
+        saveRedirectUris(
+                registeredClientId,
+                registeredClientModel.getRedirectUriModels(),
+                redirectUriDataSourceRepository::getRedirectUriByExamples,
+                redirectUriDataSourceRepository::saveAllRedirectBounds
+        );
+        saveRedirectUris(
+                registeredClientId,
+                registeredClientModel.getPostLogoutRedirectUriModels(),
+                redirectUriDataSourceRepository::getPostLogoutRedirectUriByExamples,
+                redirectUriDataSourceRepository::saveAllPostLogoutRedirectBounds
+        );
     }
 
     private void saveRegisteredClientSecret(Long registeredClientId, RegisteredClientSecretModel secret){
@@ -117,22 +112,32 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         tokenSettingsDataSourceRepository.save(tokenSettings);
     }
 
-    private void saveScopes(Long registeredClientId, Collection<RedirectUri> redirectUri){
-
+    private void saveScopes(Long registeredClientId, Collection<? extends Scope> scopeBounds){
+        var existingScopes = scopeDataSourceRepository.getScopesByExamples(scopeBounds);
+        if(areAllMatchingScopes(existingScopes, scopeBounds)) {
+            var bounds = scopeBounds.stream()
+                    .map(Scope::getId)
+                    .map(id -> new ScopeBindingModel(registeredClientId, id))
+                    .toList();
+            scopeDataSourceRepository.saveAllBounds(bounds);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    private void saveRedirectUris(Collection<RedirectUri> redirectUris,
-                                  Function<Collection<RedirectUri>, Collection<RedirectUri>> existingDataSupplier,
-                                  Consumer<Collection<? extends RedirectUriBinding>> provisioningConsumer) {
+    private void saveRedirectUris(Long registeredClientId,
+                                  Collection<? extends RedirectUri> redirectUris,
+                                  Function<Collection<? extends RedirectUri>, Collection<? extends RedirectUri>> existingDataSupplier,
+                                  Consumer<Collection<? extends UriBinding>> provisioningConsumer) {
         var existingRedirect = existingDataSupplier.apply(redirectUris);
         if(areAllMatchingExampleRedirectUri(existingRedirect, redirectUris)) {
-            var redirectIds = existingRedirect.stream()
+            var bounds = existingRedirect.stream()
                     .map(RedirectUri::getId)
-                    .map()
+                    .map(id -> new RedirectUriBindingModel(registeredClientId, id))
                     .toList();
-            provisioningConsumer.accept();
+            provisioningConsumer.accept(bounds);
         } else {
-
+            throw new IllegalArgumentException("");
         }
     }
 
@@ -180,12 +185,21 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         }, executor));
     }
 
-    private boolean areAllMatchingExampleRedirectUri(Collection<? extends RedirectUri> data, Collection<? extends RedirectUri> examples) {
+    private boolean areAllMatchingScopes(Collection<? extends Scope> data, Collection<? extends Scope> examples) {
         if(data.size() != examples.size()) {
+            return examples.stream()
+                    .allMatch(example -> data.stream().anyMatch(scope -> isMatchingScope(scope, example)));
+        } else {
+            return false;
+        }
+    }
+
+    private boolean areAllMatchingExampleRedirectUri(Collection<? extends RedirectUri> dataCollection, Collection<? extends RedirectUri> examples) {
+        if(dataCollection.size() != examples.size()) {
             return false;
         } else {
             return examples.stream()
-                    .allMatch(example -> data.stream().anyMatch(redirectUri -> isMatchingExampleRedirectUri(redirectUri, example)));
+                    .allMatch(example -> dataCollection.stream().anyMatch(data -> isMatchingExampleRedirectUri(data, example)));
         }
     }
 
@@ -197,6 +211,19 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
             return redirectUri.getId().equals(example.getId());
         } else if (example.getValue() != null) {
             return redirectUri.getValue().equals(example.getValue());
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isMatchingScope(Scope data, Scope example) {
+        if(example.getId() != null && example.getName() != null) {
+            return data.getId().equals(example.getId()) &&
+                    data.getName().equals(example.getName());
+        } else if (example.getId() != null) {
+            return data.getId().equals(example.getId());
+        } else if (example.getName() != null) {
+            return data.getName().equals(example.getName());
         } else {
             return false;
         }

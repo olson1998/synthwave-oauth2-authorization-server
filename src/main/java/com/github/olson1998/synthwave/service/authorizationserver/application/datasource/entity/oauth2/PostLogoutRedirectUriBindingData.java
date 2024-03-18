@@ -33,6 +33,15 @@ public class PostLogoutRedirectUriBindingData implements Persistable<UriBindingV
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    public PostLogoutRedirectUriBindingData(UriBinding uriBinding) {
+        this.properties = new UriBindingValue(
+                uriBinding.getRegisteredClientId(),
+                uriBinding.getUriId()
+        );
+        this.createdOn = uriBinding.getCreatedOn();
+    }
+
     @Override
     public Long getRegisteredClientId() {
         return Optional.ofNullable(properties)

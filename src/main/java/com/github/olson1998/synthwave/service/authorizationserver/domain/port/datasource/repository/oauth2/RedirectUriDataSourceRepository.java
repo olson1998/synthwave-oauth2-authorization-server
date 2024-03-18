@@ -1,6 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUriBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.UriBinding;
 import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
@@ -15,4 +17,8 @@ public interface RedirectUriDataSourceRepository {
     Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId);
 
     Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp);
+
+    void saveAllRedirectBounds(Collection<? extends UriBinding> redirectUriCollection);
+
+    void saveAllPostLogoutRedirectBounds(Collection<? extends UriBinding> postLogoutRedirectUriCollection);
 }

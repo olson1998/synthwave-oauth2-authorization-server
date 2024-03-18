@@ -34,6 +34,14 @@ public class ScopeBindingData implements Persistable<ScopeBindingValue>, ScopeBi
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
+    public ScopeBindingData(ScopeBinding scopeBinding) {
+        this.properties = new ScopeBindingValue(
+                scopeBinding.getRegisteredClientId(),
+                scopeBinding.getScopeId()
+        );
+        this.createdOn = scopeBinding.getCreatedOn();
+    }
+
     @Override
     public Long getRegisteredClientId() {
         return Optional.ofNullable(properties)

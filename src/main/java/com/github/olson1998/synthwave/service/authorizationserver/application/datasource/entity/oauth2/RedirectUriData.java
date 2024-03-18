@@ -27,20 +27,20 @@ import org.springframework.data.domain.Persistable;
 public class RedirectUriData implements Persistable<Long>, RedirectUri {
 
     @Id
-    @Column(name = "RUID")
+    @Column(name = "RID")
     private Long id;
 
-    @Column(name = "RUURI")
+    @Column(name = "RURI")
     @JavaType(URIModelJavaType.class)
     @JdbcType(VarcharJdbcType.class)
     private String value;
 
-    @Column(name = "RUCTMP")
+    @Column(name = "RCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
-    @Column(name = "RUETMP")
+    @Column(name = "RETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;

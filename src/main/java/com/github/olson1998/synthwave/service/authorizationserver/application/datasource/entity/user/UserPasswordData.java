@@ -26,6 +26,9 @@ public class UserPasswordData implements UserPassword {
     @Column(name = "PSID")
     private Long id;
 
+    @Column(name = "USID")
+    private Long userId;
+
     @Column(name = "PSVAL")
     private String value;
 
@@ -42,4 +45,12 @@ public class UserPasswordData implements UserPassword {
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;
 
+    public UserPasswordData(UserPassword userPassword) {
+        this.id = userPassword.getId();
+        this.userId = userPassword.getUserId();
+        this.value = userPassword.getValue();
+        this.active = userPassword.getActive();
+        this.createdOn = userPassword.getCreatedOn();
+        this.expireOn = userPassword.getExpireOn();
+    }
 }

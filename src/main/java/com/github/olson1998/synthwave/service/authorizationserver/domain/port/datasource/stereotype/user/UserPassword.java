@@ -6,6 +6,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 
 public interface UserPassword extends Identifiable<Long>, CreatedOn, ExpireOn {
 
+    Long getUserId();
 
     String getValue();
 

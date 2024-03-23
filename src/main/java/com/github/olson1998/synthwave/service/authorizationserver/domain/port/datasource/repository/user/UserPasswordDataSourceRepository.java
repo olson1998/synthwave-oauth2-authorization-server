@@ -5,4 +5,6 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 public interface UserPasswordDataSourceRepository {
 
     void save(UserPassword userPassword);
+
+    int updateActivePasswordNotActiveByUserId(Long userId);
 }

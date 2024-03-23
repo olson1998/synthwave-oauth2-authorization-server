@@ -12,7 +12,7 @@ import org.joda.time.MutableDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DefaultApplicationUser implements ApplicationUser {
+public class ApplicationUserModel implements ApplicationUser {
 
     public static final String APPLICATION_USER_ID_FIELD = "ID";
 
@@ -38,4 +38,12 @@ public class DefaultApplicationUser implements ApplicationUser {
 
     @JsonProperty(value = APPLICATION_USER_EXPIRE_ON_FIELD)
     private MutableDateTime expireOn;
+
+    public ApplicationUserModel(ApplicationUser applicationUser) {
+        this.id = applicationUser.getId();
+        this.username = applicationUser.getUsername();
+        this.displayName = applicationUser.getDisplayName();
+        this.createdOn = applicationUser.getCreatedOn();
+        this.expireOn = applicationUser.getExpireOn();
+    }
 }

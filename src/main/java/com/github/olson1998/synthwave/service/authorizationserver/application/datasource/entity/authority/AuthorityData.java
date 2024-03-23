@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.GrantedAuthority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "AUTHDATA")
-public class GrantedAuthorityData implements Persistable<Long>, GrantedAuthority {
+public class AuthorityData implements Persistable<Long>, Authority {
 
     @Id
     @Column(name = "AUID")
@@ -48,5 +48,13 @@ public class GrantedAuthorityData implements Persistable<Long>, GrantedAuthority
     @Override
     public boolean isNew() {
         return true;
+    }
+
+    public AuthorityData(Authority authority) {
+        this.id = authority.getId();
+        this.name = authority.getName();
+        this.createdOn = authority.getCreatedOn();
+        this.expireOn = authority.getExpireOn();
+        this.activeFrom = authority.getActiveFrom();
     }
 }

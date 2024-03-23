@@ -12,4 +12,5 @@ public interface ApplicationUserRepository extends UserDetailsService {
 
     @TransactionRouting(method = "POST", transaction = SAVE, item = "User")
     ApplicationUser saveApplicationUserDetails(@TransactionPayload ApplicationUserDetails applicationUserDetails);
+
 }

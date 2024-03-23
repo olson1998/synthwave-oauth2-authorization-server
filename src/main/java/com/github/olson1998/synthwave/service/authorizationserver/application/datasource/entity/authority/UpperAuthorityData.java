@@ -17,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "AUTHUP")
+@Table(name = "AUTHUPPR")
 public class UpperAuthorityData implements Persistable<UpperAuthorityValue>, UpperAuthority {
 
     @EmbeddedId

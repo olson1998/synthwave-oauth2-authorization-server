@@ -5,7 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.ExpireOn;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.Identifiable;
 
-public interface GrantedAuthority extends Identifiable<Long>, CreatedOn, ExpireOn, ActiveFrom {
+public interface Authority extends Identifiable<Long>, CreatedOn, ExpireOn, ActiveFrom {
 
     String getName();
 

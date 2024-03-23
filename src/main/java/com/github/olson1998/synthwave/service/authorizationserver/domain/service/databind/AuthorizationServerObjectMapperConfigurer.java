@@ -3,7 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.DefaultApplicationUser;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.support.springbootstarter.service.ObjectMapperConfigurer;
@@ -24,7 +24,7 @@ import static java.util.Map.entry;
 public class AuthorizationServerObjectMapperConfigurer implements ObjectMapperConfigurer {
 
     private final Map<Class<?>, Class<?>> abstractTypeMappings = Map.ofEntries(
-            entry(ApplicationUser.class, DefaultApplicationUser.class),
+            entry(ApplicationUser.class, ApplicationUserModel.class),
             entry(RegisteredClient.class, RegisteredClientModel.class),
             entry(RegisteredClientSecret.class, RegisteredClientSecretModel.class),
             entry(AuthorizationGrantTypeEntity.class, AuthorizationGrantTypeEntityModel.class),

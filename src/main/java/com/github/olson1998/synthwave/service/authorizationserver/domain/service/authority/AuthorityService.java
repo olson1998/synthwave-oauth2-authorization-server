@@ -7,10 +7,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.au
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityBindingDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
 import lombok.RequiredArgsConstructor;
-
-import java.util.stream.Collectors;
 
 @TransactionProcessor("AUTHDATA")
 
@@ -22,15 +21,39 @@ public class AuthorityService implements AuthorityRepository {
     private final AuthorityBindingDataSourceRepository authorityBindingDataSourceRepository;
 
     @Override
-    public UserAuthorities saveUserAuthorities(UserAuthorities userAuthorities) {
+    public UserAuthorities executeSaveUserAuthoritiesTransaction(UserAuthorities userAuthorities) {
+        saveUserAuthorities(userAuthorities);
+        var authoritiesModels = authorityDataSourceRepository.getAuthoritiesByUserId(userAuthorities.getUserId())
+                .stream()
+                .map(AuthorityModel::new)
+                .toList();
+        return new UserAuthoritiesModel(userAuthorities.getUserId(), authoritiesModels);
+    }
+
+    @Override
+    public void saveUserAuthorities(UserAuthorities userAuthorities) {
         var userId = userAuthorities.getUserId();
-        var authoritiesIds = authorityDataSourceRepository.getAuthoritiesIdsByExamples(userAuthorities.getAuthorities());
+        var examples = userAuthorities.getAuthorities()
+                .stream()
+                .peek(this::eraseIrrelevantData)
+                .toList();
+        var authoritiesIds = authorityDataSourceRepository.getAuthoritiesIdsByExamples(examples);
         var authoritiesBounds = authoritiesIds.stream()
                 .map(authorityId -> new AuthorityBindingModel(userId, authorityId))
                 .toList();
         authorityBindingDataSourceRepository.saveAuthoritiesBounds(authoritiesBounds);
-        return authorityDataSourceRepository.getAuthoritiesByIds(authoritiesIds).stream()
-                .map(AuthorityModel::new)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), authorityModels -> new UserAuthoritiesModel(userId, authorityModels)));
     }
+
+    private void eraseIrrelevantData(Authority authority) {
+        AuthorityModel authorityModel;
+        if(authority instanceof AuthorityModel model) {
+            authorityModel = model;
+        } else {
+            authorityModel = new AuthorityModel(authority);
+        }
+        authorityModel.setActiveFrom(null);
+        authorityModel.setCreatedOn(null);
+        authorityModel.setActiveFrom(null);
+    }
+
 }

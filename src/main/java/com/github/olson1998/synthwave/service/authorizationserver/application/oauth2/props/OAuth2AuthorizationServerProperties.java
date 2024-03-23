@@ -32,7 +32,7 @@ public class OAuth2AuthorizationServerProperties {
         @NotNull
         private String algorithm = "RSASSA-PSS";
 
-        @Min(value = 1, message = "Minimal key size is 1024")
+        @Min(value = 1)
         private int keySize = 512;
     }
 }

@@ -18,8 +18,8 @@ public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceReposit
     private final AuthorityJpaRepository authorityJpaRepository;
 
     @Override
-    public Collection<? extends Authority> getAuthoritiesByIds(Collection<Long> authoritiesIdsCollection) {
-        return authorityJpaRepository.findAllById(authoritiesIdsCollection);
+    public Collection<? extends Authority> getAuthoritiesByUserId(Long userId) {
+        return null;
     }
 
     @Override

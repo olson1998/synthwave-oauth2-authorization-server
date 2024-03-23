@@ -1,5 +1,6 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.user;
+package com.github.olson1998.synthwave.service.authorizationserver.application.user.config;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.ApplicationUserRepository;
@@ -15,9 +16,11 @@ public class UserServiceConfig {
 
     @Bean
     public ApplicationUserRepository applicationUserRepository(UserPasswordRepository userPasswordRepository,
+                                                               AuthorityRepository authorityRepository,
                                                                ApplicationUserDataSourceRepository applicationUserDataSourceRepository) {
         return new ApplicationUserService(
                 userPasswordRepository,
+                authorityRepository,
                 applicationUserDataSourceRepository
         );
     }

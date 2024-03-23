@@ -14,6 +14,15 @@ import java.util.List;
 interface AuthorityJpaRepository extends JpaRepository<AuthorityData, Long> {
 
     @Query("""
+           SELECT authority
+           FROM AuthorityData authority
+           LEFT OUTER JOIN AuthorityBindingData binding
+           ON authority.id=binding.value.authorityId
+           WHERE binding.value.userId=:userId
+           """)
+    List<AuthorityData> selectAuthorityByUserId(@Param("userId") Long userId);
+
+    @Query("""
            SELECT authority.id
            FROM AuthorityData authority
            WHERE authority IN :authorityExamples

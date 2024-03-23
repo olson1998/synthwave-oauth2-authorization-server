@@ -4,9 +4,9 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.au
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionPayload;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionRouting;
 
-import java.util.Collection;
-
 public interface AuthorityRepository {
+
+    String[] getActiveAuthoritiesNamesByUserId(Long userId);
 
     @TransactionRouting(method = "POST", transaction = "UserAuthorityBind", item = "Authority")
     UserAuthorities executeSaveUserAuthoritiesTransaction(@TransactionPayload UserAuthorities userAuthorities);

@@ -10,6 +10,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.MutableDateTime;
 
 @TransactionProcessor("AUTHDATA")
 
@@ -19,6 +20,11 @@ public class AuthorityService implements AuthorityRepository {
     private final AuthorityDataSourceRepository authorityDataSourceRepository;
 
     private final AuthorityBindingDataSourceRepository authorityBindingDataSourceRepository;
+
+    @Override
+    public String[] getActiveAuthoritiesNamesByUserId(Long userId) {
+        return authorityDataSourceRepository.getActiveAuthoritiesNameByUserId(userId);
+    }
 
     @Override
     public UserAuthorities executeSaveUserAuthoritiesTransaction(UserAuthorities userAuthorities) {
@@ -39,7 +45,7 @@ public class AuthorityService implements AuthorityRepository {
                 .toList();
         var authoritiesIds = authorityDataSourceRepository.getAuthoritiesIdsByExamples(examples);
         var authoritiesBounds = authoritiesIds.stream()
-                .map(authorityId -> new AuthorityBindingModel(userId, authorityId))
+                .map(authorityId -> new AuthorityBindingModel(userId, authorityId, MutableDateTime.now()))
                 .toList();
         authorityBindingDataSourceRepository.saveAuthoritiesBounds(authoritiesBounds);
     }

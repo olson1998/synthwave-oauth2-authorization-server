@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.authority;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData;
+import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,17 @@ import java.util.List;
 
 @Repository
 interface AuthorityJpaRepository extends JpaRepository<AuthorityData, Long> {
+
+    @Query("""
+           SELECT authority
+           FROM AuthorityData authority
+           LEFT OUTER JOIN AuthorityBindingData binding
+           ON authority.id=binding.value.authorityId
+           WHERE authority.activeFrom > :now
+           AND authority.expireOn < :now
+           AND binding.value.userId=:userId
+           """)
+    String[] selectActiveAuthoritiesNamesByUserId(@Param("userId") Long userId, @Param("now") MutableDateTime now);
 
     @Query("""
            SELECT authority

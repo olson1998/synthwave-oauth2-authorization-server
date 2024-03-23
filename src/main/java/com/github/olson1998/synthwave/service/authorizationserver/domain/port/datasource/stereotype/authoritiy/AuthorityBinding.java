@@ -1,6 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy;
 
-public interface AuthorityBinding {
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.CreatedOn;
+
+public interface AuthorityBinding extends CreatedOn {
 
     Long getUserId();
 

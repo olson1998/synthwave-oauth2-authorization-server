@@ -6,6 +6,8 @@ import java.util.Collection;
 
 public interface AuthorityDataSourceRepository {
 
+    String[] getActiveAuthoritiesNameByUserId(Long userId);
+
     Collection<? extends Authority> getAuthoritiesByUserId(Long userId);
 
     Collection<Long> getAuthoritiesIdsByExamples(Collection<? extends Authority> authorityExamplesCollection);

@@ -1,6 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedabble.UpperAuthorityValue;
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedable.UpperAuthorityValue;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.UpperAuthority;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

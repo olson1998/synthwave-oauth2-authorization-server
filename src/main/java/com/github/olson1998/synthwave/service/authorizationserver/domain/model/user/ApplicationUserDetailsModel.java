@@ -2,7 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
@@ -27,6 +29,9 @@ public class ApplicationUserDetailsModel implements ApplicationUserDetails {
     @JsonProperty(value = "AUTH", required = true)
     private List<AuthorityModel> authorityModelList;
 
+    @JsonProperty(value = "ROLE", required = true)
+    private List<RoleModel> roleModelsList;
+
     @Override
     public ApplicationUser getApplicationUser() {
         return applicationUserModel;
@@ -40,5 +45,10 @@ public class ApplicationUserDetailsModel implements ApplicationUserDetails {
     @Override
     public Collection<? extends Authority> getAuthorities() {
         return authorityModelList;
+    }
+
+    @Override
+    public Collection<? extends Role> getRoles() {
+        return roleModelsList;
     }
 }

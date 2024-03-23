@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedabble;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

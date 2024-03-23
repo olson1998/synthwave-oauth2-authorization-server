@@ -9,6 +9,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.au
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.role.RoleRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.ApplicationUserRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.UserPasswordRepository;
@@ -29,6 +30,8 @@ import java.util.Optional;
 public class ApplicationUserService implements ApplicationUserRepository {
 
     private final UserPasswordRepository userPasswordRepository;
+
+    private final RoleRepository roleRepository;
 
     private final AuthorityRepository authorityRepository;
 
@@ -82,17 +85,25 @@ public class ApplicationUserService implements ApplicationUserRepository {
     }
 
     private void saveAuthorities(List<AuthorityModel> authorityModelList, Long userId) {
-        authorityRepository.saveUserAuthorities(new UserAuthoritiesModel(userId, authorityModelList));
+        var userAuthorities = new UserAuthoritiesModel(userId, authorityModelList);
+        authorityRepository.saveUserAuthorities(userAuthorities);
     }
 
-    private UserDetails buildUserDetails(UserDetailsData searchQueryResult) {
+    private void saveRoles() {
+
+    }
+
+    private UserDetails buildUserDetails(UserDetailsData userDetailsData) {
+        var userId = userDetailsData.getId();
         var builder = User.builder();
-        var expireTimestamp = searchQueryResult.getExpireOn();
+        var expireTimestamp = userDetailsData.getExpireOn();
         var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(expireTimestamp);
-        builder.username(searchQueryResult.getUsername())
-                .password(searchQueryResult.getPassword())
+        builder.username(userDetailsData.getUsername())
+                .password(userDetailsData.getPassword())
                 .accountExpired(expired);
-        Optional.ofNullable(searchQueryResult.getEnabled()).ifPresent(isEnabled -> builder.disabled(!isEnabled));
+        Optional.ofNullable(userDetailsData.getEnabled()).ifPresent(isEnabled -> builder.disabled(!isEnabled));
+        builder.roles(roleRepository.getActiveRoleNamesByUserId(userId));
+        builder.authorities(authorityRepository.getActiveAuthoritiesNamesByUserId(userId));
         return builder.build();
     }
 

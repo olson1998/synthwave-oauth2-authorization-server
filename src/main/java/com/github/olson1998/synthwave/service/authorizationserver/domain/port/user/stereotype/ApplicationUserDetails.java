@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
 
@@ -13,4 +14,6 @@ public interface ApplicationUserDetails {
     UserPassword getPassword();
 
     Collection<? extends Authority> getAuthorities();
+
+    Collection<? extends Role> getRoles();
 }

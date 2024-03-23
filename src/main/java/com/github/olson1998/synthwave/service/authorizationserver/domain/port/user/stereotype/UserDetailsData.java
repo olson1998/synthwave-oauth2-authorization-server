@@ -1,11 +1,12 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.common.Identifiable;
 import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface UserDetailsData {
+public interface UserDetailsData extends Identifiable<Long> {
 
     String getUsername();
 

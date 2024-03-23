@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,11 @@ import java.util.Collection;
 public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceRepository {
 
     private final AuthorityJpaRepository authorityJpaRepository;
+
+    @Override
+    public String[] getActiveAuthoritiesNameByUserId(Long userId) {
+        return authorityJpaRepository.selectActiveAuthoritiesNamesByUserId(userId, MutableDateTime.now());
+    }
 
     @Override
     public Collection<? extends Authority> getAuthoritiesByUserId(Long userId) {

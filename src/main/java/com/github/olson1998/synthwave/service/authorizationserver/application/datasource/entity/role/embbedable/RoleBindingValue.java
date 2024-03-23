@@ -1,4 +1,4 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.embbedabble;
+package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.role.embbedable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,14 +13,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class AuthorityBindingValue implements Serializable {
+public class RoleBindingValue implements Serializable {
 
-    private static final long serialVersionUID = -222428871917135347L;
+    private static final long serialVersionUID = -5046676066801467085L;
 
     @Column(name = "USID")
     private Long userId;
 
-    @Column(name = "AUID")
-    private Long authorityId;
+    @Column(name = "RLID")
+    private Long roleId;
 
 }

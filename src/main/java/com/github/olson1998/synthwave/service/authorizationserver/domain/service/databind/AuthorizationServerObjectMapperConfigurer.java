@@ -2,10 +2,20 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityBindingModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleBindingModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.UserPasswordModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.AuthorityBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.RoleBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
 import com.github.olson1998.synthwave.support.springbootstarter.service.ObjectMapperConfigurer;
 import lombok.Getter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -25,6 +35,11 @@ public class AuthorizationServerObjectMapperConfigurer implements ObjectMapperCo
 
     private final Map<Class<?>, Class<?>> abstractTypeMappings = Map.ofEntries(
             entry(ApplicationUser.class, ApplicationUserModel.class),
+            entry(UserPassword.class, UserPasswordModel.class),
+            entry(Role.class, RoleModel.class),
+            entry(Authority.class, AuthorityModel.class),
+            entry(RoleBinding.class, RoleBindingModel.class),
+            entry(AuthorityBinding.class, AuthorityBindingModel.class),
             entry(RegisteredClient.class, RegisteredClientModel.class),
             entry(RegisteredClientSecret.class, RegisteredClientSecretModel.class),
             entry(AuthorizationGrantTypeEntity.class, AuthorizationGrantTypeEntityModel.class),

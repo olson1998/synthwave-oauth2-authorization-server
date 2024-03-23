@@ -16,6 +16,7 @@ interface ApplicationUserJpaRepository extends JpaRepository<ApplicationUserData
 
     @Query("""
            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.user.model.UserDetailsDataModel(
+           user.id,
            user.username,
            password.value,
            true,

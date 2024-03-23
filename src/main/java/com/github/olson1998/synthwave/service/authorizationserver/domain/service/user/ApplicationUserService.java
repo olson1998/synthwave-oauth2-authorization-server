@@ -9,7 +9,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.au
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query.ApplicationUserDetailsSearchQueryResult;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.ApplicationUserRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.UserPasswordRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
@@ -85,10 +85,10 @@ public class ApplicationUserService implements ApplicationUserRepository {
         authorityRepository.saveUserAuthorities(new UserAuthoritiesModel(userId, authorityModelList));
     }
 
-    private UserDetails buildUserDetails(ApplicationUserDetailsSearchQueryResult searchQueryResult) {
+    private UserDetails buildUserDetails(UserDetailsData searchQueryResult) {
         var builder = User.builder();
         var expireTimestamp = searchQueryResult.getExpireOn();
-        var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(searchQueryResult.getExpireOn());
+        var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(expireTimestamp);
         builder.username(searchQueryResult.getUsername())
                 .password(searchQueryResult.getPassword())
                 .accountExpired(expired);

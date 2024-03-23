@@ -1,8 +1,9 @@
-package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.query;
+package com.github.olson1998.synthwave.service.authorizationserver.application.user.model;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query.ApplicationUserDetailsSearchQueryResult;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
@@ -10,8 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@RequiredArgsConstructor
-public class ApplicationUserDetailsSearchQueryResultImpl implements ApplicationUserDetailsSearchQueryResult {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDetailsDataModel implements UserDetailsData {
 
     private String username;
 

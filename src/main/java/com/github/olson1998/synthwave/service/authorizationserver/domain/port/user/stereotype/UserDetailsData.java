@@ -1,11 +1,11 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype;
 
 import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
 import java.util.Set;
 
-public interface ApplicationUserDetailsSearchQueryResult {
+public interface UserDetailsData {
 
     String getUsername();
 

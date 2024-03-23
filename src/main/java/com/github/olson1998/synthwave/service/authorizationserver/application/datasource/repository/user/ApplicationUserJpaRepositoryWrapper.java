@@ -3,17 +3,12 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.query.ApplicationUserDetailsSearchQueryResult;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -23,25 +18,8 @@ public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataS
     private final ApplicationUserJpaRepository applicationUserJpaRepository;
 
     @Override
-    public Optional<ApplicationUserDetailsSearchQueryResult> getUserByUsername(String username) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<ApplicationUser> getByExample(@NonNull ApplicationUser applicationUser, Integer limit) {
-        var example = Example.of(
-                mapToData(applicationUser),
-                ExampleMatcher.matching().withIgnoreNullValues()
-        );
-        return Optional.ofNullable(limit)
-                .map(limitValue -> {
-                    var page = Pageable.ofSize(limit);
-                    return applicationUserJpaRepository.findAll(example, page);
-                }).map(page -> page.stream().toList())
-                .orElseGet(()-> applicationUserJpaRepository.findAll(example))
-                .stream()
-                .map(ApplicationUser.class::cast)
-                .toList();
+    public Optional<? extends UserDetailsData> getUserByUsername(String username) {
+        return applicationUserJpaRepository.selectUserDetailsByUsername(username);
     }
 
     @Override

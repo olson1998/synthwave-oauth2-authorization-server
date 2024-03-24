@@ -31,6 +31,11 @@ public class RoleService implements RoleRepository {
     }
 
     @Override
+    public Collection<? extends Role> getRolesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp) {
+        return roleDataSourceRepository.getRolesByUserIdAndTimestamp(userId, timestamp);
+    }
+
+    @Override
     public String[] getActiveRoleNamesByUserId(Long userId) {
         return roleDataSourceRepository.getActiveRoleNamesByUserId(userId);
     }

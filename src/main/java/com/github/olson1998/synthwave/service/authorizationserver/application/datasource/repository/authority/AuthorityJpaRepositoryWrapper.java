@@ -19,13 +19,18 @@ public class AuthorityJpaRepositoryWrapper implements AuthorityDataSourceReposit
     private final AuthorityJpaRepository authorityJpaRepository;
 
     @Override
+    public Collection<? extends Authority> getAuthoritiesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp) {
+        return authorityJpaRepository.selectAuthoritiesByUserIdAndTimestamp(userId, timestamp);
+    }
+
+    @Override
     public String[] getActiveAuthoritiesNameByUserId(Long userId) {
         return authorityJpaRepository.selectActiveAuthoritiesNamesByUserId(userId, MutableDateTime.now());
     }
 
     @Override
     public Collection<? extends Authority> getAuthoritiesByUserId(Long userId) {
-        return null;
+        return authorityJpaRepository.selectAuthorityByUserId(userId);
     }
 
     @Override

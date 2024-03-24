@@ -6,6 +6,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.joda.time.MutableDateTime;
 
 @Data
@@ -16,7 +17,7 @@ public class UserPasswordModel implements UserPassword {
     @JsonProperty(value = "ID")
     private Long id;
 
-    @JsonIgnore
+    @JsonProperty(value = "USID")
     private Long userId;
 
     @JsonProperty(value = "VAL", required = true)
@@ -31,7 +32,7 @@ public class UserPasswordModel implements UserPassword {
     @JsonProperty(value = "ETMP")
     private MutableDateTime expireOn;
 
-    public UserPasswordModel(UserPassword password) {
+    public UserPasswordModel(@NonNull UserPassword password) {
         this.id = password.getId();
         this.userId = password.getUserId();
         this.value = password.getValue();

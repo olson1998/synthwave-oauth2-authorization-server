@@ -18,6 +18,11 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
     private final RoleJpaRepository roleJpaRepository;
 
     @Override
+    public Collection<? extends Role> getRolesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp) {
+        return roleJpaRepository.selectRoleByUserIdAndTimestamp(userId, timestamp);
+    }
+
+    @Override
     public String[] getActiveRoleNamesByUserId(Long userId) {
         return roleJpaRepository.selectActiveRoleNamesByUserId(userId, MutableDateTime.now());
     }

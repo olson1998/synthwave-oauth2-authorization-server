@@ -1,10 +1,13 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.role;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
+import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
 
 public interface RoleDataSourceRepository {
+
+    Collection<? extends Role> getRolesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 
     String[] getActiveRoleNamesByUserId(Long userId);
 

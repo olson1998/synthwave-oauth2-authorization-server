@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.UserAuthoritiesModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserDetailsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.UserPasswordModel;
@@ -10,21 +11,20 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.role.RoleRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.ApplicationUserRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.UserPasswordRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
-@TransactionProcessor("OA2USR")
+import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class ApplicationUserService implements ApplicationUserRepository {
@@ -42,6 +42,22 @@ public class ApplicationUserService implements ApplicationUserRepository {
         return applicationUserDataSourceRepository.getUserByUsername(username)
                 .map(this::buildUserDetails)
                 .orElse(null);
+    }
+
+    @Override
+    public ApplicationUserDetails getApplicationUserDetailsByIdAndTimestamp(Long userId, MutableDateTime timestamp) {
+        timestamp = Optional.ofNullable(timestamp).orElseGet(MutableDateTime::now);
+        var user = applicationUserDataSourceRepository.getUserById(userId);
+        var roles = roleRepository.getRolesByUserIdAndTimestamp(userId, timestamp);
+        var authorities = authorityRepository.getAuthoritiesByUserIdAndTimestamp(userId, timestamp);
+        var userDto = new ApplicationUserModel(user);
+        var rolesDto = mapToDtoList(roles, RoleModel::new);
+        var authoritiesDto = mapToDtoList(authorities, AuthorityModel::new);
+        return ApplicationUserDetailsModel.builder()
+                .applicationUserModel(userDto)
+                .roleModelsList(rolesDto)
+                .authorityModelList(authoritiesDto)
+                .build();
     }
 
     @Override
@@ -89,10 +105,6 @@ public class ApplicationUserService implements ApplicationUserRepository {
         authorityRepository.saveUserAuthorities(userAuthorities);
     }
 
-    private void saveRoles() {
-
-    }
-
     private UserDetails buildUserDetails(UserDetailsData userDetailsData) {
         var userId = userDetailsData.getId();
         var builder = User.builder();
@@ -105,6 +117,12 @@ public class ApplicationUserService implements ApplicationUserRepository {
         builder.roles(roleRepository.getActiveRoleNamesByUserId(userId));
         builder.authorities(authorityRepository.getActiveAuthoritiesNamesByUserId(userId));
         return builder.build();
+    }
+
+    private <T, S> List<S> mapToDtoList(Collection<T> objectCollection, Function<T, S> dtoMapper) {
+        return objectCollection.stream()
+                .map(dtoMapper)
+                .toList();
     }
 
 }

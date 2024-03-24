@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface ApplicationUserDataSourceRepository {
 
+    ApplicationUser getUserById(Long userId);
+
     Optional<? extends UserDetailsData> getUserByUsername(String username);
 
     ApplicationUser save(ApplicationUser applicationUser);

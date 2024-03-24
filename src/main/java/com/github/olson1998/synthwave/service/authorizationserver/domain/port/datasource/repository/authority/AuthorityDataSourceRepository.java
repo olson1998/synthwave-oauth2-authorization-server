@@ -1,10 +1,13 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
 
 public interface AuthorityDataSourceRepository {
+
+    Collection<? extends Authority> getAuthoritiesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 
     String[] getActiveAuthoritiesNameByUserId(Long userId);
 

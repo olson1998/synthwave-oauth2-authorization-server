@@ -18,6 +18,11 @@ public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataS
     private final ApplicationUserJpaRepository applicationUserJpaRepository;
 
     @Override
+    public ApplicationUser getUserById(Long userId) {
+        return applicationUserJpaRepository.selectUserById(userId);
+    }
+
+    @Override
     public Optional<? extends UserDetailsData> getUserByUsername(String username) {
         return applicationUserJpaRepository.selectUserDetailsByUsername(username);
     }

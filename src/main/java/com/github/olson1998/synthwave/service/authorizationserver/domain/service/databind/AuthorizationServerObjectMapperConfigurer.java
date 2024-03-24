@@ -7,6 +7,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.a
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserDetailsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.UserPasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
@@ -16,6 +17,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.RoleBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
 import com.github.olson1998.synthwave.support.springbootstarter.service.ObjectMapperConfigurer;
 import lombok.Getter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -35,6 +37,7 @@ public class AuthorizationServerObjectMapperConfigurer implements ObjectMapperCo
 
     private final Map<Class<?>, Class<?>> abstractTypeMappings = Map.ofEntries(
             entry(ApplicationUser.class, ApplicationUserModel.class),
+            entry(ApplicationUserDetails.class, ApplicationUserDetailsModel.class),
             entry(UserPassword.class, UserPasswordModel.class),
             entry(Role.class, RoleModel.class),
             entry(Authority.class, AuthorityModel.class),

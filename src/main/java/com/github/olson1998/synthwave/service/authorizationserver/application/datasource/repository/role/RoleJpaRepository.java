@@ -14,6 +14,16 @@ import java.util.List;
 interface RoleJpaRepository extends JpaRepository<RoleData, Long> {
 
     @Query("""
+           SELECT role
+           FROM RoleData role
+           LEFT OUTER JOIN RoleBindingData binding
+           ON role.id=binding.value.roleId
+           WHERE binding.value.userId=:userId
+           AND role.expireOn > :timestamp
+           """)
+    List<RoleData> selectRoleByUserIdAndTimestamp(@Param("userId") Long userId, @Param("timestamp") MutableDateTime timestamp);
+
+    @Query("""
            SELECT role.name
            FROM RoleData role
            LEFT OUTER JOIN RoleBindingData binding

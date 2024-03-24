@@ -19,6 +19,17 @@ interface AuthorityJpaRepository extends JpaRepository<AuthorityData, Long> {
            FROM AuthorityData authority
            LEFT OUTER JOIN AuthorityBindingData binding
            ON authority.id=binding.value.authorityId
+           WHERE binding.value.userId=:userId
+           AND authority.expireOn > :timestamp
+           AND authority.activeFrom < :timestamp
+           """)
+    List<AuthorityData> selectAuthoritiesByUserIdAndTimestamp(@Param("userId") Long userId, @Param("timestamp") MutableDateTime timestamp);
+
+    @Query("""
+           SELECT authority
+           FROM AuthorityData authority
+           LEFT OUTER JOIN AuthorityBindingData binding
+           ON authority.id=binding.value.authorityId
            WHERE authority.activeFrom > :now
            AND authority.expireOn < :now
            AND binding.value.userId=:userId

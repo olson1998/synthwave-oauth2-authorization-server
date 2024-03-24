@@ -1,20 +1,21 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.port.role;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionPayload;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionRouting;
+import org.joda.time.MutableDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
-import static com.github.olson1998.synthwave.support.masteritem.model.MiTransactions.SAVE;
-
 public interface RoleRepository {
 
-    @TransactionRouting(method = "POST", transaction = SAVE, item = "Role")
-    Collection<? extends Role> saveAll(@TransactionPayload Collection<? extends Role> roleCollection);
+    Collection<? extends Role> getRolesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 
     String[] getActiveRoleNamesByUserId(Long userId);
 
+    @Transactional(rollbackFor = Exception.class)
+    Collection<? extends Role> saveAll(Collection<? extends Role> roleCollection);
+
+    @Transactional(rollbackFor = Exception.class)
     void saveUserRoles(Collection<? extends Role> roleCollection, Long userId);
 
 }

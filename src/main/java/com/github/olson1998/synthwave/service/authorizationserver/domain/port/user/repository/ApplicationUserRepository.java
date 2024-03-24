@@ -2,15 +2,16 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.u
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionPayload;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionRouting;
+import org.joda.time.MutableDateTime;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import static com.github.olson1998.synthwave.support.masteritem.model.MiTransactions.SAVE;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ApplicationUserRepository extends UserDetailsService {
 
-    @TransactionRouting(method = "POST", transaction = SAVE, item = "User")
-    ApplicationUser saveApplicationUserDetails(@TransactionPayload ApplicationUserDetails applicationUserDetails);
+    ApplicationUserDetails getApplicationUserDetailsByIdAndTimestamp(Long userId, MutableDateTime timestamp);
+
+    @Transactional(rollbackFor = Exception.class)
+    ApplicationUser saveApplicationUserDetails(ApplicationUserDetails applicationUserDetails);
+
 
 }

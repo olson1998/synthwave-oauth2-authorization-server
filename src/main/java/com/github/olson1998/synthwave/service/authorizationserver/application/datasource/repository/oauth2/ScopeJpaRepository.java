@@ -16,12 +16,12 @@ interface ScopeJpaRepository extends JpaRepository<ScopeData, Long> {
 
     @Query(
     """
-    SELECT scope
+    SELECT scope.id
     FROM ScopeData scope
     WHERE scope IN :examples
     """
     )
-    List<ScopeData> selectScopesByExamples(@Param("examples") Collection<Example<ScopeData>> examples);
+    List<Long> selectScopesIdByExamples(@Param("examples") Collection<Example<ScopeData>> examples);
 
     @Query(
     """

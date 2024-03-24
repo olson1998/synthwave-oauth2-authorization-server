@@ -53,6 +53,22 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
     }
 
     @Override
+    public Collection<? extends RedirectUri> saveAll(Collection<? extends RedirectUri> redirectUriCollection) {
+        var data = redirectUriCollection.stream()
+                .map(RedirectUriData::new)
+                .toList();
+        return redirectUriJpaRepository.saveAll(data);
+    }
+
+    @Override
+    public Collection<? extends RedirectUri> saveAllPostLogout(Collection<? extends RedirectUri> postLogoutRedirectUriCollection) {
+        var data = postLogoutRedirectUriCollection.stream()
+                .map(PostLogoutRedirectUriData::new)
+                .toList();
+        return postLogoutRedirectUriJpaRepository.saveAll(data);
+    }
+
+    @Override
     public void saveAllRedirectBounds(Collection<? extends UriBinding> redirectUriCollection) {
         var data = redirectUriCollection.stream()
                 .map(RedirectUriBindingData::new)

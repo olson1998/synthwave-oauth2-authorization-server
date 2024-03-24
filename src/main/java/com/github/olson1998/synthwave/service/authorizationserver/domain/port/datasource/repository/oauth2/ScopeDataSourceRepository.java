@@ -8,9 +8,11 @@ import java.util.Set;
 
 public interface ScopeDataSourceRepository {
 
-    Collection<? extends Scope> getScopesByExamples(Collection<? extends Scope> scopeExamples);
+    Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples);
 
     Set<String> getScopesByRegisteredClientId(Long registeredClientId);
+
+    Collection<? extends Scope> saveAll(Collection<? extends Scope> scopeCollection);
 
     void saveAllBounds(Collection<? extends ScopeBinding> scopeCollection);
 }

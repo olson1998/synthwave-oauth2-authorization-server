@@ -17,6 +17,10 @@ public interface RedirectUriDataSourceRepository {
 
     Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp);
 
+    Collection<? extends RedirectUri> saveAll(Collection<? extends RedirectUri> redirectUriCollection);
+
+    Collection<? extends RedirectUri> saveAllPostLogout(Collection<? extends RedirectUri> postLogoutRedirectUriCollection);
+
     void saveAllRedirectBounds(Collection<? extends UriBinding> redirectUriCollection);
 
     void saveAllPostLogoutRedirectBounds(Collection<? extends UriBinding> postLogoutRedirectUriCollection);

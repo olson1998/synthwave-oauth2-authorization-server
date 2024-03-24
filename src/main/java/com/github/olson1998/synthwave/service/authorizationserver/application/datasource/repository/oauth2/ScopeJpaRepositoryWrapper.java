@@ -22,16 +22,24 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
     private final ScopeBindingJpaRepository scopeBindingJpaRepository;
 
     @Override
-    public Collection<? extends Scope> getScopesByExamples(Collection<? extends Scope> scopeExamples) {
+    public Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples) {
         var examples = scopeExamples.stream()
                 .map(this::createDataExample)
                 .toList();
-        return scopeJpaRepository.selectScopesByExamples(examples);
+        return scopeJpaRepository.selectScopesIdByExamples(examples);
     }
 
     @Override
     public Set<String> getScopesByRegisteredClientId(Long registeredClientId) {
         return scopeJpaRepository.selectScopeNameByRegisteredClientId(registeredClientId);
+    }
+
+    @Override
+    public Collection<? extends Scope> saveAll(Collection<? extends Scope> scopeCollection) {
+        var data = scopeCollection.stream()
+                .map(ScopeData::new)
+                .toList();
+        return scopeJpaRepository.saveAll(data);
     }
 
     @Override

@@ -2,11 +2,13 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.AuthorityDeleteResponseModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityBindingDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.AuthorityDeleteResponse;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 
@@ -37,8 +39,9 @@ public class AuthorityService implements AuthorityRepository {
     }
 
     @Override
-    public void saveUserAuthorities(Long userId, Collection<? extends Authority> authorityCollection) {
-        var examples = authorityCollection
+    public void saveUserAuthorities(UserAuthorities userAuthorities) {
+        var userId = userAuthorities.getUserId();
+        var examples = userAuthorities.getAuthorities()
                 .stream()
                 .map(this::eraseIrrelevantData)
                 .toList();
@@ -47,6 +50,19 @@ public class AuthorityService implements AuthorityRepository {
                 .map(authorityId -> new AuthorityBindingModel(userId, authorityId, MutableDateTime.now()))
                 .toList();
         authorityBindingDataSourceRepository.saveAuthoritiesBounds(authoritiesBounds);
+    }
+
+    @Override
+    public AuthorityDeleteResponse deleteAuthorities(Collection<Long> idCollection) {
+        var authoritiesCollection = authorityDataSourceRepository.getAuthoritiesByIdCollection(idCollection);
+        var authoritiesIdCollection = authoritiesCollection.stream()
+                .map(Authority::getId)
+                .toList();
+        var deletedBounds = authorityBindingDataSourceRepository.deleteAuthoritiesBounds(authoritiesIdCollection);
+        var models = authoritiesCollection.stream()
+                .map(AuthorityModel::new)
+                .toList();
+        return new AuthorityDeleteResponseModel<>(models, deletedBounds);
     }
 
     private Authority eraseIrrelevantData(Authority authority) {

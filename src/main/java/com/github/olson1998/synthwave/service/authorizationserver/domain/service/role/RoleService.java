@@ -6,14 +6,11 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.role.RoleDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.role.RoleRepository;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-@TransactionProcessor("ROLEDATA")
 
 @RequiredArgsConstructor
 public class RoleService implements RoleRepository {

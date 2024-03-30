@@ -1,7 +1,9 @@
 package com.github.olson1998.synthwave.service.authorizationserver.adapter.authority;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.AuthorityDeleteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,14 @@ public class AuthorityRestController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/binding/user/{userId}/save", consumes = APPLICATION_JSON_VALUE)
-    public void saveAuthoritiesBounds(@PathVariable("userId") Long userId, @RequestBody Collection<Authority> authorityCollection) {
-        authorityRepository.saveUserAuthorities(userId, authorityCollection);
+    public void saveAuthoritiesBounds(@RequestBody UserAuthorities userAuthorities) {
+        authorityRepository.saveUserAuthorities(userAuthorities);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(path = "/delete")
+    public AuthorityDeleteResponse deleteAuthority(@RequestParam("ID") Collection<Long> idCollection) {
+
     }
 
 }

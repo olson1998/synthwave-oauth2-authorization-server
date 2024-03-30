@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface OAuth2RegisteredClientRepository extends RegisteredClientRepository {
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     void save(RegisteredClient registeredClient);
+
+    @Transactional(rollbackFor = Exception.class)
+    void delete(Long registeredClientId);
 }

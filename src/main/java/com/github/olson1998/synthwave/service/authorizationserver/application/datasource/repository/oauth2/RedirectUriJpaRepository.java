@@ -30,4 +30,5 @@ interface RedirectUriJpaRepository extends JpaRepository<RedirectUriData, Long> 
 
     @Query("SELECT uri FROM RedirectUriData uri WHERE uri IN :redirectUriExamples")
     List<RedirectUriData> selectRedirectUriByExamples(@Param("redirectUriExamples") Collection<Example<RedirectUriData>> redirectUriExamples);
+
 }

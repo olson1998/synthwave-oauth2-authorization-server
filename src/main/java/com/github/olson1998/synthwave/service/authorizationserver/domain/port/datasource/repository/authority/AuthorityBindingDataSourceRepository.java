@@ -8,4 +8,6 @@ public interface AuthorityBindingDataSourceRepository {
 
     void saveAuthoritiesBounds(Collection<? extends AuthorityBinding> authorityBindingCollection);
 
+    int deleteAuthoritiesBounds(Collection<Long> authoritiesIdCollection);
+
 }

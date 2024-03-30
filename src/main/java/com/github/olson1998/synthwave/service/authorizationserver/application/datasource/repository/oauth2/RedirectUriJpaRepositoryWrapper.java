@@ -84,6 +84,26 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
         postLogoutRedirectUriBindingJpaRepository.saveAll(data);
     }
 
+    @Override
+    public int deleteRedirectUriBoundsById(Long redirectId) {
+        return
+    }
+
+    @Override
+    public int deletePostLogoutRedirectUriBoundsById(Long redirectId) {
+        return 0;
+    }
+
+    @Override
+    public int deleteRedirectBoundsByIdAndRegisteredClientId(Collection<Long> idCollection, Long registeredClientId) {
+        return redirectUriBindingJpaRepository.deleteRedirectByIdAndRegisteredClientId(idCollection, registeredClientId);
+    }
+
+    @Override
+    public int deletePostLogoutRedirectBoundsByIdAndRegisteredClientId(Collection<Long> idCollection, Long registeredClientId) {
+        return postLogoutRedirectUriBindingJpaRepository.deletePostLogoutRedirectUriByIdAndRegisteredClientId(idCollection, registeredClientId);
+    }
+
     private <T> List<Example<T>> createRedirectDataExampleList(Collection<? extends RedirectUri> redirectUriCollection, Function<RedirectUri, T> mapper){
         return redirectUriCollection.stream()
                 .map(redirectUri -> createRedirectDataExample(redirectUri, mapper))

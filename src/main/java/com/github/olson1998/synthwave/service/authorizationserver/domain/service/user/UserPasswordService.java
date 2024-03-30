@@ -4,13 +4,10 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.u
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.UserPasswordDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.UserPassword;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.repository.UserPasswordRepository;
-import com.github.olson1998.synthwave.support.masteritem.annotation.TransactionProcessor;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-@TransactionProcessor("OA2PSS")
 
 @RequiredArgsConstructor
 public class UserPasswordService implements UserPasswordRepository {

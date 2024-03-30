@@ -17,7 +17,7 @@ public class UserPasswordRestController {
     private final UserPasswordRepository userPasswordRepository;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(path = "/Update", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/update", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public void updateUserPassword(@RequestBody UserPassword userPassword) {
         userPasswordRepository.updateUserPassword(userPassword);
     }

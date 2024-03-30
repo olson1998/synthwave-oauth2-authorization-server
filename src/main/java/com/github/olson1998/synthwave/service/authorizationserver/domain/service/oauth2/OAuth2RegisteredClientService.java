@@ -54,6 +54,11 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
     }
 
     @Override
+    public void delete(Long registeredClientId) {
+
+    }
+
+    @Override
     public RegisteredClient findById(String id) {
         var timestamp = MutableDateTime.now();
         var longId = Long.parseLong(id);

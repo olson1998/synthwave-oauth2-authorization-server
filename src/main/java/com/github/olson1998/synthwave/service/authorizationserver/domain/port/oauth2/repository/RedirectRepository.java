@@ -19,8 +19,16 @@ public interface RedirectRepository {
     @Transactional(rollbackFor = Exception.class)
     Collection<? extends RedirectUri> saveAllPostLogoutRedirectUri(Collection<? extends RedirectUri> redirectUriCollection);
 
+    @Transactional(rollbackFor = Exception.class)
+    void deleteRedirectUri(String query);
+
+    @Transactional(rollbackFor = Exception.class)
+    void deletePostLogoutRedirectUri(String query);
+
+    @Transactional(rollbackFor = Exception.class)
     void saveAllRedirectBounds(Collection<? extends RedirectUri> redirectUriCollection, Long registeredClientId);
 
+    @Transactional(rollbackFor = Exception.class)
     void saveAllPostLogoutRedirectBounds(Collection<? extends RedirectUri> redirectUriCollection, Long registeredClientId);
 
 }

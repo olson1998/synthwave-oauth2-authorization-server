@@ -21,4 +21,9 @@ public class AuthorityBindingJpaRepositoryWrapper implements AuthorityBindingDat
                 .toList();
         authorityBindingJpaRepository.saveAll(data);
     }
+
+    @Override
+    public int deleteAuthoritiesBounds(Collection<Long> authoritiesIdCollection) {
+        return authorityBindingJpaRepository.deleteAuthorityBindingByAuthorityId(authoritiesIdCollection);
+    }
 }

@@ -24,4 +24,13 @@ public interface RedirectUriDataSourceRepository {
     void saveAllRedirectBounds(Collection<? extends UriBinding> redirectUriCollection);
 
     void saveAllPostLogoutRedirectBounds(Collection<? extends UriBinding> postLogoutRedirectUriCollection);
+
+    int deleteRedirectUriBoundsById(Long redirectId);
+
+    int deletePostLogoutRedirectUriBoundsById(Long redirectId);
+
+    int deleteRedirectBoundsByIdAndRegisteredClientId(Collection<Long> idCollection, Long registeredClientId);
+
+    int deletePostLogoutRedirectBoundsByIdAndRegisteredClientId(Collection<Long> idCollection, Long registeredClientId);
+
 }

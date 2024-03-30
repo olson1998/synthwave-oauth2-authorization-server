@@ -44,6 +44,16 @@ public class RedirectService implements RedirectRepository {
     }
 
     @Override
+    public void deleteRedirectUri(String query) {
+
+    }
+
+    @Override
+    public void deletePostLogoutRedirectUri(String query) {
+
+    }
+
+    @Override
     public void saveAllRedirectBounds(Collection<? extends RedirectUri> redirectUriCollection, Long registeredClientId) {
         saveRedirectUris(
                 registeredClientId,
@@ -115,4 +125,5 @@ public class RedirectService implements RedirectRepository {
             return false;
         }
     }
+
 }

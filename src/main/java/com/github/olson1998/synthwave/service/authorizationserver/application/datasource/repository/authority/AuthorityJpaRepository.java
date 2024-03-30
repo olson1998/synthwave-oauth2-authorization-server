@@ -17,6 +17,13 @@ interface AuthorityJpaRepository extends JpaRepository<AuthorityData, Long> {
     @Query("""
            SELECT authority
            FROM AuthorityData authority
+           WHERE authority.id IN :idCollection
+           """)
+    List<AuthorityData> selectAuthorityByIdCollection(@Param("idCollection") Collection<Long> idCollection);
+
+    @Query("""
+           SELECT authority
+           FROM AuthorityData authority
            LEFT OUTER JOIN AuthorityBindingData binding
            ON authority.id=binding.value.authorityId
            WHERE binding.value.userId=:userId

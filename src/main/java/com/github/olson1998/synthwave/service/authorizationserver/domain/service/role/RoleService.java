@@ -1,10 +1,15 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.role;
 
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteRoleResponseModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteUserRoleBindingResponseModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.role.RoleBindingDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.role.RoleDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteRoleResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteUserRoleBindingResponse;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
@@ -47,6 +52,20 @@ public class RoleService implements RoleRepository {
                 .peek(roleBindingModel -> roleBindingModel.setCreatedOn(MutableDateTime.now()))
                 .toList();
         roleBindingDataSourceRepository.saveAll(roleBounds);
+    }
+
+    @Override
+    public DeleteRoleResponse deleteRoles(Collection<Long> idCollection) {
+        var roleIdCollection = roleDataSourceRepository.getRolesIdsByIdCollection(idCollection);
+        var deletedBounds = roleBindingDataSourceRepository.deleteRoleById(roleIdCollection);
+        return new DeleteRoleResponseModel(roleIdCollection, new DeletedBindingModel(deletedBounds));
+    }
+
+    @Override
+    public DeleteUserRoleBindingResponse deleteUserRoleBounds(Long userId, Collection<Long> idCollection) {
+        var roleIdCollection = roleDataSourceRepository.getRolesIdsByIdCollection(idCollection);
+        var deletedBounds = roleBindingDataSourceRepository.deleteRoleByUserIdAndRoleId(userId, idCollection);
+        return new DeleteUserRoleBindingResponseModel(userId, roleIdCollection);
     }
 
     private void eraseIrrelevantData(Role role) {

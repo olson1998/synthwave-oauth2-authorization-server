@@ -26,4 +26,9 @@ public class AuthorityBindingJpaRepositoryWrapper implements AuthorityBindingDat
     public int deleteAuthoritiesBounds(Collection<Long> authoritiesIdCollection) {
         return authorityBindingJpaRepository.deleteAuthorityBindingByAuthorityId(authoritiesIdCollection);
     }
+
+    @Override
+    public int deleteUserAuthorityBounds(Long userId, Collection<Long> authoritiesIdCollection) {
+        return authorityBindingJpaRepository.deleteAuthorityBindingByUserIdAndAuthorityId(userId, authoritiesIdCollection);
+    }
 }

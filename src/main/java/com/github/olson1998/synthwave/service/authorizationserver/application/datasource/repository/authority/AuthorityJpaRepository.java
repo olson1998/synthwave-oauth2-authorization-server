@@ -15,11 +15,11 @@ import java.util.List;
 interface AuthorityJpaRepository extends JpaRepository<AuthorityData, Long> {
 
     @Query("""
-           SELECT authority
+           SELECT authority.id
            FROM AuthorityData authority
            WHERE authority.id IN :idCollection
            """)
-    List<AuthorityData> selectAuthorityByIdCollection(@Param("idCollection") Collection<Long> idCollection);
+    List<Long> selectAuthorityByIdCollection(@Param("idCollection") Collection<Long> idCollection);
 
     @Query("""
            SELECT authority

@@ -2,13 +2,16 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.AuthorityDeleteResponseModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteAuthorityResponseModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteUserAuthorityBindingResponseModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityBindingDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.AuthorityDeleteResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorityResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteUserAuthorityBindingResponse;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 
@@ -53,16 +56,17 @@ public class AuthorityService implements AuthorityRepository {
     }
 
     @Override
-    public AuthorityDeleteResponse deleteAuthorities(Collection<Long> idCollection) {
-        var authoritiesCollection = authorityDataSourceRepository.getAuthoritiesByIdCollection(idCollection);
-        var authoritiesIdCollection = authoritiesCollection.stream()
-                .map(Authority::getId)
-                .toList();
+    public DeleteAuthorityResponse deleteAuthorities(Collection<Long> idCollection) {
+        var authoritiesIdCollection = authorityDataSourceRepository.getIdByAuthorityIdCollection(idCollection);
         var deletedBounds = authorityBindingDataSourceRepository.deleteAuthoritiesBounds(authoritiesIdCollection);
-        var models = authoritiesCollection.stream()
-                .map(AuthorityModel::new)
-                .toList();
-        return new AuthorityDeleteResponseModel<>(models, deletedBounds);
+        return new DeleteAuthorityResponseModel<>(authoritiesIdCollection, new DeletedBindingModel(deletedBounds));
+    }
+
+    @Override
+    public DeleteUserAuthorityBindingResponse deleteUserAuthoritiesBounds(Long userId, Collection<Long> idCollection) {
+        var authoritiesIdCollection = authorityDataSourceRepository.getIdByAuthorityIdCollection(idCollection);
+        var deleteBounds = authorityBindingDataSourceRepository.deleteUserAuthorityBounds(userId, idCollection);
+        return new DeleteUserAuthorityBindingResponseModel(userId, authoritiesIdCollection);
     }
 
     private Authority eraseIrrelevantData(Authority authority) {

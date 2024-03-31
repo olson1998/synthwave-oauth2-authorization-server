@@ -10,4 +10,6 @@ public interface AuthorityBindingDataSourceRepository {
 
     int deleteAuthoritiesBounds(Collection<Long> authoritiesIdCollection);
 
+    int deleteUserAuthorityBounds(Long userId, Collection<Long> authoritiesIdCollection);
+
 }

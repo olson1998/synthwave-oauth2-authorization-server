@@ -1,6 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.adapter.role;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteRoleResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteUserRoleBindingResponse;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,18 @@ public class RoleRestController {
     @PostMapping(value = "/binding/user/{userId}/save", consumes = APPLICATION_JSON_VALUE)
     public void saveRoleBounds(@PathVariable("userId") Long userId, @RequestBody Collection<Role> roleCollection) {
         roleRepository.saveUserRoles(roleCollection, userId);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/delete", produces = APPLICATION_JSON_VALUE)
+    public DeleteRoleResponse deleteRoles(@RequestParam("RLID") Collection<Long> idCollection) {
+        return roleRepository.deleteRoles(idCollection);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping(value = "/binding/user/{userId}/delete", consumes = APPLICATION_JSON_VALUE)
+    public DeleteUserRoleBindingResponse deleteUserRoles(@PathVariable("userId") Long userId, @RequestParam("RLID") Collection<Long> idCollection) {
+        return roleRepository.deleteUserRoleBounds(userId, idCollection);
     }
 
 }

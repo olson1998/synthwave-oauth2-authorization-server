@@ -6,8 +6,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -22,6 +24,13 @@ interface RoleJpaRepository extends JpaRepository<RoleData, Long> {
            AND role.expireOn > :timestamp
            """)
     List<RoleData> selectRoleByUserIdAndTimestamp(@Param("userId") Long userId, @Param("timestamp") MutableDateTime timestamp);
+
+    @Query("""
+           SELECT role.id
+           FROM RoleData role
+           WHERE role.id IN :idCollection
+           """)
+    List<Long> selectRoleIdByIdCollection(@Param("idCollection") Collection<Long> idCollection);
 
     @Query("""
            SELECT role.name

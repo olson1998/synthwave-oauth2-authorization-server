@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface AuthorityDataSourceRepository {
 
-    Collection<? extends Authority> getAuthoritiesByIdCollection(Collection<Long> authorityIdCollection);
+    Collection<Long> getIdByAuthorityIdCollection(Collection<Long> authorityIdCollection);
 
     Collection<? extends Authority> getAuthoritiesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 

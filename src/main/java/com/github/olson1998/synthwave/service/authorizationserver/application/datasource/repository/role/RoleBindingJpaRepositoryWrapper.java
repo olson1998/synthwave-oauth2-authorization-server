@@ -13,7 +13,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRepository {
 
-    private RoleBindingJpaRepository roleBindingJpaRepository;
+    private final RoleBindingJpaRepository roleBindingJpaRepository;
 
     @Override
     public void saveAll(Collection<? extends RoleBinding> roleBoundsCollection) {
@@ -23,4 +23,15 @@ public class RoleBindingJpaRepositoryWrapper implements RoleBindingDataSourceRep
                 .toList();
         roleBindingJpaRepository.saveAll(data);
     }
+
+    @Override
+    public int deleteRoleById(Collection<Long> idCollection) {
+        return roleBindingJpaRepository.deleteRoleById(idCollection);
+    }
+
+    @Override
+    public int deleteRoleByUserIdAndRoleId(Long userId, Collection<Long> idCollection) {
+        return roleBindingJpaRepository.deleteRoleByUserIdAndRoleId(userId, idCollection);
+    }
+
 }

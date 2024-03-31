@@ -23,6 +23,11 @@ public class RoleJpaRepositoryWrapper implements RoleDataSourceRepository {
     }
 
     @Override
+    public Collection<Long> getRolesIdsByIdCollection(Collection<Long> idCollection) {
+        return roleJpaRepository.selectRoleIdByIdCollection(idCollection);
+    }
+
+    @Override
     public String[] getActiveRoleNamesByUserId(Long userId) {
         return roleJpaRepository.selectActiveRoleNamesByUserId(userId, MutableDateTime.now());
     }

@@ -8,4 +8,8 @@ public interface RoleBindingDataSourceRepository {
 
     void saveAll(Collection<? extends RoleBinding> roleBoundsCollection);
 
+    int deleteRoleById(Collection<Long> idCollection);
+
+    int deleteRoleByUserIdAndRoleId(Long userId, Collection<Long> idCollection);
+
 }

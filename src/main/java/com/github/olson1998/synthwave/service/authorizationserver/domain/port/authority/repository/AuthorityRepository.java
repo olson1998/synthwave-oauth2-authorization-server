@@ -2,7 +2,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.a
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.AuthorityDeleteResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorityResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteUserAuthorityBindingResponse;
 import org.joda.time.MutableDateTime;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,9 @@ public interface AuthorityRepository {
     void saveUserAuthorities(UserAuthorities userAuthorities);
 
     @Transactional(rollbackFor = Exception.class)
-    AuthorityDeleteResponse deleteAuthorities(Collection<Long> idCollection);
+    DeleteAuthorityResponse deleteAuthorities(Collection<Long> idCollection);
+
+    @Transactional(rollbackFor = Exception.class)
+    DeleteUserAuthorityBindingResponse deleteUserAuthoritiesBounds(Long userId, Collection<Long> idCollection);
 
 }

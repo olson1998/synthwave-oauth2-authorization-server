@@ -20,4 +20,12 @@ interface AuthorityBindingJpaRepository extends JpaRepository<AuthorityBindingDa
            """)
     int deleteAuthorityBindingByAuthorityId(@Param("authoritiesIdCollection") Collection<Long> authoritiesIdCollection);
 
+    @Modifying
+    @Query("""
+           DELETE FROM AuthorityBindingData binding
+           WHERE binding.value.userId=:userId
+           AND binding.value.authorityId IN :authoritiesIdCollection
+           """)
+    int deleteAuthorityBindingByUserIdAndAuthorityId(@Param("userId") Long userId, @Param("authoritiesIdCollection") Collection<Long> authoritiesIdCollection);
+
 }

@@ -3,7 +3,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.adapter.autho
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.AuthorityDeleteResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorityResponse;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteUserAuthorityBindingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,15 @@ public class AuthorityRestController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/delete")
-    public AuthorityDeleteResponse deleteAuthority(@RequestParam("ID") Collection<Long> idCollection) {
+    @DeleteMapping(path = "/delete", produces = APPLICATION_JSON_VALUE)
+    public DeleteAuthorityResponse deleteAuthority(@RequestParam("AUID") Collection<Long> idCollection) {
+        return authorityRepository.deleteAuthorities(idCollection);
+    }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping(path = "/binding/user/{userId}/delete", produces = APPLICATION_JSON_VALUE)
+    public DeleteUserAuthorityBindingResponse deleteUserAuthorityBounds(@PathVariable("userId") Long userId, @RequestParam("AUID") Collection<Long> idCollection) {
+       return authorityRepository.deleteUserAuthoritiesBounds(userId, idCollection);
     }
 
 }

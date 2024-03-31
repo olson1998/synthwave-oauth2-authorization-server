@@ -9,6 +9,8 @@ public interface RoleDataSourceRepository {
 
     Collection<? extends Role> getRolesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 
+    Collection<Long> getRolesIdsByIdCollection(Collection<Long> idCollection);
+
     String[] getActiveRoleNamesByUserId(Long userId);
 
     Collection<Long> getRoleIdByExample(Collection<? extends Role> roleExamples);

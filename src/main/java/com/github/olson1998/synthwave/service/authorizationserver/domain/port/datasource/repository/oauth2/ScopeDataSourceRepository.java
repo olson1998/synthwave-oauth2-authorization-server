@@ -8,6 +8,10 @@ import java.util.Set;
 
 public interface ScopeDataSourceRepository {
 
+    Collection<? extends Scope> getAllScopes();
+
+    Collection<Long> getScopeIdById(Collection<Long> scopeIdCollection);
+
     Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples);
 
     Set<String> getScopesByRegisteredClientId(Long registeredClientId);
@@ -15,4 +19,6 @@ public interface ScopeDataSourceRepository {
     Collection<? extends Scope> saveAll(Collection<? extends Scope> scopeCollection);
 
     void saveAllBounds(Collection<? extends ScopeBinding> scopeCollection);
+
+    int deleteScopeBoundsByScopeId(Collection<Long> scopeIdCollection);
 }

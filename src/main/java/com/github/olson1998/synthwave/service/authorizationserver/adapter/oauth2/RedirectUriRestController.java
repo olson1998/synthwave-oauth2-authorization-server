@@ -31,20 +31,14 @@ public class RedirectUriRestController {
         return redirectRepository.saveAllPostLogoutRedirectUri(redirectUriCollection);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/delete", produces = APPLICATION_JSON_VALUE)
-    public DeleteResponse deleteRedirectUri(@RequestParam("RUID") Long redirectUriId) {
-
-    }
-
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/bound/registered-client/{registeredClientId}/save", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/bind/registered-client/{registeredClientId}/save", consumes = APPLICATION_JSON_VALUE)
     public void saveRegisteredClientRedirectUriBounds(@PathVariable("registeredClientId") Long registeredClientId, @RequestBody Collection<? extends RedirectUri> redirectUriCollection) {
         redirectRepository.saveAllRedirectBounds(redirectUriCollection, registeredClientId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/post-logout/bound/registered-client/{registeredClientId}/save", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/post-logout/bind/registered-client/{registeredClientId}/save", consumes = APPLICATION_JSON_VALUE)
     public void saveRegisteredClientPostLogoutRedirectUriBounds(@PathVariable("registeredClientId") Long registeredClientId, @RequestBody Collection<? extends RedirectUri> redirectUriCollection) {
         redirectRepository.saveAllPostLogoutRedirectBounds(redirectUriCollection, registeredClientId);
     }

@@ -22,6 +22,16 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
     private final ScopeBindingJpaRepository scopeBindingJpaRepository;
 
     @Override
+    public Collection<? extends Scope> getAllScopes() {
+        return scopeJpaRepository.findAll();
+    }
+
+    @Override
+    public Collection<Long> getScopeIdById(Collection<Long> scopeIdCollection) {
+        return scopeJpaRepository.selectScopeIdById(scopeIdCollection);
+    }
+
+    @Override
     public Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples) {
         var examples = scopeExamples.stream()
                 .map(this::createDataExample)
@@ -48,6 +58,11 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
                 .map(ScopeBindingData::new)
                 .toList();
         scopeBindingJpaRepository.saveAll(data);
+    }
+
+    @Override
+    public int deleteScopeBoundsByScopeId(Collection<Long> scopeIdCollection) {
+        return scopeBindingJpaRepository.deleteScopeBindingByScopeId(scopeIdCollection);
     }
 
     private Example<ScopeData> createDataExample(Scope scope) {

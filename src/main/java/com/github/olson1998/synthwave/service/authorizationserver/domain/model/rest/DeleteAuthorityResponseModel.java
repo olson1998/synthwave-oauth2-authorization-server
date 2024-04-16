@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.model.
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorityResponse;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeletedBinding;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeletedRows;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,6 @@ public class DeleteAuthorityResponseModel<T> implements DeleteAuthorityResponse 
     private Collection<Long> parameters;
 
     @JsonProperty("AUTHBIND")
-    private DeletedBinding deletedBinding;
+    private DeletedRows deletedRows;
 
 }

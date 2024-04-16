@@ -40,6 +40,12 @@ public class AuthorizationGrantTypeData implements Persistable<Long>, Authorizat
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
+    public AuthorizationGrantTypeData(AuthorizationGrantTypeEntity authorizationGrantType) {
+        this.id = authorizationGrantType.getId();
+        this.grantType = authorizationGrantType.getGrantType();
+        this.createdOn = authorizationGrantType.getCreatedOn();
+    }
+
     @Override
     public boolean isNew() {
         return true;

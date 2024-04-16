@@ -20,6 +20,11 @@ public class ScopeRestController {
 
     private final ScopeRepository scopeRepository;
 
+    @GetMapping(path = "/list", produces = APPLICATION_JSON_VALUE)
+    public Collection<? extends Scope> getAllScopes() {
+        return scopeRepository.getAllScopes();
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/save", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public Collection<? extends Scope> saveScopeCollection(@RequestBody Collection<? extends Scope> scopeCollection) {

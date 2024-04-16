@@ -3,5 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.r
 public interface DeleteResponse<T> {
 
     T getParameters();
+    
+    DeletedRows getDeletedRows();
 
 }

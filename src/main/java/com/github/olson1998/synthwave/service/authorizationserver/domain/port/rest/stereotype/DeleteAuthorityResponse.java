@@ -3,7 +3,5 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.r
 import java.util.Collection;
 
 public interface DeleteAuthorityResponse extends DeleteResponse<Collection<Long>> {
-
-    DeletedBinding getDeletedBinding();
-
+    
 }

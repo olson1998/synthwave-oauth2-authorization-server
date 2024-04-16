@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.a
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.authoritity.AuthorityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteAuthorityResponseModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteUserAuthorityBindingResponseModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedBindingModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedRowsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.stereotype.UserAuthorities;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.authority.AuthorityBindingDataSourceRepository;
@@ -59,7 +59,7 @@ public class AuthorityService implements AuthorityRepository {
     public DeleteAuthorityResponse deleteAuthorities(Collection<Long> idCollection) {
         var authoritiesIdCollection = authorityDataSourceRepository.getIdByAuthorityIdCollection(idCollection);
         var deletedBounds = authorityBindingDataSourceRepository.deleteAuthoritiesBounds(authoritiesIdCollection);
-        return new DeleteAuthorityResponseModel<>(authoritiesIdCollection, new DeletedBindingModel(deletedBounds));
+        return new DeleteAuthorityResponseModel<>(authoritiesIdCollection, new DeletedRowsModel(deletedBounds));
     }
 
     @Override

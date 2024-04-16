@@ -20,7 +20,7 @@ import org.springframework.data.domain.Persistable;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "OAU2SCP")
+@Table(name = "OAU2SCPD")
 public class ScopeData implements Persistable<Long>, Scope {
 
     @Id

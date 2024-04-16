@@ -22,6 +22,13 @@ public class AuthorizationGrantTypeBindingData implements AuthorizationGrantType
     @EmbeddedId
     private AuthorizationGrantTypeBindingValue properties;
 
+    public AuthorizationGrantTypeBindingData(AuthorizationGrantTypeBinding authorizationGrantTypeBinding) {
+        this.properties = new AuthorizationGrantTypeBindingValue(
+                authorizationGrantTypeBinding.getRegisteredClientId(),
+                authorizationGrantTypeBinding.getAuthorizationGrantTypeId()
+        );
+    }
+
     @Override
     public Long getRegisteredClientId() {
         return Optional.ofNullable(properties)

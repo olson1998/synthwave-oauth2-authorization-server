@@ -4,6 +4,6 @@ import java.util.Collection;
 
 public interface DeleteScopeResponse extends DeleteResponse<Collection<Long>> {
 
-    DeletedBinding getDeletedBounds();
+    DeletedRows getDeletedBounds();
 
 }

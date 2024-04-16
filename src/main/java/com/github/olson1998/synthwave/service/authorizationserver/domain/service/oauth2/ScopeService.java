@@ -2,8 +2,9 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ScopeBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ScopeModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteScopeBindingResponseModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteScopeResponseModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedBindingModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedRowsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ScopeDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.Scope;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ScopeRepository;
@@ -65,14 +66,14 @@ public class ScopeService implements ScopeRepository {
     public DeleteScopeResponse deleteScopes(Collection<Long> scopeIdCollection) {
         var idCollection = scopeDataSourceRepository.getScopeIdById(scopeIdCollection);
         var deletedBoundsQty = scopeDataSourceRepository.deleteScopeBoundsByScopeId(idCollection);
-        return new DeleteScopeResponseModel(idCollection, new DeletedBindingModel(deletedBoundsQty));
+        return new DeleteScopeResponseModel(idCollection, new DeletedRowsModel(deletedBoundsQty));
     }
 
     @Override
     public DeleteScopeBindingResponse deleteScopeBounds(Collection<? extends Scope> scopeCollection, Long registeredClientId) {
         var idCollection = scopeDataSourceRepository.getScopesIdByExamples(scopeCollection);
-
-        return null;
+        var deletedRowsQty = scopeDataSourceRepository.deleteScopeBoundsByScopeId(idCollection);
+        return new DeleteScopeBindingResponseModel(registeredClientId, idCollection, new DeletedRowsModel(deletedRowsQty));
     }
 
     private Scope eraseIrrelevantData(Scope scope) {

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.servic
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteRoleResponseModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeleteUserRoleBindingResponseModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedBindingModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.rest.DeletedRowsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleBindingModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.role.RoleBindingDataSourceRepository;
@@ -58,7 +58,7 @@ public class RoleService implements RoleRepository {
     public DeleteRoleResponse deleteRoles(Collection<Long> idCollection) {
         var roleIdCollection = roleDataSourceRepository.getRolesIdsByIdCollection(idCollection);
         var deletedBounds = roleBindingDataSourceRepository.deleteRoleById(roleIdCollection);
-        return new DeleteRoleResponseModel(roleIdCollection, new DeletedBindingModel(deletedBounds));
+        return new DeleteRoleResponseModel(roleIdCollection, new DeletedRowsModel(deletedBounds));
     }
 
     @Override

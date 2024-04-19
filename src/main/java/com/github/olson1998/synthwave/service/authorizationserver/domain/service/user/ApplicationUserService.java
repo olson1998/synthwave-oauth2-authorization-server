@@ -5,6 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.model.a
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.role.RoleModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserDetailsModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.ApplicationUserModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.SynthwaveUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.user.UserPasswordModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.authority.repository.AuthorityRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
@@ -107,15 +108,16 @@ public class ApplicationUserService implements ApplicationUserRepository {
 
     private UserDetails buildUserDetails(UserDetailsData userDetailsData) {
         var userId = userDetailsData.getId();
-        var builder = User.builder();
+        var builder = SynthwaveUser.synthwaveUserBuilder()
+                .userId(userId)
+                .companyCode(userDetailsData.getCompanyCode())
+                .division(userDetailsData.getDivision());
         var expireTimestamp = userDetailsData.getExpireOn();
         var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(expireTimestamp);
         builder.username(userDetailsData.getUsername())
                 .password(userDetailsData.getPassword())
-                .accountExpired(expired);
-        Optional.ofNullable(userDetailsData.getEnabled()).ifPresent(isEnabled -> builder.disabled(!isEnabled));
-        builder.roles(roleRepository.getActiveRoleNamesByUserId(userId));
-        builder.authorities(authorityRepository.getActiveAuthoritiesNamesByUserId(userId));
+                .accountNonExpired(!expired);
+        Optional.ofNullable(userDetailsData.getEnabled()).ifPresentOrElse(builder::enabled, () -> builder.enabled(true));
         return builder.build();
     }
 

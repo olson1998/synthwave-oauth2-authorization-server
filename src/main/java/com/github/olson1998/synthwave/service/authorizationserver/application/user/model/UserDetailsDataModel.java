@@ -19,6 +19,10 @@ public class UserDetailsDataModel implements UserDetailsData {
 
     private String username;
 
+    private String companyCode;
+
+    private String division;
+
     private String password;
 
     private Boolean enabled;

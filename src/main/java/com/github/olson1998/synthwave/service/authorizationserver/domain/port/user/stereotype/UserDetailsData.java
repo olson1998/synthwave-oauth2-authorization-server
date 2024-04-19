@@ -10,6 +10,10 @@ public interface UserDetailsData extends Identifiable<Long> {
 
     String getUsername();
 
+    String getCompanyCode();
+
+    String getDivision();
+
     String getPassword();
 
     Boolean getEnabled();

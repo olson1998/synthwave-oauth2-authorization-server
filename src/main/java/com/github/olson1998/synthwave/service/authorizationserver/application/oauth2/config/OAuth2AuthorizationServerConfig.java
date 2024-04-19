@@ -8,6 +8,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ScopeRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2AuthorizationService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2RegisteredClientService;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2TokenCustomizingService;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -25,7 +26,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPairGenerator;
@@ -76,12 +79,14 @@ public class OAuth2AuthorizationServerConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain oauth2AuthorizationServerSecurityFilterChain(@NonNull HttpSecurity httpSecurity,
+                                                                            @NonNull JwtGenerator jwtGenerator,
                                                                             @NonNull OAuth2AuthorizationRepository oAuth2AuthorizationRepository,
                                                                             @NonNull OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
         httpSecurity.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())
-                .registeredClientRepository(oAuth2RegisteredClientRepository);
+                .registeredClientRepository(oAuth2RegisteredClientRepository)
+                .tokenGenerator(jwtGenerator);
         return httpSecurity.build();
     }
 
@@ -124,7 +129,15 @@ public class OAuth2AuthorizationServerConfig {
     }
 
     @Bean
-    public JwtGenerator jwtGenerator(JwtEncoder jwtEncoder){
-        return new JwtGenerator(jwtEncoder);
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtEncodingContextOAuth2TokenCustomizer() {
+        return new OAuth2TokenCustomizingService();
+    }
+
+    @Bean
+    public JwtGenerator jwtGenerator(JwtEncoder jwtEncoder,
+                                     OAuth2TokenCustomizer<JwtEncodingContext> jwtEncodingContextOAuth2TokenCustomizer){
+        var jwtGenerator = new JwtGenerator(jwtEncoder);
+        jwtGenerator.setJwtCustomizer(jwtEncodingContextOAuth2TokenCustomizer);
+        return jwtGenerator;
     }
 }

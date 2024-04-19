@@ -2,10 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -13,18 +10,24 @@ import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
+import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData.AUTHORITY_ID_SEQUENCE_GENERATOR;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@SequenceGenerator(name = AUTHORITY_ID_SEQUENCE_GENERATOR, sequenceName = "AUIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "AUTHDATA")
 public class AuthorityData implements Persistable<Long>, Authority {
 
+    public static final String AUTHORITY_ID_SEQUENCE_GENERATOR = "AUIDSEQ";
+
     @Id
     @Column(name = "AUID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = AUTHORITY_ID_SEQUENCE_GENERATOR)
     private Long id;
 
     @Column(name = "AUNAME")

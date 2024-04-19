@@ -1,10 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.role;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.role.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
@@ -15,12 +12,17 @@ import org.springframework.data.domain.Persistable;
 @NoArgsConstructor
 @AllArgsConstructor
 
+@SequenceGenerator(name = RoleData.ROLE_ID_SEQUENCE_GENERATOR, sequenceName = "RLIDSEQ")
+
 @Entity
 @Table(name = "ROLEDATA")
 public class RoleData implements Persistable<Long>, Role {
 
+    public static final String ROLE_ID_SEQUENCE_GENERATOR = "RLIDSEQ";
+
     @Id
     @Column(name = "RLID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = ROLE_ID_SEQUENCE_GENERATOR)
     private Long id;
 
     @Column(name = "RLNAME")

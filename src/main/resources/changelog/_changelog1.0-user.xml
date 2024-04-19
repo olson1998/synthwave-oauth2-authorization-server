@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-USIDSEQ" author="${hostname}">
+        <createSequence sequenceName="USIDSEQ" startValue="1" incrementBy="1" />
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData" author="${hostname}">
+        <createTable tableName="USERDATA">
+            <column name="USID" type="BIGINT" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="USNAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USCODE" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USDIVI" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USDSNM" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-PSID" author="${hostname}">
+        <createSequence sequenceName="PSIDSEQ" startValue="1" incrementBy="1" />
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.UserPasswordData" author="${hostname}">
+        <createTable tableName="USERPASS">
+            <column name="PSID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="USID" type="bigint">
+                <constraints foreignKeyName="PASSUSID" referencedTableName="USERDATA" referencedColumnNames="USID" nullable="false"/>
+            </column>
+            <column name="PSVAL" type="varchar(2047)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PSACTV" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PSCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PSETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

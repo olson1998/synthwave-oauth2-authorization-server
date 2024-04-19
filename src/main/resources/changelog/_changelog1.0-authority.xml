@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData-AUIDSEQ" author="${hostname}">
+        <createSequence sequenceName="AUIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData" author="${hostname}">
+        <createTable tableName="AUTHDATA">
+            <column name="AUID" type="BIGINT" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="AUNAME" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUATMP" type="timestamp with time zone"/>
+            <column name="AUETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData" author="${hostname}">
+        <createTable tableName="AUTHBIND">
+            <column name="USID" type="bigint">
+                <constraints foreignKeyName="AUDAUSID" referencedTableName="USERDATA" referencedColumnNames="USID" nullable="false"/>
+            </column>
+            <column name="AUID" type="bigint">
+                <constraints foreignKeyName="AUDAAUID" referencedTableName="AUTHDATA" referencedColumnNames="AUID" nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="AUTHBIND" tableName="AUTHBIND" columnNames="USID,AUID"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.UpperAuthorityData" author="${hostname}">
+        <createTable tableName="AUTHUPPR">
+            <column name="AUID" type="bigint">
+                <constraints foreignKeyName="AUUPAUID" referencedTableName="AUTHDATA" referencedColumnNames="AUID" nullable="false"/>
+            </column>
+            <column name="PAID" type="bigint">
+                <constraints foreignKeyName="AUUPPAID" referencedTableName="AUTHDATA" referencedColumnNames="AUID" nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="AUTHUPPR" tableName="AUTHUPPR" columnNames="AUID,PAID"/>
+    </changeSet>
+</databaseChangeLog>

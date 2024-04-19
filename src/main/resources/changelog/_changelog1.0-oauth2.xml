@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData-RCIDSEQ" author="${hostname}">
+        <createSequence sequenceName="RCIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData" author="${hostname}">
+        <createTable tableName="OAU2RCL">
+            <column name="RCID" type="BIGINT" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="RCCID" type="varchar(255)" >
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="RCNAME" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RCCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RCATMP" type="timestamp with time zone"/>
+            <column name="RCETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData-SCIDSEQ" author="${hostname}">
+        <createSequence sequenceName="SCIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData" author="${hostname}">
+        <createTable tableName="OAU2RCLS">
+            <column name="SCID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2CSCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" unique="true"/>
+            </column>
+            <column name="SCVAL" type="varchar(2047)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SCCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SCETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientSettingsData" author="${hostname}">
+        <createTable tableName="OAU2CLST">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2CSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" primaryKey="true" nullable="false"/>
+            </column>
+            <column name="CSRPK" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CSRAC" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CSJWSU" type="varchar(2047)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CSJWSA" type="bigint(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CSCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData-CMIDSEQ" author="${hostname}">
+        <createSequence sequenceName="CMIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData" author="${hostname}">
+        <createTable tableName="OAU2CAM">
+            <column name="CMID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="CMVAL" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CMCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodBindingData" author="${hostname}">
+        <createTable tableName="OAU2CAMB">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2CMRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="CMID" type="bigint">
+                <constraints foreignKeyName="O2CMCMID" referencedTableName="OAU2CAM" referencedColumnNames="CMID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="OAU2CAMB" tableName="OAU2CAMB" columnNames="RCID,CMID"/>
+    </changeSet>
+</databaseChangeLog>

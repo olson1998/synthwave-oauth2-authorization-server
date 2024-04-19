@@ -85,10 +85,10 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodBindingData" author="${server.hostname}">
         <createTable tableName="OAU2CAMB">
             <column name="RCID" type="bigint">
-                <constraints foreignKeyName="O2CMRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints foreignKeyName="O2CMRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="CMID" type="bigint">
-                <constraints foreignKeyName="O2CMCMID" referencedTableName="OAU2CAM" referencedColumnNames="CMID"/>
+                <constraints foreignKeyName="O2CMCMID" referencedTableName="OAU2CAM" referencedColumnNames="CMID" nullable="false"/>
             </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2CAMB" tableName="OAU2CAMB" columnNames="RCID,CMID"/>
@@ -96,7 +96,7 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.TokenSettingsData" author="${server.hostname}">
         <createTable tableName="OAU2TSST">
             <column name="RCID" type="bigint">
-                <constraints primaryKey="true" foreignKeyName="O2TSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints primaryKey="true" foreignKeyName="O2TSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="TSIDAG" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -140,10 +140,10 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeBindingData" author="${server.hostname}">
         <createTable tableName="OAU2AGTB">
             <column name="RCID" type="bigint">
-                <constraints foreignKeyName="O2AGRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints foreignKeyName="O2AGRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="AGID" type="bigint">
-                <constraints foreignKeyName="O2AGAGID" referencedTableName="OAU2AGT" referencedColumnNames="AGID"/>
+                <constraints foreignKeyName="O2AGAGID" referencedTableName="OAU2AGT" referencedColumnNames="AGID" nullable="false"/>
             </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2AGTB" tableName="OAU2AGTB" columnNames="RCID,AGID"/>
@@ -167,10 +167,10 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeBindingData" author="${server.hostname}">
         <createTable tableName="OAU2SCPB">
             <column name="RCID" type="bigint">
-                <constraints foreignKeyName="O2SPRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints foreignKeyName="O2SPRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="SPID" type="bigint">
-                <constraints foreignKeyName="O2SPSPID" referencedTableName="OAU2AGT" referencedColumnNames="AGID"/>
+                <constraints foreignKeyName="O2SPSPID" referencedTableName="OAU2AGT" referencedColumnNames="AGID" nullable="false"/>
             </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2SCPB" tableName="OAU2SCPB" columnNames="RCID,SPID"/>
@@ -180,7 +180,7 @@
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData" author="${server.hostname}">
         <createTable tableName="OAU2RURI">
-            <column name="RID" type="bigint">
+            <column name="RUID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
             <column name="RURI" type="varchar(2047)">
@@ -195,13 +195,13 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriBindingData" author="${server.hostname}">
         <createTable tableName="OAU2RUIB">
             <column name="RCID" type="bigint">
-                <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="RUID" type="bigint">
-                <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2RURI" referencedColumnNames="RUID"/>
+                <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2RURI" referencedColumnNames="RUID" nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey constraintName="OAU2RUIB" tableName="OAU2SCPB" columnNames="RCID,RUID"/>
+        <addPrimaryKey constraintName="OAU2RUIB" tableName="OAU2RUIB" columnNames="RCID,RUID"/>
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData-LRIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="LRIDSEQ" incrementBy="1" startValue="1"/>
@@ -223,12 +223,12 @@
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriBindingData" author="${server.hostname}">
         <createTable tableName="OAU2LUIB">
             <column name="RCID" type="bigint">
-                <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+                <constraints foreignKeyName="O2LURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" nullable="false"/>
             </column>
             <column name="LRID" type="bigint">
-                <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2LURI" referencedColumnNames="LRID"/>
+                <constraints foreignKeyName="O2LURUID" referencedTableName="OAU2LURI" referencedColumnNames="LRID" nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey constraintName="OAU2LUIB" tableName="OAU2SCPB" columnNames="RCID,LRID"/>
+        <addPrimaryKey constraintName="OAU2LUIB" tableName="OAU2LUIB" columnNames="RCID,LRID"/>
     </changeSet>
 </databaseChangeLog>

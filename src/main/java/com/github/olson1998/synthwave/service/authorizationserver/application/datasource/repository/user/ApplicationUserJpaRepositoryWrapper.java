@@ -4,7 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.user.ApplicationUserDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
-import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
+import com.github.olson1998.synthwave.support.web.model.AffectedRows;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataS
     }
 
     @Override
-    public AffectedRows  updateUser(ApplicationUser applicationUser) {
+    public AffectedRows updateUser(ApplicationUser applicationUser) {
         var displayName = applicationUser.getDisplayName();
         var id = applicationUser.getId();
         var expireOn = applicationUser.getExpireOn();

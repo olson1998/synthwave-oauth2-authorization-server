@@ -15,6 +15,7 @@
     <properties>
         <java.version>21</java.version>
         <org.bouncycastle.bcprov-jdk15on.version>1.70</org.bouncycastle.bcprov-jdk15on.version>
+        <org.springframework.boot.spring-boot-maven-plugin.version>3.2.0</org.springframework.boot.spring-boot-maven-plugin.version>
         <org.springframework.security.spring-security-oauth2-core.version>6.1.0</org.springframework.security.spring-security-oauth2-core.version>
         <org.springframework.security.spring-security-oauth2-authorization-server.version>1.1.1</org.springframework.security.spring-security-oauth2-authorization-server.version>
     </properties>
@@ -33,11 +34,6 @@
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.olson1998.synthwave.support</groupId>
-            <artifactId>synthwave-jackson-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- Utils -->
         <dependency>
             <groupId>org.bouncycastle</groupId>
@@ -49,11 +45,23 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-core</artifactId>
             <version>${org.springframework.security.spring-security-oauth2-core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-authorization-server</artifactId>
             <version>${org.springframework.security.spring-security-oauth2-authorization-server.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Test -->
         <dependency>
@@ -68,6 +76,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${org.springframework.boot.spring-boot-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

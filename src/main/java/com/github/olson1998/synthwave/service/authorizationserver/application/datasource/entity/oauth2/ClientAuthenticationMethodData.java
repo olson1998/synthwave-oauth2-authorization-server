@@ -20,7 +20,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
-@SequenceGenerator(name = CLIENT_AUTHENTICATION_METHOD_ID_SEQUENCE_GENERATOR, sequenceName = "CMIDSEQ")
+@SequenceGenerator(name = CLIENT_AUTHENTICATION_METHOD_ID_SEQUENCE_GENERATOR, sequenceName = "CMIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "OAU2CAM")

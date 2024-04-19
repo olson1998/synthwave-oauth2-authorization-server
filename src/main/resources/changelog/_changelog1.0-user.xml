@@ -34,7 +34,7 @@
     </changeSet>
     <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.UserPasswordData" author="${server.hostname}">
         <createTable tableName="USERPASS">
-            <column name="PSID">
+            <column name="PSID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="USID" type="bigint">

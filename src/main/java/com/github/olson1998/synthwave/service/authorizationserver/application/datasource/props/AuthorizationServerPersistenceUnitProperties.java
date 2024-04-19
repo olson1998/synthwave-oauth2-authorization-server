@@ -52,7 +52,7 @@ public class AuthorizationServerPersistenceUnitProperties implements Persistence
 
         private boolean autoIntegrationEnabled = true;
 
-        private String changelog = "classpath:./changelog/changelog1.0.xml";
+        private String changelog = "src/resources/changelog/_changelog1.0.xml";
 
         private String contextName;
 

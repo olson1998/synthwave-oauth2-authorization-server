@@ -18,7 +18,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
-@SequenceGenerator(name = SCOPE_ID_SEQUENCE_GENERATOR, sequenceName = "SPIDSEQ")
+@SequenceGenerator(name = SCOPE_ID_SEQUENCE_GENERATOR, sequenceName = "SPIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "OAU2SCPD")

@@ -2,7 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
-import com.github.olson1998.synthwave.support.hibernate.util.AffectedRows;
+import com.github.olson1998.synthwave.support.web.model.AffectedRows;
 
 import java.util.Optional;
 

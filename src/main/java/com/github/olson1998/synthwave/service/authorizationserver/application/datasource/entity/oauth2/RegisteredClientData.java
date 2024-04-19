@@ -18,7 +18,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
-@SequenceGenerator(name = REGISTERED_CLIENT_ID_SEQUENCE_GENERATOR, sequenceName = "RCIDSEQ")
+@SequenceGenerator(name = REGISTERED_CLIENT_ID_SEQUENCE_GENERATOR, sequenceName = "RCIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "OAU2RCL")

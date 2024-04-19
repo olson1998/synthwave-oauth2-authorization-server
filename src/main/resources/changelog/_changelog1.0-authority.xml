@@ -21,7 +21,7 @@
             <column name="AUETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityData" author="${server.hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.authority.AuthorityBindingData" author="${server.hostname}">
         <createTable tableName="AUTHBIND">
             <column name="USID" type="bigint">
                 <constraints foreignKeyName="AUDAUSID" referencedTableName="USERDATA" referencedColumnNames="USID" nullable="false"/>

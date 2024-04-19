@@ -12,7 +12,7 @@ import org.springframework.data.domain.Persistable;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@SequenceGenerator(name = RoleData.ROLE_ID_SEQUENCE_GENERATOR, sequenceName = "RLIDSEQ")
+@SequenceGenerator(name = RoleData.ROLE_ID_SEQUENCE_GENERATOR, sequenceName = "RLIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "ROLEDATA")

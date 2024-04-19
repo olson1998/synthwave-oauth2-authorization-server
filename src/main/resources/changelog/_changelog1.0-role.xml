@@ -29,6 +29,6 @@
                 <constraints foreignKeyName="ROBIRLID" referencedTableName="ROLEDATA" referencedColumnNames="RLID" nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey constraintName="" tableName="ROLEBIND" columnNames="USID,RLID"/>
+        <addPrimaryKey constraintName="ROLEBIND" tableName="ROLEBIND" columnNames="USID,RLID"/>
     </changeSet>
 </databaseChangeLog>

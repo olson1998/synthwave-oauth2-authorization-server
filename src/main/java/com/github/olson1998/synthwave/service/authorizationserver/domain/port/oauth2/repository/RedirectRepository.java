@@ -9,6 +9,10 @@ import java.util.Set;
 
 public interface RedirectRepository {
 
+    Collection<? extends RedirectUri> getRedirectUriByExample(Collection<? extends RedirectUri> redirectUriExamples);
+
+    Collection<? extends RedirectUri> getPostLogoutRedirectUriByExample(Collection<? extends RedirectUri> redirectUriExamples);
+
     Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId);
 
     Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp);
@@ -24,6 +28,12 @@ public interface RedirectRepository {
 
     @Transactional(rollbackFor = Exception.class)
     void deletePostLogoutRedirectUri(String query);
+
+    @Transactional(rollbackFor = Exception.class)
+    Collection<? extends RedirectUri> saveAllRedirect(Collection<? extends RedirectUri> redirectUriCollection);
+
+    @Transactional(rollbackFor = Exception.class)
+    Collection<? extends RedirectUri> saveAllPostLogoutRedirect(Collection<? extends RedirectUri> redirectUriCollection);
 
     @Transactional(rollbackFor = Exception.class)
     void saveAllRedirectBounds(Collection<? extends RedirectUri> redirectUriCollection, Long registeredClientId);

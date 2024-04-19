@@ -1,0 +1,11 @@
+[
+  {
+    "URI": "http://localhost:8081/path/to/redirect"
+  },
+  {
+    "URI": "http://localhost:8082/path/to/redirect"
+  },
+  {
+    "URI": "http://localhost:8083/path/to/redirect"
+  }
+]

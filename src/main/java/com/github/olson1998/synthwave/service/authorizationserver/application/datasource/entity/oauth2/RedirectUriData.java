@@ -21,7 +21,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
-@SequenceGenerator(name = REDIRECT_URI_ID_SEQUENCE_GENERATOR, sequenceName = "RIDSEQ", allocationSize = 1)
+@SequenceGenerator(name = REDIRECT_URI_ID_SEQUENCE_GENERATOR, sequenceName = "RUIDSEQ", allocationSize = 1)
 
 @Entity
 @Table(name = "OAU2RURI")
@@ -35,8 +35,6 @@ public class RedirectUriData implements Persistable<Long>, RedirectUri {
     private Long id;
 
     @Column(name = "RURI")
-    @JavaType(URIModelJavaType.class)
-    @JdbcType(VarcharJdbcType.class)
     private String value;
 
     @Column(name = "RUCTMP")

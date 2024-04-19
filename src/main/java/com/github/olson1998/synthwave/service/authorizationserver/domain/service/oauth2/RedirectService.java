@@ -20,6 +20,16 @@ public class RedirectService implements RedirectRepository {
     private final RedirectUriDataSourceRepository redirectUriDataSourceRepository;
 
     @Override
+    public Collection<? extends RedirectUri> getRedirectUriByExample(Collection<? extends RedirectUri> redirectUriExamples) {
+        return redirectUriDataSourceRepository.getRedirectUriByExamples(redirectUriExamples);
+    }
+
+    @Override
+    public Collection<? extends RedirectUri> getPostLogoutRedirectUriByExample(Collection<? extends RedirectUri> redirectUriExamples) {
+        return redirectUriDataSourceRepository.getPostLogoutRedirectUriByExamples(redirectUriExamples);
+    }
+
+    @Override
     public Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId) {
         return redirectUriDataSourceRepository.getPostLogoutRedirectUriByRegisteredClientId(registeredClientId);
     }
@@ -51,6 +61,38 @@ public class RedirectService implements RedirectRepository {
     @Override
     public void deletePostLogoutRedirectUri(String query) {
 
+    }
+
+    @Override
+    public Collection<? extends RedirectUri> saveAllRedirect(Collection<? extends RedirectUri> redirectUriCollection) {
+        var redirectCollection = redirectUriCollection.stream()
+                .map(redirectUri -> {
+                    RedirectUriModel model;
+                    if(redirectUri instanceof RedirectUriModel redirectUriModel) {
+                        model = redirectUriModel;
+                    } else {
+                        model = new RedirectUriModel(redirectUri);
+                    }
+                    model.setCreatedOn(MutableDateTime.now());
+                    return model;
+                }).toList();
+        return redirectUriDataSourceRepository.saveAll(redirectCollection);
+    }
+
+    @Override
+    public Collection<? extends RedirectUri> saveAllPostLogoutRedirect(Collection<? extends RedirectUri> redirectUriCollection) {
+        var redirectCollection = redirectUriCollection.stream()
+                .map(redirectUri -> {
+                    RedirectUriModel model;
+                    if(redirectUri instanceof RedirectUriModel redirectUriModel) {
+                        model = redirectUriModel;
+                    } else {
+                        model = new RedirectUriModel(redirectUri);
+                    }
+                    model.setCreatedOn(MutableDateTime.now());
+                    return model;
+                }).toList();
+        return redirectUriDataSourceRepository.saveAllPostLogout(redirectCollection);
     }
 
     @Override

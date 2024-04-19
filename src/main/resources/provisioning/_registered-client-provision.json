@@ -1,0 +1,88 @@
+[
+  {
+    "RCL": {
+      "ID": 1,
+      "CID": "synthwave1@register-client",
+      "NAME": "synthwave-registered-client-1"
+    },
+    "RCLS": {
+      "VAL": "secret"
+    },
+    "SCP": [
+      {
+        "NAME": "openid"
+      }
+    ],
+    "RURI": [
+      {
+        "URI": "http://localhost:8081/path/to/redirect"
+      },
+      {
+        "URI": "http://localhost:8082/path/to/redirect"
+      },
+      {
+        "URI": "http://localhost:8083/path/to/redirect"
+      }
+    ],
+    "LURI": [
+      {
+        "URI": "http://localhost:8081/path/to/redirect"
+      },
+      {
+        "URI": "http://localhost:8082/path/to/redirect"
+      },
+      {
+        "URI": "http://localhost:8083/path/to/redirect"
+      }
+    ],
+    "AGT": [
+      {
+        "VAL": "authorization_code"
+      },
+      {
+        "VAL": "client_credentials"
+      }
+    ],
+    "CAM": [
+      {
+        "VAL": "client_secret_basic"
+      },
+      {
+        "VAL": "client_secret_post"
+      },
+      {
+        "VAL": "client_secret_jwt"
+      },
+      {
+        "VAL": "none"
+      }
+    ],
+    "CLST": {
+      "RPK": true,
+      "RAC": true,
+      "JWSU": "http://localhost:8080/synthwave/v1.0/authorization-server",
+      "JWSA": "RS256"
+    },
+    "TSST": {
+      "IDAG": "RS256",
+      "TFMT": "reference",
+      "ATTL": {
+        "amount": 30,
+        "time_unit": "MINUTES"
+      },
+      "RTTL": {
+        "amount": 90,
+        "time_unit": "MINUTES"
+      },
+      "RTAR": false,
+      "DCTL": {
+        "amount": 30,
+        "time_unit": "MINUTES"
+      },
+      "ACTL": {
+        "amount": 30,
+        "time_unit": "MINUTES"
+      }
+    }
+  }
+]

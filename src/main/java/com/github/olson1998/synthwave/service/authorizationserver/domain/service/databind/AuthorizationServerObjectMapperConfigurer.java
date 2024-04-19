@@ -22,6 +22,7 @@ import com.github.olson1998.synthwave.support.springbootstarter.service.ObjectMa
 import lombok.Getter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
@@ -82,8 +83,10 @@ public class AuthorizationServerObjectMapperConfigurer implements ObjectMapperCo
         module.addDeserializer(ClientAuthenticationMethod.class, new ClientAuthenticationMethodStdDeserializer());
         module.addSerializer(OAuth2TokenFormat.class, new OAuth2TokenFormatStdSerializer());
         module.addDeserializer(OAuth2TokenFormat.class, new OAuth2TokenFormatStdDeserializer());
-        module.addSerializer(SignatureAlgorithm.class, new SignatureAlgorithmStdSerializer());
-        module.addDeserializer(SignatureAlgorithm.class, new SignatureAlgorithmStdDeserializer());
+        module.addSerializer(JwsAlgorithm.class, new JwsAlgorithmStdSerializer());
+        module.addDeserializer(JwsAlgorithm.class, new JwsAlgorithmStdDeserializer());
+        module.addSerializer(RegisteredClient.class, new RegisteredClientStdSerializer());
+        module.addDeserializer(RegisteredClient.class, new RegisteredClientStdDeserializer());
         return module;
     }
 }

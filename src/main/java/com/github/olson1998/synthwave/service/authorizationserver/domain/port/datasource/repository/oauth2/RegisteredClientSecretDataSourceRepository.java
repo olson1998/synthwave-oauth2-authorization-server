@@ -4,5 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 
 public interface RegisteredClientSecretDataSourceRepository {
 
+    boolean existsRegisteredClientId(Long registeredClientId);
+
     void save(RegisteredClientSecret registeredClientSecret);
 }

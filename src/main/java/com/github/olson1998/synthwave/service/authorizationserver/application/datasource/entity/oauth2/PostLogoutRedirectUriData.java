@@ -34,8 +34,6 @@ public class PostLogoutRedirectUriData implements Persistable<Long>, RedirectUri
     private Long id;
 
     @Column(name = "LRURI")
-    @JavaType(URIModelJavaType.class)
-    @JdbcType(VarcharJdbcType.class)
     private String value;
 
     @Column(name = "LRCTMP")

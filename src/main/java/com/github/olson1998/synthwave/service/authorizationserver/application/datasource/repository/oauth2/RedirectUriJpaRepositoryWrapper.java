@@ -32,14 +32,18 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
 
     @Override
     public Collection<? extends RedirectUri> getRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples) {
-        var examples = createRedirectDataExampleList(redirectUriExamples, RedirectUriData::new);
-        return redirectUriJpaRepository.selectRedirectUriByExamples(examples);
+        var dataExamples = createRedirectDataExampleList(redirectUriExamples, RedirectUriData::new);
+        return dataExamples.stream()
+                .flatMap(redirectUriDataExample -> redirectUriJpaRepository.findAll(redirectUriDataExample).stream())
+                .toList();
     }
 
     @Override
     public Collection<? extends RedirectUri> getPostLogoutRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples) {
-        var examples = createRedirectDataExampleList(redirectUriExamples, PostLogoutRedirectUriData::new);
-        return postLogoutRedirectUriJpaRepository.selectPostLogoutRedirectUriByExamples(examples);
+        var dataExamples = createRedirectDataExampleList(redirectUriExamples, PostLogoutRedirectUriData::new);
+        return dataExamples.stream()
+                .flatMap(redirectUriDataExample -> postLogoutRedirectUriJpaRepository.findAll(redirectUriDataExample).stream())
+                .toList();
     }
 
     @Override

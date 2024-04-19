@@ -186,7 +186,7 @@
             <column name="RURI" type="varchar(2047)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="RUTMP" type="timestamp with time zone">
+            <column name="RUCTMP" type="timestamp with time zone">
                 <constraints nullable="false"/>
             </column>
             <column name="RUETMP" type="timestamp with time zone"/>
@@ -214,7 +214,7 @@
             <column name="LRURI" type="varchar(2047)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="LRTMP" type="timestamp with time zone">
+            <column name="LRCTMP" type="timestamp with time zone">
                 <constraints nullable="false"/>
             </column>
             <column name="LRETMP" type="timestamp with time zone"/>

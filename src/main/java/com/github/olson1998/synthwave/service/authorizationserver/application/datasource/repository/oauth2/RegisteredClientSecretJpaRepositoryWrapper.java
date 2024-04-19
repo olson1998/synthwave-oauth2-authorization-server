@@ -13,6 +13,11 @@ public class RegisteredClientSecretJpaRepositoryWrapper implements RegisteredCli
     private final RegisteredClientSecretJpaRepository registeredClientSecretJpaRepository;
 
     @Override
+    public boolean existsRegisteredClientId(Long registeredClientId) {
+        return registeredClientSecretJpaRepository.selectCaseWhenRegisteredClientExists(registeredClientId);
+    }
+
+    @Override
     public void save(RegisteredClientSecret registeredClientSecret) {
         registeredClientSecretJpaRepository.save(new RegisteredClientSecretData(registeredClientSecret));
     }

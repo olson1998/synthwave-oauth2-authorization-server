@@ -24,7 +24,9 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
         basePackages = {
                 "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.user",
                 "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oidc",
-                "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2"
+                "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.oauth2",
+                "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.role",
+                "com.github.olson1998.synthwave.service.authorizationserver.application.datasource.repository.authority"
         }
 )
 @Configuration

@@ -19,6 +19,6 @@ public class ScopeBindingValue implements Serializable {
     @Column(name = "RCID")
     private Long registeredClientId;
 
-    @Column(name = "SCID")
+    @Column(name = "SPID")
     private Long scopeId;
 }

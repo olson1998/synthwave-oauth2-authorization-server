@@ -75,7 +75,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="CMVAL" type="varchar(31)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="CMCTMP" type="timestamp with time zone">
                 <constraints nullable="false"/>
@@ -92,5 +92,143 @@
             </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2CAMB" tableName="OAU2CAMB" columnNames="RCID,CMID"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.TokenSettingsData" author="${hostname}">
+        <createTable tableName="OAU2TSST">
+            <column name="RCID" type="bigint">
+                <constraints primaryKey="true" foreignKeyName="O2TSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="TSIDAG" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSTFMT" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSATTL" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSRTTL" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSRTAR" type="tinyint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSDCTL" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TSACTL" type="varchar(31)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData-AGIDSEQ" author="${hostname}">
+        <createSequence sequenceName="AGIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData" author="${hostname}">
+        <createTable tableName="OAU2AGT">
+            <column name="AGID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="AGVAL" type="varchar(31)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="AGCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeBindingData" author="${hostname}">
+        <createTable tableName="OAU2AGTB">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2AGRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="AGID" type="bigint">
+                <constraints foreignKeyName="O2AGAGID" referencedTableName="OAU2AGT" referencedColumnNames="AGID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="OAU2AGTB" tableName="OAU2AGTB" columnNames="RCID,AGID"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData-SPIDSEQ" author="${hostname}">
+        <createSequence sequenceName="SPIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData" author="${hostname}">
+        <createTable tableName="OAU2SCPD">
+            <column name="SPID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="SCNAME" type="varchar(31)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="SCCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeBindingData" author="${hostname}">
+        <createTable tableName="OAU2SCPB">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2SPRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="SPID" type="bigint">
+                <constraints foreignKeyName="O2SPSPID" referencedTableName="OAU2AGT" referencedColumnNames="AGID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="OAU2SCPB" tableName="OAU2SCPB" columnNames="RCID,SPID"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData-RUIDSEQ" author="${hostname}">
+        <createSequence sequenceName="RUIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData" author="${hostname}">
+        <createTable tableName="OAU2RURI">
+            <column name="RID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="RURI" type="varchar(2047)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="RUTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RUETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriBindingData" author="${hostname}">
+        <createTable tableName="OAU2RUIB">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="RUID" type="bigint">
+                <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2RURI" referencedColumnNames="RUID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="OAU2RUIB" tableName="OAU2SCPB" columnNames="RCID,RUID"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData-LRIDSEQ" author="${hostname}">
+        <createSequence sequenceName="LRIDSEQ" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData" author="${hostname}">
+        <createTable tableName="OAU2LURI">
+            <column name="LRID" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="LRURI" type="varchar(2047)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="LRTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LRETMP" type="timestamp with time zone"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriBindingData" author="${hostname}">
+        <createTable tableName="OAU2LUIB">
+            <column name="RCID" type="bigint">
+                <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
+            </column>
+            <column name="LRID" type="bigint">
+                <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2LURI" referencedColumnNames="LRID"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="OAU2LUIB" tableName="OAU2SCPB" columnNames="RCID,LRID"/>
     </changeSet>
 </databaseChangeLog>

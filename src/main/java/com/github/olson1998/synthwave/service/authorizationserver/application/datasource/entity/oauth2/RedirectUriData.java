@@ -4,10 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
 import com.github.olson1998.synthwave.support.web.util.URIModel;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -16,18 +13,25 @@ import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
+import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData.REDIRECT_URI_ID_SEQUENCE_GENERATOR;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 
+@SequenceGenerator(name = REDIRECT_URI_ID_SEQUENCE_GENERATOR, sequenceName = "RIDSEQ")
+
 @Entity
 @Table(name = "OAU2RURI")
 public class RedirectUriData implements Persistable<Long>, RedirectUri {
 
+    public static final String REDIRECT_URI_ID_SEQUENCE_GENERATOR = "RIDSEQ";
+
     @Id
-    @Column(name = "RID")
+    @Column(name = "RUID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = REDIRECT_URI_ID_SEQUENCE_GENERATOR )
     private Long id;
 
     @Column(name = "RURI")
@@ -35,12 +39,12 @@ public class RedirectUriData implements Persistable<Long>, RedirectUri {
     @JdbcType(VarcharJdbcType.class)
     private String value;
 
-    @Column(name = "RCTMP")
+    @Column(name = "RUCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
 
-    @Column(name = "RETMP")
+    @Column(name = "RUETMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;

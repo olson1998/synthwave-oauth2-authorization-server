@@ -17,7 +17,7 @@ public class UriBindingValue implements Serializable {
 
     private static final long serialVersionUID = 8150924141574910071L;
 
-    @Column(name = "RCID")
+    @Column(name = "RUCID")
     private Long registeredClientId;
 
     @Column(name = "RUID")

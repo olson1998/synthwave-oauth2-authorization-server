@@ -2,10 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.Scope;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -13,18 +10,25 @@ import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
+import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData.SCOPE_ID_SEQUENCE_GENERATOR;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 
+@SequenceGenerator(name = SCOPE_ID_SEQUENCE_GENERATOR, sequenceName = "SPIDSEQ")
+
 @Entity
 @Table(name = "OAU2SCPD")
 public class ScopeData implements Persistable<Long>, Scope {
 
+    public static final String SCOPE_ID_SEQUENCE_GENERATOR = "SPIDSEQ";
+
     @Id
-    @Column(name = "SCID")
+    @Column(name = "SPID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = SCOPE_ID_SEQUENCE_GENERATOR)
     private Long id;
 
     @Column(name = "SCNAME")

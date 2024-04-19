@@ -43,7 +43,6 @@ public class AuthorizationServerObjectMapperConfigurer implements ObjectMapperCo
             entry(Authority.class, AuthorityModel.class),
             entry(RoleBinding.class, RoleBindingModel.class),
             entry(AuthorityBinding.class, AuthorityBindingModel.class),
-            entry(RegisteredClient.class, RegisteredClientModel.class),
             entry(RegisteredClientSecret.class, RegisteredClientSecretModel.class),
             entry(AuthorizationGrantTypeEntity.class, AuthorizationGrantTypeEntityModel.class),
             entry(ClientAuthenticationMethodEntity.class, ClientAuthenticationMethodEntityModel.class),

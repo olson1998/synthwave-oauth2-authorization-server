@@ -47,6 +47,14 @@ public class RegisteredClientSecretData implements Persistable<Long>, Registered
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime expireOn;
 
+    public RegisteredClientSecretData(RegisteredClientSecret registeredClientSecret) {
+        this.id = registeredClientSecret.getId();
+        this.registeredClientId = registeredClientSecret.getRegisteredClientId();
+        this.value = registeredClientSecret.getValue();
+        this.createdOn = registeredClientSecret.getCreatedOn();
+        this.expireOn = registeredClientSecret.getExpireOn();
+    }
+
     @Override
     public boolean isNew() {
         return true;

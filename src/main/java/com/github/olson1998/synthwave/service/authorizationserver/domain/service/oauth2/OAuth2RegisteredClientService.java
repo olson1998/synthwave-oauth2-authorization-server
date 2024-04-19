@@ -145,8 +145,7 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
                 appendPostLogoutRedirectUriMono,
                 appendScopesMono
         );
-        return Flux.fromIterable(appendMonoList)
-                .flatMap(voidMono -> voidMono);
+        return Flux.merge(appendMonoList);
     }
 
     private <T> Mono<Void> appendRegisteredClientValuesAsync(RegisteredClient.Builder builder, Supplier<T> valueSupplier, BiConsumer<RegisteredClient.Builder, T> registeredClientValueConsumer) {

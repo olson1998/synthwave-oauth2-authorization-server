@@ -76,10 +76,10 @@ interface RegisteredClientPropertiesJpaRepository extends JpaRepository<Register
             ON registeredClient.id=clientSettings.registeredClientId
             LEFT OUTER JOIN TokenSettingsData tokenSettings
             ON registeredClient.id=tokenSettings.registeredClientId
-            WHERE registeredClient.id=:registeredClientId
+            WHERE registeredClient.clientId=:clientId
             AND (registeredClient.activeFrom IS NOT NULL AND registeredClient.activeFrom > :timestamp) OR (registeredClient.activeFrom IS NULL)
             """
     )
     Optional<RegisteredClientBuilderWrapper> selectPropertiesByClientId(@Param("clientId") String clientId,
-                                                                        @Param("timestamp") MutableDateTime selectTimestamp);
+                                                                        @Param("timestamp") MutableDateTime timestamp);
 }

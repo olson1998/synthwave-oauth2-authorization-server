@@ -32,6 +32,11 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
     }
 
     @Override
+    public Collection<? extends Scope> getScopeByNames(Collection<String> scopeNames) {
+        return scopeJpaRepository.selectScopeByNames(scopeNames);
+    }
+
+    @Override
     public Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples) {
         var examples = scopeExamples.stream()
                 .map(this::createDataExample)

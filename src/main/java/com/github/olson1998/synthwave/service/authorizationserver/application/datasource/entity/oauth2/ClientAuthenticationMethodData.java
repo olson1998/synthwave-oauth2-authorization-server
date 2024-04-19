@@ -42,4 +42,10 @@ public class ClientAuthenticationMethodData implements ClientAuthenticationMetho
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    public ClientAuthenticationMethodData(ClientAuthenticationMethodEntity clientAuthenticationMethodEntity) {
+        this.id = clientAuthenticationMethodEntity.getId();
+        this.method = clientAuthenticationMethodEntity.getMethod();
+        this.createdOn = clientAuthenticationMethodEntity.getCreatedOn();
+    }
 }

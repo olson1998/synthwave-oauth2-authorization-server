@@ -14,11 +14,27 @@ public class AuthorizationGrantTypeJavaType extends AbstractJavaType<Authorizati
 
     @Override
     public <X> X unwrap(AuthorizationGrantType value, Class<X> type, WrapperOptions options) {
-        return null;
+        if(value != null) {
+            if(type.equals(String.class)) {
+                return type.cast(value.getValue());
+            } else {
+                throw unknownUnwrap(type);
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
     public <X> AuthorizationGrantType wrap(X value, WrapperOptions options) {
-        return null;
+        if(value == null) {
+            return null;
+        } else {
+            if(value instanceof String string) {
+                return new AuthorizationGrantType(string);
+            } else {
+                throw unknownWrap(value.getClass());
+            }
+        }
     }
 }

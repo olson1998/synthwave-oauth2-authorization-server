@@ -15,7 +15,11 @@ public interface AuthorizationGrantTypeDatasourceRepository {
 
     Set<AuthorizationGrantType> getAuthorizationGrantTypeSetByRegisteredClientId(Long registeredClientId);
 
+    Collection<? extends AuthorizationGrantTypeEntity> getAuthorizationGrantTypeByType(Collection<AuthorizationGrantType> authorizationGrantTypeCollection);
+
     AuthorizationGrantTypeEntity save(AuthorizationGrantTypeEntity authorizationGrantType);
+
+    Collection<? extends AuthorizationGrantTypeEntity> saveAll(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeEntities);
 
     void saveBounds(Collection<? extends AuthorizationGrantTypeBinding> authorizationGrantTypeBounds);
 

@@ -7,10 +7,19 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Repository
 interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodData, Long> {
+
+    @Query("""
+           SELECT method
+           FROM ClientAuthenticationMethodData method
+           WHERE method.method IN :methods
+           """)
+    List<ClientAuthenticationMethodData> selectClientAuthenticationMethodByMethods(@Param("methods") Collection<ClientAuthenticationMethod> clientAuthenticationMethods);
 
     @Query(
     """

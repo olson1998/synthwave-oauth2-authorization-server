@@ -42,9 +42,22 @@ public class AuthorizationGrantTypeJpaRepositoryWrapper implements Authorization
     }
 
     @Override
+    public Collection<? extends AuthorizationGrantTypeEntity> getAuthorizationGrantTypeByType(Collection<AuthorizationGrantType> authorizationGrantTypeCollection) {
+        return authorizationGrantTypeJpaRepository.selectAuthorizationGrantTypeByType(authorizationGrantTypeCollection);
+    }
+
+    @Override
     public AuthorizationGrantTypeEntity save(AuthorizationGrantTypeEntity authorizationGrantType) {
         var data = new AuthorizationGrantTypeData(authorizationGrantType);
         return authorizationGrantTypeJpaRepository.save(data);
+    }
+
+    @Override
+    public Collection<? extends AuthorizationGrantTypeEntity> saveAll(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeEntities) {
+        var data = authorizationGrantTypeEntities.stream()
+                .map(AuthorizationGrantTypeData::new)
+                .toList();
+        return authorizationGrantTypeJpaRepository.saveAll(data);
     }
 
     @Override

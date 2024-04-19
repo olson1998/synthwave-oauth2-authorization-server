@@ -12,6 +12,8 @@ public interface ScopeDataSourceRepository {
 
     Collection<Long> getScopeIdById(Collection<Long> scopeIdCollection);
 
+    Collection<? extends Scope> getScopeByNames(Collection<String> scopeNames);
+
     Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples);
 
     Set<String> getScopesByRegisteredClientId(Long registeredClientId);

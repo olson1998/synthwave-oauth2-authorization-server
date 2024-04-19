@@ -8,11 +8,19 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 @Repository
 interface AuthorizationGrantTypeJpaRepository extends JpaRepository<AuthorizationGrantTypeData, Long> {
+
+    @Query("""
+           SELECT authorizationGrantType
+           FROM AuthorizationGrantTypeData authorizationGrantType
+           WHERE authorizationGrantType.grantType IN :authorizationGranTypes
+           """)
+    List<AuthorizationGrantTypeData> selectAuthorizationGrantTypeByType(@Param("authorizationGranTypes") Collection<AuthorizationGrantType> authorizationGrantTypeCollection);
 
     @Query("""
            SELECT authorizationGrantType

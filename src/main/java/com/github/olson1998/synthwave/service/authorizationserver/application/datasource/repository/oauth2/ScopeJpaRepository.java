@@ -40,4 +40,11 @@ interface ScopeJpaRepository extends JpaRepository<ScopeData, Long> {
     """
     )
     Set<String> selectScopeNameByRegisteredClientId(@Param("registeredClientId") Long registeredClientId);
+
+    @Query("""
+           SELECT scope
+           FROM ScopeData scope
+           WHERE scope.name IN :scopes
+           """)
+    List<ScopeData> selectScopeByNames(@Param("scopes") Collection<String> scopeNames);
 }

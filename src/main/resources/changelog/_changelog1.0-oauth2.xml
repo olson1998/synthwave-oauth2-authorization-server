@@ -129,7 +129,7 @@
             <column name="AGID" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="AGVAL" type="varchar(31)">
+            <column name="AGVAL" type="varchar(63)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="AGCTMP" type="timestamp with time zone">

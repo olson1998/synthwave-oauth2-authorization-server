@@ -1,9 +1,11 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2RegisteredClientRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ScopeRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2AuthorizationService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2RegisteredClientService;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -28,6 +30,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.JwkProperties.OAUTH2_AUTHORIZATION_SERVER_JWK_PROPERTIES_VALUE;
 
@@ -37,8 +40,26 @@ public class OAuth2AuthorizationServerConfig {
     private final OAuth2AuthorizationServerConfigurer configurer = new OAuth2AuthorizationServerConfigurer();
 
     @Bean
-    public OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository(RegisteredClientDataSourceRepository registeredClientDataSourceRepository) {
-        return new OAuth2RegisteredClientService(registeredClientDataSourceRepository);
+    public OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository(Executor executor,
+                                                                             RedirectRepository redirectRepository,
+                                                                             ScopeRepository scopeRepository,
+                                                                             RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
+                                                                             RegisteredClientSecretDataSourceRepository registeredClientSecretDataSourceRepository,
+                                                                             ClientSettingsDataSourceRepository clientSettingsDataSourceRepository,
+                                                                             TokenSettingsDataSourceRepository tokenSettingsDataSourceRepository,
+                                                                             AuthorizationGrantTypeDatasourceRepository authorizationGrantTypeDatasourceRepository,
+                                                                             ClientAuthenticationMethodDataSourceRepository clientAuthenticationMethodDataSourceRepository) {
+        return new OAuth2RegisteredClientService(
+                executor,
+                redirectRepository,
+                scopeRepository,
+                registeredClientDataSourceRepository,
+                registeredClientSecretDataSourceRepository,
+                clientSettingsDataSourceRepository,
+                tokenSettingsDataSourceRepository,
+                authorizationGrantTypeDatasourceRepository,
+                clientAuthenticationMethodDataSourceRepository
+        );
     }
 
     @Bean

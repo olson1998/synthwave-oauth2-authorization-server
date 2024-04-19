@@ -58,7 +58,7 @@ public class RoleService implements RoleRepository {
     public DeleteRoleResponse deleteRoles(Collection<Long> idCollection) {
         var roleIdCollection = roleDataSourceRepository.getRolesIdsByIdCollection(idCollection);
         var deletedBounds = roleBindingDataSourceRepository.deleteRoleById(roleIdCollection);
-        return new DeleteRoleResponseModel(roleIdCollection, new DeletedRowsModel(deletedBounds));
+        return new DeleteRoleResponseModel(roleIdCollection, new DeletedRowsModel(deletedBounds), null);
     }
 
     @Override

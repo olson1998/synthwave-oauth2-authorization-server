@@ -3,10 +3,10 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData-RCIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData-RCIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="RCIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData" author="${server.hostname}">
         <createTable tableName="OAU2RCL">
             <column name="RCID" type="BIGINT" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -24,10 +24,10 @@
             <column name="RCETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData-SCIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData-SCIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="SCIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientSecretData" author="${server.hostname}">
         <createTable tableName="OAU2RCLS">
             <column name="SCID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -44,7 +44,7 @@
             <column name="SCETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientSettingsData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientSettingsData" author="${server.hostname}">
         <createTable tableName="OAU2CLST">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2CSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID" primaryKey="true" nullable="false"/>
@@ -66,10 +66,10 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData-CMIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData-CMIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="CMIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData" author="${server.hostname}">
         <createTable tableName="OAU2CAM">
             <column name="CMID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -82,7 +82,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodBindingData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodBindingData" author="${server.hostname}">
         <createTable tableName="OAU2CAMB">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2CMRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
@@ -93,7 +93,7 @@
         </createTable>
         <addPrimaryKey constraintName="OAU2CAMB" tableName="OAU2CAMB" columnNames="RCID,CMID"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.TokenSettingsData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.TokenSettingsData" author="${server.hostname}">
         <createTable tableName="OAU2TSST">
             <column name="RCID" type="bigint">
                 <constraints primaryKey="true" foreignKeyName="O2TSRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
@@ -121,10 +121,10 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData-AGIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData-AGIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="AGIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData" author="${server.hostname}">
         <createTable tableName="OAU2AGT">
             <column name="AGID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -137,7 +137,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeBindingData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeBindingData" author="${server.hostname}">
         <createTable tableName="OAU2AGTB">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2AGRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
@@ -148,10 +148,10 @@
         </createTable>
         <addPrimaryKey constraintName="OAU2AGTB" tableName="OAU2AGTB" columnNames="RCID,AGID"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData-SPIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData-SPIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="SPIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData" author="${server.hostname}">
         <createTable tableName="OAU2SCPD">
             <column name="SPID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -164,7 +164,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeBindingData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeBindingData" author="${server.hostname}">
         <createTable tableName="OAU2SCPB">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2SPRCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
@@ -175,10 +175,10 @@
         </createTable>
         <addPrimaryKey constraintName="OAU2SCPB" tableName="OAU2SCPB" columnNames="RCID,SPID"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData-RUIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData-RUIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="RUIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriData" author="${server.hostname}">
         <createTable tableName="OAU2RURI">
             <column name="RID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -192,7 +192,7 @@
             <column name="RUETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriBindingData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RedirectUriBindingData" author="${server.hostname}">
         <createTable tableName="OAU2RUIB">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>
@@ -203,10 +203,10 @@
         </createTable>
         <addPrimaryKey constraintName="OAU2RUIB" tableName="OAU2SCPB" columnNames="RCID,RUID"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData-LRIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData-LRIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="LRIDSEQ" incrementBy="1" startValue="1"/>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData" author="${server.hostname}">
         <createTable tableName="OAU2LURI">
             <column name="LRID" type="bigint">
                 <constraints primaryKey="true"/>
@@ -220,7 +220,7 @@
             <column name="LRETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriBindingData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriBindingData" author="${server.hostname}">
         <createTable tableName="OAU2LUIB">
             <column name="RCID" type="bigint">
                 <constraints foreignKeyName="O2RURCID" referencedTableName="OAU2RCL" referencedColumnNames="RCID"/>

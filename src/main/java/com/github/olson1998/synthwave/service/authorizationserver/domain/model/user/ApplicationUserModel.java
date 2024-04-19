@@ -30,6 +30,12 @@ public class ApplicationUserModel implements ApplicationUser {
     @JsonProperty(value = APPLICATION_USER_NAME_FIELD, required = true)
     private String username;
 
+    @JsonProperty("CODE")
+    private String companyCode;
+
+    @JsonProperty("DIVI")
+    private String division;
+
     @JsonProperty(value = APPLICATION_USER_DISPLAY_NAME_FIELD, required = true)
     private String displayName;
 

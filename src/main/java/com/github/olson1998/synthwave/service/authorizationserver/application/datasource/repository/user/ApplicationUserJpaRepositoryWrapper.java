@@ -57,6 +57,8 @@ public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataS
         return new ApplicationUserData(
                 applicationUser.getId(),
                 applicationUser.getUsername(),
+                applicationUser.getCompanyCode(),
+                applicationUser.getDivision(),
                 applicationUser.getDisplayName(),
                 MutableDateTime.now(),
                 applicationUser.getExpireOn()

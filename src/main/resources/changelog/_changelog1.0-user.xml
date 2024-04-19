@@ -3,10 +3,10 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-USIDSEQ" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-USIDSEQ" author="${server.hostname}">
         <createSequence sequenceName="USIDSEQ" startValue="1" incrementBy="1" />
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData" author="${server.hostname}">
         <createTable tableName="USERDATA">
             <column name="USID" type="BIGINT" >
                 <constraints primaryKey="true" nullable="false"/>
@@ -29,10 +29,10 @@
             <column name="USETMP" type="timestamp with time zone"/>
         </createTable>
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-PSID" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData-PSID" author="${server.hostname}">
         <createSequence sequenceName="PSIDSEQ" startValue="1" incrementBy="1" />
     </changeSet>
-    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.UserPasswordData" author="${hostname}">
+    <changeSet id="com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.UserPasswordData" author="${server.hostname}">
         <createTable tableName="USERPASS">
             <column name="PSID">
                 <constraints primaryKey="true" nullable="false"/>

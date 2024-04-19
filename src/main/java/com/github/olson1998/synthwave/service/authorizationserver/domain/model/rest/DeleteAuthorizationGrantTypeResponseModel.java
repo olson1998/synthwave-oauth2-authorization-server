@@ -22,4 +22,9 @@ public class DeleteAuthorizationGrantTypeResponseModel implements DeleteAuthoriz
     public DeletedRows getDeletedBounds() {
         return deletedBoundsModel;
     }
+
+    @Override
+    public DeletedRows getDeletedRows() {
+        return null;
+    }
 }

@@ -1,13 +1,16 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.props;
 
+import com.github.olson1998.synthwave.support.dataintegration.props.DataIntegrationProperties;
 import com.github.olson1998.synthwave.support.jpa.config.JpaDialectConfig;
 import com.github.olson1998.synthwave.support.jpa.props.EntityManagerProps;
 import com.github.olson1998.synthwave.support.jpa.props.PersistenceUnitProperties;
 import com.github.olson1998.synthwave.support.jpa.props.VendorAdapterProps;
-import com.github.olson1998.synthwave.support.migration.config.MigrationProperties;
 import com.zaxxer.hikari.HikariConfig;
 import jakarta.persistence.ValidationMode;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaDialect;
@@ -37,7 +40,7 @@ public class AuthorizationServerPersistenceUnitProperties implements Persistence
 
     private final EntityManagerProps entityManager = new DefaultEntityManagerProperties();
 
-    private final MigrationProperties migration = new DefaultMigrationProperties();
+    private final DataIntegrationProperties migration = new DefaultDataIntegrationProperties();
 
     private final VendorAdapterProps vendorAdapter = new DefaultVendorAdapterProperties();
 
@@ -45,11 +48,11 @@ public class AuthorizationServerPersistenceUnitProperties implements Persistence
     @Validated
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class DefaultMigrationProperties implements MigrationProperties {
+    public static class DefaultDataIntegrationProperties implements DataIntegrationProperties {
 
-        private boolean autoMigrationEnabled;
+        private boolean autoIntegrationEnabled = true;
 
-        private String changelog;
+        private String changelog = "classpath:./changelog/changelog1.0.xml";
 
         private String contextName;
 

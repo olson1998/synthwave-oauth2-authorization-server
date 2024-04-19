@@ -16,7 +16,7 @@ public class Argon2PasswordEncoderConfig {
                 argon2PasswordEncoderProperties.getHashLength(),
                 argon2PasswordEncoderProperties.getParallelism(),
                 argon2PasswordEncoderProperties.getMemory(),
-                argon2PasswordEncoderProperties.getInterations()
+                argon2PasswordEncoderProperties.getIterations()
         );
     }
 }

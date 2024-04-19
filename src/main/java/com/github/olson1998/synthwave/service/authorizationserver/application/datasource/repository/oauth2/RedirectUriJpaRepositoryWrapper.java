@@ -86,7 +86,7 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
 
     @Override
     public int deleteRedirectUriBoundsById(Long redirectId) {
-        return
+        return 0;
     }
 
     @Override

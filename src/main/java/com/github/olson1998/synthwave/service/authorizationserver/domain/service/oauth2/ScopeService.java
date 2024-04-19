@@ -66,7 +66,7 @@ public class ScopeService implements ScopeRepository {
     public DeleteScopeResponse deleteScopes(Collection<Long> scopeIdCollection) {
         var idCollection = scopeDataSourceRepository.getScopeIdById(scopeIdCollection);
         var deletedBoundsQty = scopeDataSourceRepository.deleteScopeBoundsByScopeId(idCollection);
-        return new DeleteScopeResponseModel(idCollection, new DeletedRowsModel(deletedBoundsQty));
+        return new DeleteScopeResponseModel(idCollection, new DeletedRowsModel(deletedBoundsQty), null);
     }
 
     @Override

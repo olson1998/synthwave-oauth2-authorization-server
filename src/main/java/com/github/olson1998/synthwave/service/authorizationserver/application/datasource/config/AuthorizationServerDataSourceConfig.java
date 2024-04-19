@@ -1,8 +1,8 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.datasource.config;
 
+import com.github.olson1998.synthwave.support.dataintegration.service.DataIntegrationService;
 import com.github.olson1998.synthwave.support.jpa.config.AbstractPersistenceUnitConfig;
 import com.github.olson1998.synthwave.support.jpa.props.PersistenceUnitProperties;
-import com.github.olson1998.synthwave.support.migration.service.MigrationService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -38,19 +38,19 @@ public class AuthorizationServerDataSourceConfig extends AbstractPersistenceUnit
 
     public static final String AUTHORIZATION_SERVER_PLATFORM_TRANSACTION_MANAGER_BEAN = "authorizationServerPlatformTransactionManager";
 
-    private final MigrationService migrationService;
+    private final DataIntegrationService dataIntegrationService;
 
     private final PersistenceUnitProperties persistenceUnitProperties;
 
-    public AuthorizationServerDataSourceConfig(@NonNull MigrationService migrationService,
+    public AuthorizationServerDataSourceConfig(@NonNull DataIntegrationService dataIntegrationService,
                                                @Qualifier(AUTHORIZATION_SERVER_PERSISTENCE_UNIT_PROPERTIES_BEAN) PersistenceUnitProperties persistenceUnitProperties) {
-        this.migrationService = migrationService;
+        this.dataIntegrationService = dataIntegrationService;
         this.persistenceUnitProperties = persistenceUnitProperties;
     }
 
     @Bean(AUTHORIZATION_SERVER_DATASOURCE_BEAN)
     public DataSource dataSource(){
-        return initDataSource(migrationService, persistenceUnitProperties);
+        return initDataSource(dataIntegrationService, persistenceUnitProperties);
     }
 
     @Bean(AUTHORIZATION_SERVER_HIBERNATE_VENDOR_ADAPTER_BEAN)

@@ -17,6 +17,8 @@ import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -37,7 +39,11 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @Configuration
 public class OAuth2AuthorizationServerConfig {
 
-    private final OAuth2AuthorizationServerConfigurer configurer = new OAuth2AuthorizationServerConfigurer();
+    public static final String OAUTH2_REQUEST_PATH = "/oauth2-rest";
+
+    public static final String LOGIN_PATH = "/login";
+
+    public static final String ON_LOGIN_PROCESS_ENDPOINT= LOGIN_PATH+ "/login/process";
 
     @Bean
     public OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository(Executor executor,
@@ -68,20 +74,27 @@ public class OAuth2AuthorizationServerConfig {
     }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain oauth2AuthorizationServerSecurityFilterChain(@NonNull HttpSecurity httpSecurity,
                                                                             @NonNull OAuth2AuthorizationRepository oAuth2AuthorizationRepository,
-                                                                            @NonNull OAuth2RegisteredClientRepository OAuth2RegisteredClientRepository) throws Exception {
-        httpSecurity.apply(configurer);
-        configurer.registeredClientRepository(OAuth2RegisteredClientRepository);
-        configurer.authorizationService(oAuth2AuthorizationRepository);
-        configurer.init(httpSecurity);
+                                                                            @NonNull OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository) throws Exception {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
+        httpSecurity.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                .oidc(Customizer.withDefaults())
+                .registeredClientRepository(oAuth2RegisteredClientRepository);
+        return httpSecurity.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .authorizeHttpRequests()
-                .anyRequest()
-                .permitAll()
-                .and()
-                .csrf()
-                .disable()
+                .securityMatcher(OAUTH2_REQUEST_PATH + "/**", LOGIN_PATH + "/**")
+                .formLogin(Customizer.withDefaults())
+                .formLogin(formLoginConfigurer -> {
+                    formLoginConfigurer.failureForwardUrl(LOGIN_PATH);
+                    formLoginConfigurer.loginProcessingUrl(ON_LOGIN_PROCESS_ENDPOINT);
+                })
                 .build();
     }
 

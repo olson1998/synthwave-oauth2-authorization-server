@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -37,12 +38,13 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 
+import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.EndpointsProperties.OAUTH2_AUTHORITZATION_SERVER_ENDPOINTS_PROPERTIES_VALUE;
 import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.JwkProperties.OAUTH2_AUTHORIZATION_SERVER_JWK_PROPERTIES_VALUE;
 
 @Configuration
 public class OAuth2AuthorizationServerConfig {
 
-    public static final String OAUTH2_REQUEST_PATH = "/oauth2-rest";
+    public static final String OAUTH2_REQUEST_PATH = "/oauth2";
 
     public static final String LOGIN_PATH = "/login";
 
@@ -69,6 +71,25 @@ public class OAuth2AuthorizationServerConfig {
                 authorizationGrantTypeDatasourceRepository,
                 clientAuthenticationMethodDataSourceRepository
         );
+    }
+
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings(@Value(OAUTH2_AUTHORITZATION_SERVER_ENDPOINTS_PROPERTIES_VALUE) OAuth2AuthorizationServerProperties.EndpointsProperties endpointsProperties) {
+        var deviceEndpoints = endpointsProperties.getDevice();
+        var oidcEndpoints = endpointsProperties.getOidc();
+        var tokenEndpoints = endpointsProperties.getToken();
+        return AuthorizationServerSettings.builder()
+                .authorizationEndpoint(OAUTH2_REQUEST_PATH + endpointsProperties.getAuthorization())
+                .jwkSetEndpoint(OAUTH2_REQUEST_PATH + endpointsProperties.getJwk())
+                .tokenIntrospectionEndpoint(OAUTH2_REQUEST_PATH + tokenEndpoints.getIntrospection())
+                .tokenRevocationEndpoint(OAUTH2_REQUEST_PATH + tokenEndpoints.getRevocation())
+                .tokenEndpoint(OAUTH2_REQUEST_PATH + tokenEndpoints.getEndpoint())
+                .deviceAuthorizationEndpoint(OAUTH2_REQUEST_PATH + deviceEndpoints.getAuthorization())
+                .deviceVerificationEndpoint(OAUTH2_REQUEST_PATH + deviceEndpoints.getVerification())
+                .oidcClientRegistrationEndpoint(OAUTH2_REQUEST_PATH + oidcEndpoints.getClientRegistration())
+                .oidcUserInfoEndpoint(OAUTH2_REQUEST_PATH + oidcEndpoints.getUserInfo())
+                .oidcLogoutEndpoint(OAUTH2_REQUEST_PATH + oidcEndpoints.getLogout())
+                .build();
     }
 
     @Bean

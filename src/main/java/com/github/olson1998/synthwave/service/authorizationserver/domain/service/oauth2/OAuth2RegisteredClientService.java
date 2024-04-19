@@ -73,13 +73,14 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
     @Override
     public RegisteredClient findByClientId(String clientId) {
         var timestamp = MutableDateTime.now();
-        var registeredClientBuilder = registeredClientDataSourceRepository.findRegisteredClientByClientIdWithTimestamp(clientId, timestamp)
-                .orElseThrow();
-        var id = registeredClientBuilder.getId();
-        appendAdditionalPropertiesAsync(registeredClientBuilder, id, timestamp)
-                .collectList()
-                .block();
-        return registeredClientBuilder.build();
+        return registeredClientDataSourceRepository.findRegisteredClientByClientIdWithTimestamp(clientId, timestamp)
+                .map(abstractRegisteredClientBuilderWrapper -> {
+                    var id = abstractRegisteredClientBuilderWrapper.getId();
+                    appendAdditionalPropertiesAsync(abstractRegisteredClientBuilderWrapper, id, timestamp)
+                            .collectList()
+                            .block();
+                    return abstractRegisteredClientBuilderWrapper.build();
+                }).orElse(null);
     }
 
     private void saveRegisteredClientModel(RegisteredClientModel registeredClientModel) {

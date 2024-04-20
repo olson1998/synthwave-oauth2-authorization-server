@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.user.ApplicationUser;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -10,6 +11,7 @@ import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData.USER_ID_SEQUENCE_GENERATOR;
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -17,6 +19,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
+@EntityListeners({CreatedOnEntityListener.class})
 @SequenceGenerator(name = USER_ID_SEQUENCE_GENERATOR, sequenceName = "USIDSEQ", allocationSize = 1)
 
 @Entity

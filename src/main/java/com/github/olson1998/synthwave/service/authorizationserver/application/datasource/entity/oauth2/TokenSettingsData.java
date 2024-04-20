@@ -52,6 +52,17 @@ public class TokenSettingsData implements Persistable<Long>, TokenSettingsEntity
     @Column(name = "TSACTL")
     private Duration authorizationCodeTimeToLive;
 
+    public TokenSettingsData(TokenSettingsEntity tokenSettings) {
+        this.registeredClientId = tokenSettings.getRegisteredClientId();
+        this.idTokenSignatureAlgorithm = tokenSettings.getIdTokenSignatureAlgorithm();
+        this.accessTokenFormat = tokenSettings.getAccessTokenFormat();
+        this.accessTokenTimeToLive = tokenSettings.getAccessTokenTimeToLive();
+        this.refreshTokenTimeToLive = tokenSettings.getRefreshTokenTimeToLive();
+        this.reuseRefreshTokens = tokenSettings.getReuseRefreshTokens();
+        this.deviceCodeTimeToLive = tokenSettings.getDeviceCodeTimeToLive();
+        this.authorizationCodeTimeToLive = tokenSettings.getAuthorizationCodeTimeToLive();
+    }
+
     @Override
     public TokenSettings toSettings() {
         return TokenSettings.builder()

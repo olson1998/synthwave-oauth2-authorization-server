@@ -35,9 +35,9 @@ public class AuthorizationGrantTypeService implements AuthorizationGrantTypeRepo
         var examples = authorizationGrantTypeCollection.stream()
                 .map(this::eraseIrrelevantData)
                 .toList();
-        var authorizationGrantTypeIds = authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeIdByExamples(examples);
+        var authorizationGrantTypeIds = authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeByExamples(examples);
         var bounds = authorizationGrantTypeIds.stream()
-                .map(authorizationGrantTypeId -> new AuthorizationGrantTypeBindingModel(registeredClientId, authorizationGrantTypeId))
+                .map(authorizationGrantType -> new AuthorizationGrantTypeBindingModel(registeredClientId, authorizationGrantType.getId()))
                 .toList();
         authorizationGrantTypeDatasourceRepository.saveBounds(bounds);
     }

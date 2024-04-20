@@ -3,10 +3,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.emb.ScopeBindingValue;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ScopeBinding;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -21,6 +19,8 @@ import java.util.Optional;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
+@EntityListeners({CreatedOnEntityListener.class})
 
 @Entity
 @Table(name = "OAU2SCPB")

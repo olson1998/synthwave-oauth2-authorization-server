@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.authoritiy.Authority;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -17,6 +18,8 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
+@EntityListeners({CreatedOnEntityListener.class})
 @SequenceGenerator(name = AUTHORITY_ID_SEQUENCE_GENERATOR, sequenceName = "AUIDSEQ", allocationSize = 1)
 
 @Entity

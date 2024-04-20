@@ -5,14 +5,18 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.AuthorizationGrantTypeDatasourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.AuthorizationGrantTypeBinding;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.AuthorizationGrantTypeEntity;
+import com.github.olson1998.synthwave.support.jpa.spec.JpaSpecificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -23,12 +27,9 @@ public class AuthorizationGrantTypeJpaRepositoryWrapper implements Authorization
     private final AuthorizationGrantTypeBindingJpaRepository authorizationGrantTypeBindingJpaRepository;
 
     @Override
-    public Collection<Long> getAuthorizationGrantTypeIdByExamples(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeCollection) {
-        var examples = authorizationGrantTypeCollection.stream()
-                .map(AuthorizationGrantTypeData::new)
-                .map(authorizationGrantTypeData -> Example.of(authorizationGrantTypeData, ExampleMatcher.matching().withIgnoreNullValues()))
-                .toList();
-        return authorizationGrantTypeJpaRepository.selectAuthorizationGrantTypeIdByExamples(examples);
+    public Collection<? extends AuthorizationGrantTypeEntity> getAuthorizationGrantTypeByExamples(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeCollection) {
+        var examplesDataSpecChain = createAuthorizationGrantTypeDataExampleSpecChain(authorizationGrantTypeCollection);
+        return authorizationGrantTypeJpaRepository.findAll(examplesDataSpecChain);
     }
 
     @Override
@@ -79,5 +80,11 @@ public class AuthorizationGrantTypeJpaRepositoryWrapper implements Authorization
                 registeredClientId,
                 authorizationGrantTypeId
         );
+    }
+
+    private Specification<AuthorizationGrantTypeData> createAuthorizationGrantTypeDataExampleSpecChain(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeCollection) {
+        return authorizationGrantTypeCollection.stream()
+                .map(AuthorizationGrantTypeData::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), JpaSpecificationUtil::createDataExamplesSpecChain));
     }
 }

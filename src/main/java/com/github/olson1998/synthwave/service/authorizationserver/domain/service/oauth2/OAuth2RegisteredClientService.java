@@ -1,16 +1,15 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ClientSettingsEntityModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.RegisteredClientSecretModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.TokenSettingsEntityModel;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.Scope;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2RegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ScopeRepository;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,6 +25,8 @@ import java.util.function.Supplier;
 public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepository {
 
     private final Executor executor;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final RedirectRepository redirectRepository;
 
@@ -89,13 +90,16 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         saveRegisteredClientSecret(registeredClientId, registeredClientModel.getSecretModel());
         saveClientSettings(registeredClientId, registeredClientModel.getClientSettingsModel());
         saveTokenSettings(registeredClientId, registeredClientModel.getTokenSettingsModel());
+        saveClientAuthenticationMethodsBounds(registeredClientId, registeredClientModel.getClientAuthenticationMethodsSet());
         scopeRepository.saveAllBounds(registeredClientModel.getScopeModels(), registeredClientId);
+        saveAuthorizationGrantTypeBounds(registeredClientId, registeredClientModel.getAuthorizationGrantTypesSet());
         redirectRepository.saveAllRedirectBounds(registeredClientModel.getRedirectUriModels(), registeredClientId);
         redirectRepository.saveAllPostLogoutRedirectBounds(registeredClientModel.getPostLogoutRedirectUriModels(), registeredClientId);
     }
 
     private void saveRegisteredClientSecret(Long registeredClientId, RegisteredClientSecretModel secret){
         secret.setRegisteredClientId(registeredClientId);
+        secret.setValue(passwordEncoder.encode(secret.getValue()));
         registeredClientSecretDataSourceRepository.save(secret);
     }
 
@@ -109,8 +113,19 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
         tokenSettingsDataSourceRepository.save(tokenSettings);
     }
 
-    private void saveScopesBounds(Long registeredClientId, Collection<? extends Scope> scopeCollection){
-        scopeRepository.saveAllBounds(scopeCollection, registeredClientId);
+    private void saveAuthorizationGrantTypeBounds(Long registeredClientId, Collection<AuthorizationGrantTypeEntityModel> authorizationGrantTypeEntityModels) {
+        var boundsCollection = authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeByExamples(authorizationGrantTypeEntityModels)
+                .stream()
+                .map(authorizationGrantType -> new AuthorizationGrantTypeBindingModel(registeredClientId, authorizationGrantType.getId()))
+                .toList();
+        authorizationGrantTypeDatasourceRepository.saveBounds(boundsCollection);
+    }
+
+    private void saveClientAuthenticationMethodsBounds(Long registeredClientId, Collection<ClientAuthenticationMethodEntityModel> methods) {
+        var boundsCollection = clientAuthenticationMethodDataSourceRepository.getClientAuthenticationMethodsByExamples(methods).stream()
+                .map(clientAuthenticationMethod -> new ClientAuthenticationMethodBindingModel(registeredClientId, clientAuthenticationMethod.getId()))
+                .toList();
+        clientAuthenticationMethodDataSourceRepository.saveAllBounds(boundsCollection);
     }
 
     private Flux<Void> appendAdditionalPropertiesAsync(RegisteredClient.Builder registeredClientBuilder, long id, MutableDateTime timestamp) {

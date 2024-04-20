@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.AuthorizationGrantTypeData;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-interface AuthorizationGrantTypeJpaRepository extends JpaRepository<AuthorizationGrantTypeData, Long> {
+interface AuthorizationGrantTypeJpaRepository extends JpaRepository<AuthorizationGrantTypeData, Long>, JpaSpecificationExecutor<AuthorizationGrantTypeData> {
 
     @Query("""
            SELECT authorizationGrantType
@@ -22,16 +23,9 @@ interface AuthorizationGrantTypeJpaRepository extends JpaRepository<Authorizatio
            """)
     List<AuthorizationGrantTypeData> selectAuthorizationGrantTypeByType(@Param("authorizationGranTypes") Collection<AuthorizationGrantType> authorizationGrantTypeCollection);
 
-    @Query("""
-           SELECT authorizationGrantType
-           FROM AuthorizationGrantTypeData authorizationGrantType
-           WHERE authorizationGrantType IN :authorizationGrantTypeList
-           """)
-    List<Long> selectAuthorizationGrantTypeIdByExamples(@Param("authorizationGrantTypeList")List<Example<AuthorizationGrantTypeData>> authorizationGrantTypeList);
-
     @Query(
     """
-    SELECT authorizationGrantType
+    SELECT authorizationGrantType.grantType
     FROM AuthorizationGrantTypeData authorizationGrantType
     LEFT OUTER JOIN AuthorizationGrantTypeBindingData binding
     ON authorizationGrantType.id = binding.properties.authorizationGrantTypeId

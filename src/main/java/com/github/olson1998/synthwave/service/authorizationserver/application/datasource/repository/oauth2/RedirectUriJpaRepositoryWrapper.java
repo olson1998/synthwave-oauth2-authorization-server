@@ -7,16 +7,19 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RedirectUriDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.UriBinding;
+import com.github.olson1998.synthwave.support.jpa.spec.JpaSpecificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -32,27 +35,23 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
 
     @Override
     public Collection<? extends RedirectUri> getRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples) {
-        var dataExamples = createRedirectDataExampleList(redirectUriExamples, RedirectUriData::new);
-        return dataExamples.stream()
-                .flatMap(redirectUriDataExample -> redirectUriJpaRepository.findAll(redirectUriDataExample).stream())
-                .toList();
+        var redirectUriDataExampleChain = createRedirectUriDataExampleChain(redirectUriExamples);
+        return redirectUriJpaRepository.findAll(redirectUriDataExampleChain);
     }
 
     @Override
     public Collection<? extends RedirectUri> getPostLogoutRedirectUriByExamples(Collection<? extends RedirectUri> redirectUriExamples) {
-        var dataExamples = createRedirectDataExampleList(redirectUriExamples, PostLogoutRedirectUriData::new);
-        return dataExamples.stream()
-                .flatMap(redirectUriDataExample -> postLogoutRedirectUriJpaRepository.findAll(redirectUriDataExample).stream())
-                .toList();
+        var redirectUriDataExampleChain = createPostLogoutRedirectUriDataExampleChain(redirectUriExamples);
+        return postLogoutRedirectUriJpaRepository.findAll(redirectUriDataExampleChain);
     }
 
     @Override
-    public Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId) {
+    public Collection<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId) {
         return postLogoutRedirectUriJpaRepository.selectPostLogoutRedirectUriByRegisteredClientId(registeredClientId);
     }
 
     @Override
-    public Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp) {
+    public Collection<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp) {
         return redirectUriJpaRepository.selectRedirectUriByRegisteredClientId(registeredClientId, timestamp);
     }
 
@@ -108,20 +107,16 @@ public class RedirectUriJpaRepositoryWrapper implements RedirectUriDataSourceRep
         return postLogoutRedirectUriBindingJpaRepository.deletePostLogoutRedirectUriByIdAndRegisteredClientId(idCollection, registeredClientId);
     }
 
-    private <T> List<Example<T>> createRedirectDataExampleList(Collection<? extends RedirectUri> redirectUriCollection, Function<RedirectUri, T> mapper){
-        return redirectUriCollection.stream()
-                .map(redirectUri -> createRedirectDataExample(redirectUri, mapper))
-                .toList();
+    private Specification<RedirectUriData> createRedirectUriDataExampleChain(Collection<? extends RedirectUri> redirectUriExampleCollection) {
+        return redirectUriExampleCollection.stream()
+                .map(RedirectUriData::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), JpaSpecificationUtil::createDataExamplesSpecChain));
     }
 
-    private Example<RedirectUriData> createRedirectUriDataExample(RedirectUri redirectUri) {
-        return createRedirectDataExample(redirectUri, RedirectUriData::new);
+    private Specification<PostLogoutRedirectUriData> createPostLogoutRedirectUriDataExampleChain(Collection<? extends RedirectUri> redirectUriExampleCollection) {
+        return redirectUriExampleCollection.stream()
+                .map(PostLogoutRedirectUriData::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), JpaSpecificationUtil::createDataExamplesSpecChain));
     }
 
-    private <T> Example<T> createRedirectDataExample(RedirectUri example, Function<RedirectUri, T> mapper) {
-        var dataExample = mapper.apply(example);
-        var matcher = ExampleMatcher.matchingAll()
-                .withIgnoreNullValues();
-        return Example.of(dataExample, matcher);
-    }
 }

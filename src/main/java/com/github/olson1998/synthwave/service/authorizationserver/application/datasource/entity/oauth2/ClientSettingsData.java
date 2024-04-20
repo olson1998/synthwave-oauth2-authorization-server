@@ -3,10 +3,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.JwsAlgorithmJavaType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientSettingsEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -16,11 +14,15 @@ import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
+@EntityListeners({CreatedOnEntityListener.class})
 
 @Entity
 @Table(name = "OAU2CLST")
@@ -48,6 +50,15 @@ public class ClientSettingsData implements ClientSettingsEntity {
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;
+
+    public ClientSettingsData(ClientSettingsEntity clientSettings) {
+        this.registeredClientId = clientSettings.getRegisteredClientId();
+        this.requireProofKey = clientSettings.getRequireProofKey();
+        this.requireAuthorizationConsent = clientSettings.getRequireAuthorizationConsent();
+        this.jwkSetUrl = clientSettings.getJwkSetUrl();
+        this.jwsAlgorithm = clientSettings.getJwsAlgorithm();
+        this.createdOn = clientSettings.getCreatedOn();
+    }
 
     @Override
     public ClientSettings toSettings() {

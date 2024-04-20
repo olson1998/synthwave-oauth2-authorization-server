@@ -30,12 +30,12 @@ public class RedirectService implements RedirectRepository {
     }
 
     @Override
-    public Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId) {
+    public Collection<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId) {
         return redirectUriDataSourceRepository.getPostLogoutRedirectUriByRegisteredClientId(registeredClientId);
     }
 
     @Override
-    public Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp) {
+    public Collection<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp) {
         return redirectUriDataSourceRepository.getRedirectUriByRegisteredClientIdWithTimestamp(registeredClientId, timestamp);
     }
 

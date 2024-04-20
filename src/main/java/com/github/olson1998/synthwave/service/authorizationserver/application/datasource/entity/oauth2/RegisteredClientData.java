@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -11,6 +12,7 @@ import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData.REGISTERED_CLIENT_ID_SEQUENCE_GENERATOR;
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -18,6 +20,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
+@EntityListeners({CreatedOnEntityListener.class})
 @SequenceGenerator(name = REGISTERED_CLIENT_ID_SEQUENCE_GENERATOR, sequenceName = "RCIDSEQ", allocationSize = 1)
 
 @Entity
@@ -28,7 +31,6 @@ public class RegisteredClientData implements Persistable<Long>, RegisteredClient
 
     @Id
     @Column(name = "RCID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = REGISTERED_CLIENT_ID_SEQUENCE_GENERATOR)
     private Long id;
 
     @Column(name = "RCCID")

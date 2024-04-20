@@ -2,6 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodData, Long> {
+interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAuthenticationMethodData, Long>, JpaSpecificationExecutor<ClientAuthenticationMethodData> {
 
     @Query("""
            SELECT method
@@ -23,7 +24,7 @@ interface ClientAuthenticationMethodJpaRepository extends JpaRepository<ClientAu
 
     @Query(
     """
-    SELECT clientAuthenticationMethod
+    SELECT clientAuthenticationMethod.method
     FROM ClientAuthenticationMethodData clientAuthenticationMethod
     LEFT OUTER JOIN ClientAuthenticationMethodBindingData binding
     ON clientAuthenticationMethod.id=binding.properties.clientAuthenticationMethodId

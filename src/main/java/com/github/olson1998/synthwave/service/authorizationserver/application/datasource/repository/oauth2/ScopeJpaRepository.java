@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ScopeData;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-interface ScopeJpaRepository extends JpaRepository<ScopeData, Long> {
+interface ScopeJpaRepository extends JpaRepository<ScopeData, Long>, JpaSpecificationExecutor<ScopeData> {
 
     @Query("""
            SELECT scope.id
@@ -21,15 +22,6 @@ interface ScopeJpaRepository extends JpaRepository<ScopeData, Long> {
            WHERE scope.id IN :scopeIdCollection
            """)
     List<Long> selectScopeIdById(@Param("scopeIdCollection") Collection<Long> scopeIdCollection);
-
-    @Query(
-    """
-    SELECT scope.id
-    FROM ScopeData scope
-    WHERE scope IN :examples
-    """
-    )
-    List<Long> selectScopesIdByExamples(@Param("examples") Collection<Example<ScopeData>> examples);
 
     @Query(
     """

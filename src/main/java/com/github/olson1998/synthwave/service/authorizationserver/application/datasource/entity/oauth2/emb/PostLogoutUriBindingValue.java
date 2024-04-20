@@ -13,13 +13,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 
 @Embeddable
-public class UriBindingValue implements Serializable {
+public class PostLogoutUriBindingValue implements Serializable {
 
-    private static final long serialVersionUID = 8150924141574910071L;
-
+    private static final long serialVersionUID = -3414387887126129386L;
     @Column(name = "RCID")
     private Long registeredClientId;
 
-    @Column(name = "RUID")
-    private Long uriId;
+    @Column(name = "LRID")
+    private Long postLogoutUriId;
+
 }

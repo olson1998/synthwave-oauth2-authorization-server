@@ -5,13 +5,21 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ScopeDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.Scope;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ScopeBinding;
+import com.github.olson1998.synthwave.support.jpa.spec.JpaSpecificationUtil;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.convert.QueryByExamplePredicateBuilder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -37,11 +45,9 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
     }
 
     @Override
-    public Collection<Long> getScopesIdByExamples(Collection<? extends Scope> scopeExamples) {
-        var examples = scopeExamples.stream()
-                .map(this::createDataExample)
-                .toList();
-        return scopeJpaRepository.selectScopesIdByExamples(examples);
+    public Collection<? extends Scope> getScopesByExamples(@NonNull Collection<? extends Scope> scopeExamples) {
+        var dataSpecChain = createScopeDataExampleSpecChain(scopeExamples);
+        return scopeJpaRepository.findAll(dataSpecChain);
     }
 
     @Override
@@ -70,10 +76,10 @@ public class ScopeJpaRepositoryWrapper implements ScopeDataSourceRepository {
         return scopeBindingJpaRepository.deleteScopeBindingByScopeId(scopeIdCollection);
     }
 
-    private Example<ScopeData> createDataExample(Scope scope) {
-        var dataExample = new ScopeData(scope);
-        var matcher = ExampleMatcher.matchingAll()
-                .withIgnoreNullValues();
-        return Example.of(dataExample, matcher);
+    private Specification<ScopeData> createScopeDataExampleSpecChain(Collection<? extends Scope> scopeExamplesCollection) {
+        return scopeExamplesCollection.stream()
+                .map(ScopeData::new)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), JpaSpecificationUtil::createDataExamplesSpecChain));
     }
+
 }

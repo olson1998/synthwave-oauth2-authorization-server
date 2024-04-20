@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class ScopeService implements ScopeRepository {
@@ -51,10 +53,10 @@ public class ScopeService implements ScopeRepository {
         var examples = scopeCollection.stream()
                 .map(this::eraseIrrelevantData)
                 .toList();
-        var scopeIdCollection = scopeDataSourceRepository.getScopesIdByExamples(examples);
+        var scopeIdCollection = scopeDataSourceRepository.getScopesByExamples(examples);
         if(examples.size() == scopeIdCollection.size()) {
             var bounds = scopeIdCollection.stream()
-                    .map(id -> new ScopeBindingModel(registeredClientId, id))
+                    .map(scope -> new ScopeBindingModel(registeredClientId, scope.getId()))
                     .toList();
             scopeDataSourceRepository.saveAllBounds(bounds);
         } else {
@@ -71,7 +73,11 @@ public class ScopeService implements ScopeRepository {
 
     @Override
     public DeleteScopeBindingResponse deleteScopeBounds(Collection<? extends Scope> scopeCollection, Long registeredClientId) {
-        var idCollection = scopeDataSourceRepository.getScopesIdByExamples(scopeCollection);
+        var idCollection = scopeDataSourceRepository.getScopesByExamples(scopeCollection).stream()
+                .map(scope -> Optional.ofNullable(scope.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
         var deletedRowsQty = scopeDataSourceRepository.deleteScopeBoundsByScopeId(idCollection);
         return new DeleteScopeBindingResponseModel(registeredClientId, idCollection, new DeletedRowsModel(deletedRowsQty));
     }

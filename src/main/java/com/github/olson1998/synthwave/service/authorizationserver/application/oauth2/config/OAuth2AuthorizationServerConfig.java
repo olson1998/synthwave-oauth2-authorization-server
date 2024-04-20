@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
@@ -52,6 +53,7 @@ public class OAuth2AuthorizationServerConfig {
 
     @Bean
     public OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository(Executor executor,
+                                                                             PasswordEncoder passwordEncoder,
                                                                              RedirectRepository redirectRepository,
                                                                              ScopeRepository scopeRepository,
                                                                              RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
@@ -62,6 +64,7 @@ public class OAuth2AuthorizationServerConfig {
                                                                              ClientAuthenticationMethodDataSourceRepository clientAuthenticationMethodDataSourceRepository) {
         return new OAuth2RegisteredClientService(
                 executor,
+                passwordEncoder,
                 redirectRepository,
                 scopeRepository,
                 registeredClientDataSourceRepository,

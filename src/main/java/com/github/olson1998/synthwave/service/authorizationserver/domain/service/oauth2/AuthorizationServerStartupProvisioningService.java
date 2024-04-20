@@ -74,8 +74,8 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
         provisionRequiredAuthorizationGrantTypes();
         provisionRequiredClientAuthenticationMethods();
         provisionRedirectUri();
-        provisionRegisteredClients();
         provisionPostLogoutRedirectUri();
+        provisionRegisteredClients();
     }
 
     private void provisionRequiredScopes() {
@@ -97,7 +97,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
         log.debug("Existing authorization grant types: {}", existingTypes);
         var provisionTypes = REQUIRED_AUTHORIZATION_GRANT_TYPES.stream()
                 .filter(authorizationGrantType -> existingTypes.stream().noneMatch(authorizationGrantTypeEntity -> authorizationGrantTypeEntity.getGrantType().getValue().equals(authorizationGrantType.getValue())))
-                .map(authorizationGrantType -> new AuthorizationGrantTypeEntityModel(null, authorizationGrantType, MutableDateTime.now()))
+                .map(authorizationGrantType -> new AuthorizationGrantTypeEntityModel(null, authorizationGrantType, null))
                 .toList();
         if(!provisionTypes.isEmpty()) {
             var provisionedTypes = authorizationGrantTypeDatasourceRepository.saveAll(provisionTypes);
@@ -111,7 +111,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
         log.debug("Existing client authentication methods: {}", existingMethods);
         var provisionMethods = REQUIRED_CLIENT_AUTHENTICATION_METHODS.stream()
                 .filter(clientAuthenticationMethod -> existingMethods.stream().noneMatch(entity -> entity.getMethod().getValue().equals(clientAuthenticationMethod.getValue())))
-                .map(clientAuthenticationMethod -> new ClientAuthenticationMethodEntityModel(null, clientAuthenticationMethod, MutableDateTime.now()))
+                .map(clientAuthenticationMethod -> new ClientAuthenticationMethodEntityModel(null, clientAuthenticationMethod, null))
                 .toList();
         if(!provisionMethods.isEmpty()) {
             var provisionedMethods = clientAuthenticationMethodDataSourceRepository.saveAll(provisionMethods);

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface AuthorizationGrantTypeDatasourceRepository {
 
-    Collection<Long> getAuthorizationGrantTypeIdByExamples(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeCollection);
+    Collection<? extends AuthorizationGrantTypeEntity> getAuthorizationGrantTypeByExamples(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeCollection);
 
     Collection<? extends AuthorizationGrantTypeEntity> getAllTypes();
 

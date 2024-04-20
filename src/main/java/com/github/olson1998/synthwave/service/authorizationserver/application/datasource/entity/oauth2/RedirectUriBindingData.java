@@ -3,10 +3,8 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.emb.UriBindingValue;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.UriBinding;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
@@ -16,11 +14,15 @@ import org.springframework.data.domain.Persistable;
 
 import java.util.Optional;
 
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
+@EntityListeners({CreatedOnEntityListener.class})
 
 @Entity
 @Table(name = "OAU2RUIB")
@@ -29,7 +31,7 @@ public class RedirectUriBindingData implements Persistable<UriBindingValue>, Uri
     @EmbeddedId
     private UriBindingValue properties;
 
-    @Column(name = "RUCTMP")
+    @Column(name = "BNCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
     private MutableDateTime createdOn;

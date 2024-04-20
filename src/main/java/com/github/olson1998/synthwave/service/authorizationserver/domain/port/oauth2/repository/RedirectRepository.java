@@ -13,9 +13,9 @@ public interface RedirectRepository {
 
     Collection<? extends RedirectUri> getPostLogoutRedirectUriByExample(Collection<? extends RedirectUri> redirectUriExamples);
 
-    Set<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId);
+    Collection<String> getPostLogoutRedirectUriByRegisteredClientId(Long registeredClientId);
 
-    Set<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp);
+    Collection<String> getRedirectUriByRegisteredClientIdWithTimestamp(Long registeredClientId, MutableDateTime timestamp);
 
     @Transactional(rollbackFor = Exception.class)
     Collection<? extends RedirectUri> saveAllRedirectUri(Collection<? extends RedirectUri> redirectUriCollection);

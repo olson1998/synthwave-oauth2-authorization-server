@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.ClientAuthenticationMethodJavaType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodEntity;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -13,6 +14,7 @@ import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData.CLIENT_AUTHENTICATION_METHOD_ID_SEQUENCE_GENERATOR;
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -20,6 +22,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
+@EntityListeners({CreatedOnEntityListener.class})
 @SequenceGenerator(name = CLIENT_AUTHENTICATION_METHOD_ID_SEQUENCE_GENERATOR, sequenceName = "CMIDSEQ", allocationSize = 1)
 
 @Entity

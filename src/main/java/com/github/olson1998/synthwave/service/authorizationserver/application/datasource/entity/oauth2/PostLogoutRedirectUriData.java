@@ -3,6 +3,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.d
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.javatype.URIModelJavaType;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
 import com.github.olson1998.synthwave.support.hibernate.javatype.MutableDateTimeJavaType;
+import com.github.olson1998.synthwave.support.jpa.audit.CreatedOnEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JavaType;
@@ -13,6 +14,7 @@ import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData.POST_LOGOUT_REDIRECT_URI_ID_SEQUENCE_GENERATOR;
+import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -20,6 +22,7 @@ import static com.github.olson1998.synthwave.service.authorizationserver.applica
 @NoArgsConstructor
 @AllArgsConstructor
 
+@EntityListeners({CreatedOnEntityListener.class})
 @SequenceGenerator(name = POST_LOGOUT_REDIRECT_URI_ID_SEQUENCE_GENERATOR, sequenceName = "LRIDSEQ", allocationSize = 1)
 
 @Entity
@@ -39,6 +42,7 @@ public class PostLogoutRedirectUriData implements Persistable<Long>, RedirectUri
     @Column(name = "LRCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
+    @GeneratedValue(generator = MUTABLE_DATETIME_TIMESTAMP_GENERATOR)
     private MutableDateTime createdOn;
 
     @Column(name = "LRETMP")

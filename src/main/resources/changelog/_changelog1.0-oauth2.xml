@@ -58,7 +58,7 @@
             <column name="CSJWSU" type="varchar(2047)">
                 <constraints nullable="false"/>
             </column>
-            <column name="CSJWSA" type="bigint(255)">
+            <column name="CSJWSA" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="CSCTMP" type="timestamp with time zone">
@@ -172,6 +172,9 @@
             <column name="SPID" type="bigint">
                 <constraints foreignKeyName="O2SPSPID" referencedTableName="OAU2AGT" referencedColumnNames="AGID" nullable="false"/>
             </column>
+            <column name="SBCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2SCPB" tableName="OAU2SCPB" columnNames="RCID,SPID"/>
     </changeSet>
@@ -200,6 +203,9 @@
             <column name="RUID" type="bigint">
                 <constraints foreignKeyName="O2RURUID" referencedTableName="OAU2RURI" referencedColumnNames="RUID" nullable="false"/>
             </column>
+            <column name="BNCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2RUIB" tableName="OAU2RUIB" columnNames="RCID,RUID"/>
     </changeSet>
@@ -227,6 +233,9 @@
             </column>
             <column name="LRID" type="bigint">
                 <constraints foreignKeyName="O2LURUID" referencedTableName="OAU2LURI" referencedColumnNames="LRID" nullable="false"/>
+            </column>
+            <column name="BNCTMP" type="timestamp with time zone">
+                <constraints nullable="false"/>
             </column>
         </createTable>
         <addPrimaryKey constraintName="OAU2LUIB" tableName="OAU2LUIB" columnNames="RCID,LRID"/>

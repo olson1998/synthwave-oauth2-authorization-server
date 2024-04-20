@@ -22,6 +22,13 @@ public class ClientAuthenticationMethodBindingData implements ClientAuthenticati
     @EmbeddedId
     private ClientAuthenticationMethodBindingValue properties;
 
+    public ClientAuthenticationMethodBindingData(ClientAuthenticationMethodBinding clientAuthenticationMethodBinding) {
+        this.properties = new ClientAuthenticationMethodBindingValue(
+                clientAuthenticationMethodBinding.getRegisteredClientId(),
+                clientAuthenticationMethodBinding.getClientAuthenticationMethodId()
+        );
+    }
+
     @Override
     public Long getRegisteredClientId() {
         return Optional.ofNullable(properties)

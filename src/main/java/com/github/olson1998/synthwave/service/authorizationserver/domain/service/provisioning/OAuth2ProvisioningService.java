@@ -1,14 +1,17 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.service.provisioning;
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.AuthorizationGrantTypeEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ClientAuthenticationMethodEntityModel;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.ScopeModel;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.AuthorizationGrantTypeDatasourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ClientAuthenticationMethodDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientSecretDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ScopeDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RedirectUri;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.AuthorizationServerStartupProvisioning;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.EntityProvider;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2RegisteredClientRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.provisioning.repository.Provisioner;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.provisioning.repository.ProvisionerSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.MutableDateTime;
@@ -24,7 +27,7 @@ import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AuthorizationServerStartupProvisioningService implements AuthorizationServerStartupProvisioning {
+public class OAuth2ProvisioningService implements Provisioner {
 
     private static final Set<String> REQUIRED_SCOPES = Set.of(
             OidcScopes.OPENID,
@@ -50,11 +53,11 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
             ClientAuthenticationMethod.CLIENT_SECRET_POST
     );
 
-    private final EntityProvider<Collection<RedirectUri>> redirectUriEntityProvider;
+    private final ProvisionerSource<Collection<RedirectUri>> redirectUriProvisionerSource;
 
-    private final EntityProvider<Collection<RedirectUri>> postLogoutRedirectUriEntityProvider;
+    private final ProvisionerSource<Collection<RedirectUri>> postLogoutRedirectUriProvisionerSource;
 
-    private final EntityProvider<Collection<RegisteredClient>> registeredClientEntityProvider;
+    private final ProvisionerSource<Collection<RegisteredClient>> registeredClientProvisionerSource;
 
     private final OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository;
 
@@ -69,7 +72,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
     private final ClientAuthenticationMethodDataSourceRepository clientAuthenticationMethodDataSourceRepository;
 
     @Override
-    public void provisionOnStartup() {
+    public void provision() {
         provisionRequiredScopes();
         provisionRequiredAuthorizationGrantTypes();
         provisionRequiredClientAuthenticationMethods();
@@ -120,7 +123,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
     }
 
     private void provisionRedirectUri() {
-        var redirectUriCollection = redirectUriEntityProvider.getEntity();
+        var redirectUriCollection = redirectUriProvisionerSource.getEntity();
         if(!redirectUriCollection.isEmpty()) {
             var existingRedirectUri = Optional.ofNullable(redirectRepository.getRedirectUriByExample(redirectUriCollection))
                     .orElseGet(Collections::emptyList);
@@ -136,7 +139,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
     }
 
     private void provisionPostLogoutRedirectUri() {
-        var redirectUriCollection = postLogoutRedirectUriEntityProvider.getEntity();
+        var redirectUriCollection = postLogoutRedirectUriProvisionerSource.getEntity();
         if(!redirectUriCollection.isEmpty()) {
             var existingRedirectUri = Optional.ofNullable(redirectRepository.getPostLogoutRedirectUriByExample(redirectUriCollection)).
                     orElseGet(Collections::emptyList);
@@ -152,7 +155,7 @@ public class AuthorizationServerStartupProvisioningService implements Authorizat
     }
 
     private void provisionRegisteredClients() {
-        var registeredClients = Optional.ofNullable(registeredClientEntityProvider.getEntity()).orElseGet(Collections::emptyList);
+        var registeredClients = Optional.ofNullable(registeredClientProvisionerSource.getEntity()).orElseGet(Collections::emptyList);
         registeredClients.forEach(registeredClient -> {
             if(!registeredClientSecretDataSourceRepository.existsRegisteredClientId(Long.parseLong(registeredClient.getId()))) {
                 oAuth2RegisteredClientRepository.save(registeredClient);

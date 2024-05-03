@@ -22,6 +22,7 @@ public class OAuth2AuthorizationServerProperties {
 
     private final JwkProperties jwk = new JwkProperties();
     private final EndpointsProperties endpoint = new EndpointsProperties();
+    private final LoginEndpointsProperties loginEndpoint = new LoginEndpointsProperties();
 
     @Data
     @Validated
@@ -31,11 +32,33 @@ public class OAuth2AuthorizationServerProperties {
 
         public static final String OAUTH2_AUTHORIZATION_SERVER_JWK_PROPERTIES_VALUE = "#{" + OAUTH2_AUTHORIZATION_SERVER_PROPERTIES_BEAN + ".jwk}";
 
+        public static final String OAUTH2_JWT_SIGNATURE_ALG_VALUE = "#{" + OAUTH2_AUTHORIZATION_SERVER_PROPERTIES_BEAN + ".jwk.algorithm}";
+
         @NotNull
-        private String algorithm = "RSASSA-PSS";
+        private String algorithm = "HS256";
 
         @Min(value = 1)
-        private int keySize = 512;
+        private int keySize = 256;
+    }
+
+    @Data
+    @Validated
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginEndpointsProperties {
+
+        public static final String OAUTH2_AUTHORIZATION_SERVER_LOGIN_ENDPOINTS_VALUE = "#{" + OAUTH2_AUTHORIZATION_SERVER_PROPERTIES_BEAN + ".loginEndpoint}";
+
+        private String loginPage = "/tenant/login/user";
+
+        private String loginProcessing = "/tenant/login/process";
+
+        private String success = "/tenant/login/hello.html";
+
+        private String failure = "/tenant/login/failed.html?error=true";
+
+        private String logout = "/tenant/logout";
+
     }
 
     @Data

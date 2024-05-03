@@ -1,0 +1,19 @@
+[
+  {
+    "USER": {
+      "NAME": "admin",
+      "CODE": "MANWRO01",
+      "DIVI": "MAN",
+      "DSNM": "admin"
+    },
+    "PASS": {
+      "VAL": "pass"
+    },
+    "AUTH":[
+
+    ],
+    "ROLE": [
+
+    ]
+  }
+]

@@ -18,11 +18,13 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.us
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -42,7 +44,7 @@ public class ApplicationUserService implements ApplicationUserRepository {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return applicationUserDataSourceRepository.getUserByUsername(username)
                 .map(this::buildUserDetails)
-                .orElse(null);
+                .orElseThrow(() -> new UsernameNotFoundException("User: '%s' has not been found"));
     }
 
     @Override
@@ -98,6 +100,7 @@ public class ApplicationUserService implements ApplicationUserRepository {
             userPasswordModel = new UserPasswordModel(userPassword);
         }
         userPasswordModel.setUserId(userId);
+        userPasswordModel.setActive(true);
         userPasswordRepository.saveNewUserPassword(userPassword);
     }
 
@@ -113,11 +116,19 @@ public class ApplicationUserService implements ApplicationUserRepository {
                 .companyCode(userDetailsData.getCompanyCode())
                 .division(userDetailsData.getDivision());
         var expireTimestamp = userDetailsData.getExpireOn();
-        var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(expireTimestamp);
         builder.username(userDetailsData.getUsername())
                 .password(userDetailsData.getPassword())
-                .accountNonExpired(!expired);
+                .enabled(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true);
+        if(expireTimestamp != null) {
+            var expired = MutableDateTime.now(expireTimestamp.getZone()).isBefore(expireTimestamp);
+            builder.accountNonExpired(expired);
+        } else {
+            builder.accountNonExpired(true);
+        }
         Optional.ofNullable(userDetailsData.getEnabled()).ifPresentOrElse(builder::enabled, () -> builder.enabled(true));
+        builder.authorities(Collections.singletonList(new SimpleGrantedAuthority("user")));
         return builder.build();
     }
 

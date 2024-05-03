@@ -25,15 +25,15 @@ interface ApplicationUserJpaRepository extends JpaRepository<ApplicationUserData
            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.user.model.UserDetailsDataModel(
            user.id,
            user.username,
+           user.companyCode,
+           user.division,
            password.value,
-           true,
            user.expireOn
            )
            FROM ApplicationUserData user
            LEFT OUTER JOIN UserPasswordData password
            ON user.id=password.userId
            WHERE user.username=:username
-           AND password.active=true
            """)
     Optional<UserDetailsDataModel> selectUserDetailsByUsername(@Param("username") String username);
 
@@ -41,8 +41,9 @@ interface ApplicationUserJpaRepository extends JpaRepository<ApplicationUserData
            SELECT new com.github.olson1998.synthwave.service.authorizationserver.application.user.model.UserDetailsDataModel(
            user.id,
            user.username,
+           user.companyCode,
+           user.division,
            password.value,
-           true,
            user.expireOn
            )
            FROM ApplicationUserData user

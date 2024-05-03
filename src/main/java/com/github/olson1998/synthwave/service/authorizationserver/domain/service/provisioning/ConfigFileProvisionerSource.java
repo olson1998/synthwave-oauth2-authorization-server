@@ -1,15 +1,15 @@
-package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
+package com.github.olson1998.synthwave.service.authorizationserver.domain.service.provisioning;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.EntityProvider;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.provisioning.repository.ProvisionerSource;
 import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class FileEntityProvider<T> implements EntityProvider<T> {
+public class ConfigFileProvisionerSource<T> implements ProvisionerSource<T> {
 
     private final ObjectMapper objectMapper;
 

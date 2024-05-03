@@ -41,6 +41,7 @@ import java.util.concurrent.Executor;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.EndpointsProperties.OAUTH2_AUTHORITZATION_SERVER_ENDPOINTS_PROPERTIES_VALUE;
 import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.JwkProperties.OAUTH2_AUTHORIZATION_SERVER_JWK_PROPERTIES_VALUE;
+import static com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties.LoginEndpointsProperties.OAUTH2_AUTHORIZATION_SERVER_LOGIN_ENDPOINTS_VALUE;
 
 @Configuration
 public class OAuth2AuthorizationServerConfig {
@@ -49,7 +50,7 @@ public class OAuth2AuthorizationServerConfig {
 
     public static final String LOGIN_PATH = "/login";
 
-    public static final String ON_LOGIN_PROCESS_ENDPOINT= LOGIN_PATH+ "/login/process";
+    public static final String ON_LOGIN_PROCESS_ENDPOINT= LOGIN_PATH + "/process";
 
     @Bean
     public OAuth2RegisteredClientRepository oAuth2RegisteredClientRepository(Executor executor,
@@ -101,7 +102,7 @@ public class OAuth2AuthorizationServerConfig {
     }
 
     @Bean
-    @Order(2)
+    @Order(1)
     public SecurityFilterChain oauth2AuthorizationServerSecurityFilterChain(@NonNull HttpSecurity httpSecurity,
                                                                             @NonNull JwtGenerator jwtGenerator,
                                                                             @NonNull OAuth2AuthorizationRepository oAuth2AuthorizationRepository,
@@ -116,14 +117,13 @@ public class OAuth2AuthorizationServerConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity httpSecurity,
+                                                              @Value(OAUTH2_AUTHORIZATION_SERVER_LOGIN_ENDPOINTS_VALUE) OAuth2AuthorizationServerProperties.LoginEndpointsProperties loginEndpointsProperties) throws Exception {
         return httpSecurity
-                .securityMatcher(OAUTH2_REQUEST_PATH + "/**", LOGIN_PATH + "/**")
-                .formLogin(Customizer.withDefaults())
-                .formLogin(formLoginConfigurer -> {
-                    formLoginConfigurer.failureForwardUrl(LOGIN_PATH);
-                    formLoginConfigurer.loginProcessingUrl(ON_LOGIN_PROCESS_ENDPOINT);
-                })
+                .securityMatcher(
+                        OAUTH2_REQUEST_PATH + "/**",
+                        "/login"
+                ).formLogin(Customizer.withDefaults())
                 .build();
     }
 

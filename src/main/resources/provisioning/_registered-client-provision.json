@@ -15,32 +15,17 @@
     ],
     "RURI": [
       {
-        "URI": "http://localhost:8081/path/to/redirect"
-      },
-      {
-        "URI": "http://localhost:8082/path/to/redirect"
-      },
-      {
-        "URI": "http://localhost:8083/path/to/redirect"
+        "URI": "http://localhost:8081/synthwave/v1.0/login-service/authorization-code/get"
       }
     ],
     "LURI": [
       {
         "URI": "http://localhost:8081/path/to/redirect"
-      },
-      {
-        "URI": "http://localhost:8082/path/to/redirect"
-      },
-      {
-        "URI": "http://localhost:8083/path/to/redirect"
       }
     ],
     "AGT": [
       {
         "VAL": "authorization_code"
-      },
-      {
-        "VAL": "client_credentials"
       }
     ],
     "CAM": [
@@ -65,7 +50,7 @@
     },
     "TSST": {
       "IDAG": "RS256",
-      "TFMT": "reference",
+      "TFMT": "self-contained",
       "ATTL": {
         "amount": 30,
         "time_unit": "MINUTES"

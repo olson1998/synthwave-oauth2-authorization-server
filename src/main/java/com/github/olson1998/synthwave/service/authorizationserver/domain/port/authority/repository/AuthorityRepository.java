@@ -11,6 +11,8 @@ import java.util.Collection;
 
 public interface AuthorityRepository {
 
+    Collection<? extends Authority> getAllAuthorities();
+
     Collection<? extends Authority> getAuthoritiesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp);
 
     String[] getActiveAuthoritiesNamesByUserId(Long userId);

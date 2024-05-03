@@ -10,6 +10,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorizationGrantTypeBindingResponse;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteAuthorizationGrantTypeResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.Collection;
 
@@ -19,10 +20,20 @@ public class AuthorizationGrantTypeService implements AuthorizationGrantTypeRepo
     private final AuthorizationGrantTypeDatasourceRepository authorizationGrantTypeDatasourceRepository;
 
     @Override
+    public Collection<AuthorizationGrantType> getAuthorizationGrantTypesByRegisteredClientId(Long registeredClientId) {
+        return authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeSetByRegisteredClientId(registeredClientId);
+    }
+
+    @Override
     public Collection<? extends AuthorizationGrantTypeEntity> getAllTypes() {
         return authorizationGrantTypeDatasourceRepository.getAllTypes().stream()
                 .map(AuthorizationGrantTypeEntityModel::new)
                 .toList();
+    }
+
+    @Override
+    public Collection<? extends AuthorizationGrantTypeEntity> getAuthorizationGrantTypeByExamples(Collection<? extends AuthorizationGrantTypeEntity> authorizationGrantTypeEntityModels) {
+        return authorizationGrantTypeDatasourceRepository.getAuthorizationGrantTypeByExamples(authorizationGrantTypeEntityModels);
     }
 
     @Override

@@ -9,6 +9,8 @@ import java.util.Set;
 
 public interface ClientAuthenticationMethodDataSourceRepository {
 
+    Collection<? extends ClientAuthenticationMethodEntity> getAllAuthenticationMethods();
+
     Collection<? extends ClientAuthenticationMethodEntity> getClientAuthenticationMethodsByExamples(Collection<? extends ClientAuthenticationMethodEntity> clientAuthenticationMethodExamples);
 
     Collection<? extends ClientAuthenticationMethodEntity> getClientAuthenticationMethodsByMethod(Collection<ClientAuthenticationMethod> clientAuthenticationMethods);

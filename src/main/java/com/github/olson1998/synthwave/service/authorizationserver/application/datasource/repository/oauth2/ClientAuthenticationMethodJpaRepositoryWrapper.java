@@ -24,6 +24,11 @@ public class ClientAuthenticationMethodJpaRepositoryWrapper implements ClientAut
     private final ClientAuthenticationMethodBindingJpaRepository clientAuthenticationMethodBindingJpaRepository;
 
     @Override
+    public Collection<? extends ClientAuthenticationMethodEntity> getAllAuthenticationMethods() {
+        return clientAuthenticationMethodJpaRepository.findAll();
+    }
+
+    @Override
     public Collection<? extends ClientAuthenticationMethodEntity> getClientAuthenticationMethodsByExamples(Collection<? extends ClientAuthenticationMethodEntity> clientAuthenticationMethodExamples) {
         var dataExamplesSpec = createDataExamplesSpec(clientAuthenticationMethodExamples);
         return clientAuthenticationMethodJpaRepository.findAll(dataExamplesSpec);

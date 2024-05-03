@@ -21,6 +21,11 @@ public class AuthorityRestController {
 
     private final AuthorityRepository authorityRepository;
 
+    @GetMapping(path = "/list", produces = APPLICATION_JSON_VALUE)
+    public Collection<? extends Authority> getAllAuthorities() {
+        return authorityRepository.getAllAuthorities();
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/save", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public Collection<? extends Authority> saveAuthorities(@RequestBody Collection<Authority> authorityCollection) {

@@ -25,6 +25,14 @@ public class AuthorityService implements AuthorityRepository {
     private final AuthorityBindingDataSourceRepository authorityBindingDataSourceRepository;
 
     @Override
+    public Collection<? extends Authority> getAllAuthorities() {
+        return authorityDataSourceRepository.getAllAuthorities()
+                .stream()
+                .map(AuthorityModel::new)
+                .toList();
+    }
+
+    @Override
     public Collection<? extends Authority> getAuthoritiesByUserIdAndTimestamp(Long userId, MutableDateTime timestamp) {
         return authorityDataSourceRepository.getAuthoritiesByUserIdAndTimestamp(userId, timestamp);
     }

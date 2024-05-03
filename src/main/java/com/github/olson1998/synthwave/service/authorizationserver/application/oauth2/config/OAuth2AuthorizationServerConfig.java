@@ -2,10 +2,7 @@ package com.github.olson1998.synthwave.service.authorizationserver.application.o
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2AuthorizationRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.OAuth2RegisteredClientRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.RedirectRepository;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ScopeRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2AuthorizationService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2RegisteredClientService;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2TokenCustomizingService;
@@ -57,23 +54,23 @@ public class OAuth2AuthorizationServerConfig {
                                                                              PasswordEncoder passwordEncoder,
                                                                              RedirectRepository redirectRepository,
                                                                              ScopeRepository scopeRepository,
+                                                                             AuthorizationGrantTypeRepository authorizationGrantTypeRepository,
+                                                                             ClientAuthenticationMethodRepository clientAuthenticationMethodRepository,
                                                                              RegisteredClientDataSourceRepository registeredClientDataSourceRepository,
                                                                              RegisteredClientSecretDataSourceRepository registeredClientSecretDataSourceRepository,
                                                                              ClientSettingsDataSourceRepository clientSettingsDataSourceRepository,
-                                                                             TokenSettingsDataSourceRepository tokenSettingsDataSourceRepository,
-                                                                             AuthorizationGrantTypeDatasourceRepository authorizationGrantTypeDatasourceRepository,
-                                                                             ClientAuthenticationMethodDataSourceRepository clientAuthenticationMethodDataSourceRepository) {
+                                                                             TokenSettingsDataSourceRepository tokenSettingsDataSourceRepository) {
         return new OAuth2RegisteredClientService(
                 executor,
                 passwordEncoder,
                 redirectRepository,
                 scopeRepository,
+                authorizationGrantTypeRepository,
+                clientAuthenticationMethodRepository,
                 registeredClientDataSourceRepository,
                 registeredClientSecretDataSourceRepository,
                 clientSettingsDataSourceRepository,
-                tokenSettingsDataSourceRepository,
-                authorizationGrantTypeDatasourceRepository,
-                clientAuthenticationMethodDataSourceRepository
+                tokenSettingsDataSourceRepository
         );
     }
 

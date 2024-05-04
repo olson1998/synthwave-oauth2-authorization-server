@@ -5,9 +5,12 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public interface RegisteredClientDataSourceRepository {
+
+    Collection<? extends RegisteredClientProperties> searchRegisteredClientByExample(RegisteredClientProperties registeredClientProperties);
 
     Optional<? extends AbstractRegisteredClientBuilderWrapper> findRegisteredClientByClientIdWithTimestamp(String clientId, MutableDateTime timestamp);
 

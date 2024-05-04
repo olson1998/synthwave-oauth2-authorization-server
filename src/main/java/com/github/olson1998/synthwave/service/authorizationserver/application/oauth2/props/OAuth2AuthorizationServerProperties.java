@@ -35,10 +35,10 @@ public class OAuth2AuthorizationServerProperties {
         public static final String OAUTH2_JWT_SIGNATURE_ALG_VALUE = "#{" + OAUTH2_AUTHORIZATION_SERVER_PROPERTIES_BEAN + ".jwk.algorithm}";
 
         @NotNull
-        private String algorithm = "HS256";
+        private String algorithm;
 
         @Min(value = 1)
-        private int keySize = 256;
+        private int keySize;
     }
 
     @Data

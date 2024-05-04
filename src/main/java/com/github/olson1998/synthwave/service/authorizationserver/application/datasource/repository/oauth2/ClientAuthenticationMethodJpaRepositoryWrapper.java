@@ -7,6 +7,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodEntity;
 import com.github.olson1998.synthwave.support.jpa.spec.JpaSpecificationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class ClientAuthenticationMethodJpaRepositoryWrapper implements ClientAut
 
     @Override
     public Collection<? extends ClientAuthenticationMethodEntity> getAllAuthenticationMethods() {
-        return clientAuthenticationMethodJpaRepository.findAll();
+        return clientAuthenticationMethodJpaRepository.findAll(Sort.by("id"));
     }
 
     @Override

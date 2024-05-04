@@ -9,6 +9,7 @@ import com.github.olson1998.synthwave.support.jpa.spec.JpaSpecificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class AuthorizationGrantTypeJpaRepositoryWrapper implements Authorization
 
     @Override
     public Collection<? extends AuthorizationGrantTypeEntity> getAllTypes() {
-        return authorizationGrantTypeJpaRepository.findAll();
+        return authorizationGrantTypeJpaRepository.findAll(Sort.by("id"));
     }
 
     @Override

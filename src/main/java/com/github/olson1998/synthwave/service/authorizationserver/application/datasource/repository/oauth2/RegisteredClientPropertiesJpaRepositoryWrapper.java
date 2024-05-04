@@ -5,10 +5,18 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.query.AbstractRegisteredClientBuilderWrapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Component
@@ -16,6 +24,12 @@ import java.util.Optional;
 public class RegisteredClientPropertiesJpaRepositoryWrapper implements RegisteredClientDataSourceRepository {
 
     private final RegisteredClientPropertiesJpaRepository registeredClientPropertiesJpaRepository;
+
+    @Override
+    public Collection<? extends RegisteredClientProperties> searchRegisteredClientByExample(RegisteredClientProperties registeredClientProperties) {
+        var example = Example.of(new RegisteredClientData(registeredClientProperties));
+        return registeredClientPropertiesJpaRepository.findAll(example, Sort.by("id"));
+    }
 
     @Override
     public Optional<? extends AbstractRegisteredClientBuilderWrapper> findRegisteredClientByClientIdWithTimestamp(String clientId, MutableDateTime timestamp) {

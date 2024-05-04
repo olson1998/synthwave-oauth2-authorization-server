@@ -1,19 +1,29 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
+import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ClientSettingsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientSecretDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.TokenSettingsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientExtendedProperties;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -42,6 +52,19 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
     private final ClientSettingsDataSourceRepository clientSettingsDataSourceRepository;
 
     private final TokenSettingsDataSourceRepository tokenSettingsDataSourceRepository;
+
+    @Override
+    public Collection<? extends RegisteredClientExtendedProperties> searchRegisteredClientBases(Long id, String clientIdPatter, String clientNamePattern, Collection<ClientAuthenticationMethod> clientAuthenticationMethods, Collection<AuthorizationGrantType> authorizationGrantTypes) {
+        RegisteredClientData registeredClientData = new RegisteredClientData(
+                id,
+                clientIdPatter,
+                clientNamePattern,
+                null,
+                null,
+                null
+        );
+        return Collections.emptyList();
+    }
 
     @Override
     public void save(RegisteredClient registeredClient) {

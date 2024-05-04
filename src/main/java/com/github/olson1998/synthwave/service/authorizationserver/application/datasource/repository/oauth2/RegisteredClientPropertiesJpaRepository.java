@@ -4,6 +4,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.application.da
 import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.query.RegisteredClientBuilderWrapper;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface RegisteredClientPropertiesJpaRepository extends JpaRepository<RegisteredClientData, Long> {
+interface RegisteredClientPropertiesJpaRepository extends JpaRepository<RegisteredClientData, Long>, JpaSpecificationExecutor<RegisteredClientData> {
 
     @Query(
     """

@@ -14,7 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 
 @RestController
-@RequestMapping(path = "/oauth2/redirect-uri")
+@RequestMapping(path = "/redirect-uri")
 public class RedirectUriRestController {
 
     private final RedirectRepository redirectRepository;

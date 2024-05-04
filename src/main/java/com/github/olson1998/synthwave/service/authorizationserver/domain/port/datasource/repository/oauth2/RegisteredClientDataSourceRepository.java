@@ -2,15 +2,16 @@ package com.github.olson1998.synthwave.service.authorizationserver.domain.port.d
 
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.query.AbstractRegisteredClientBuilderWrapper;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.query.SearchRegisteredClient;
 import org.joda.time.MutableDateTime;
+import org.springframework.data.domain.Page;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface RegisteredClientDataSourceRepository {
 
-    Collection<? extends RegisteredClientProperties> searchRegisteredClientByExample(RegisteredClientProperties registeredClientProperties);
+    Page<? extends RegisteredClientProperties> searchRegisteredClient(SearchRegisteredClient searchRegisteredClient);
 
     Optional<? extends AbstractRegisteredClientBuilderWrapper> findRegisteredClientByClientIdWithTimestamp(String clientId, MutableDateTime timestamp);
 

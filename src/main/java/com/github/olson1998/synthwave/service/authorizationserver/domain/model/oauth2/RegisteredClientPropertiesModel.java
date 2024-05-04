@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,19 @@ public class RegisteredClientPropertiesModel implements RegisteredClientProperti
     private MutableDateTime createdOn;
 
     @JsonProperty(value = "ATMP")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private MutableDateTime activeFrom;
 
     @JsonProperty(value = "ETMP")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private MutableDateTime expireOn;
+
+    public RegisteredClientPropertiesModel(RegisteredClientProperties registeredClientProperties) {
+        this.id = registeredClientProperties.getId();
+        this.clientId = registeredClientProperties.getClientId();
+        this.name = registeredClientProperties.getName();
+        this.createdOn = registeredClientProperties.getCreatedOn();
+        this.activeFrom = registeredClientProperties.getActiveFrom();
+        this.expireOn = registeredClientProperties.getExpireOn();
+    }
 }

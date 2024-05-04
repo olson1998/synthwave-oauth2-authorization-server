@@ -1,35 +1,33 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2;
 
-import com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.RegisteredClientData;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.ClientSettingsDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.RegisteredClientSecretDataSourceRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.TokenSettingsDataSourceRepository;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
-import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.stereotype.RegisteredClientExtendedProperties;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.MutableDateTime;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepository {
 
@@ -54,16 +52,35 @@ public class OAuth2RegisteredClientService implements OAuth2RegisteredClientRepo
     private final TokenSettingsDataSourceRepository tokenSettingsDataSourceRepository;
 
     @Override
-    public Collection<? extends RegisteredClientExtendedProperties> searchRegisteredClientBases(Long id, String clientIdPatter, String clientNamePattern, Collection<ClientAuthenticationMethod> clientAuthenticationMethods, Collection<AuthorizationGrantType> authorizationGrantTypes) {
-        RegisteredClientData registeredClientData = new RegisteredClientData(
-                id,
-                clientIdPatter,
-                clientNamePattern,
-                null,
-                null,
-                null
+    public Page<? extends RegisteredClientProperties> searchRegisteredClient(Long id,
+                                                                             String clientIdPatter,
+                                                                             String clientNamePattern,
+                                                                             MutableDateTime timestamp,
+                                                                             boolean filterExpired,
+                                                                             boolean filterNonActive,
+                                                                             int pageSize,
+                                                                             int page) {
+        SearchRegisteredClientQuery query = SearchRegisteredClientQuery.builder()
+                .registeredClientId(id)
+                .clientIdPattern(clientIdPatter)
+                .namePattern(clientNamePattern)
+                .timestamp(Optional.ofNullable(timestamp).orElseGet(MutableDateTime::now))
+                .filterExpired(filterExpired)
+                .filterNonActive(filterNonActive)
+                .pageSize(pageSize)
+                .page(page)
+                .build();
+        log.debug("Registered Client: {}", query);
+        Page<? extends RegisteredClientProperties> dataPage = registeredClientDataSourceRepository.searchRegisteredClient(query);
+        List<RegisteredClientPropertiesModel> modelList = dataPage.getContent()
+                .stream()
+                .map(RegisteredClientPropertiesModel::new)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return new PageImpl<>(
+                modelList,
+                dataPage.getPageable(),
+                dataPage.getTotalElements()
         );
-        return Collections.emptyList();
     }
 
     @Override

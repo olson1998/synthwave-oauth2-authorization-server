@@ -1,5 +1,6 @@
 package com.github.olson1998.synthwave.service.authorizationserver.domain.model.oauth2;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.*;
 import com.github.olson1998.synthwave.support.joda.converter.JavaInstantConverter;
@@ -29,24 +30,31 @@ public class RegisteredClientModel extends RegisteredClient {
     private RegisteredClientSecretModel secretModel;
 
     @JsonProperty(value = "SCP", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ScopeModel> scopeModels;
 
     @JsonProperty(value = "RURI", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<RedirectUriModel> redirectUriModels;
 
     @JsonProperty(value = "LURI", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<RedirectUriModel> postLogoutRedirectUriModels;
 
     @JsonProperty(value = "AGT", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<AuthorizationGrantTypeEntityModel> authorizationGrantTypesSet;
 
     @JsonProperty(value = "CAM", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<ClientAuthenticationMethodEntityModel> clientAuthenticationMethodsSet;
 
     @JsonProperty(value = "CLST" ,required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ClientSettingsEntityModel clientSettingsModel;
 
     @JsonProperty(value = "TSST", required = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private TokenSettingsEntityModel tokenSettingsModel;
 
     public RegisteredClientModel(RegisteredClient registeredClient) {

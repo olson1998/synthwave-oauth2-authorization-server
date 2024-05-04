@@ -6,10 +6,12 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.ClientAuthenticationMethodEntity;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.ClientAuthenticationMethodRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.util.Collection;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ClientAuthenticationMethodService implements ClientAuthenticationMethodRepository {
 
@@ -17,6 +19,7 @@ public class ClientAuthenticationMethodService implements ClientAuthenticationMe
 
     @Override
     public Collection<? extends ClientAuthenticationMethodEntity> getAllMethods() {
+        log.debug("Client Authentication Method: Listing all values");
         return clientAuthenticationMethodDataSourceRepository.getAllAuthenticationMethods()
                 .stream()
                 .map(ClientAuthenticationMethodEntityModel::new)

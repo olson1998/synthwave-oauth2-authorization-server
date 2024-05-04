@@ -5,10 +5,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.da
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.RegisteredClientProperties;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.stereotype.oauth2.query.AbstractRegisteredClientBuilderWrapper;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.query.SearchRegisteredClient;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Page;

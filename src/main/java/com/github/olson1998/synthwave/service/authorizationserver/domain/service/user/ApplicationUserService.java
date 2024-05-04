@@ -17,6 +17,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.us
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.ApplicationUserDetails;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.user.stereotype.UserDetailsData;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.MutableDateTime;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -29,6 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static com.github.olson1998.synthwave.support.jackson.SynthWaveParsingModules.DEFAULT_DATE_TIME_FORMATTER;
+
+@Slf4j
 @RequiredArgsConstructor
 public class ApplicationUserService implements ApplicationUserRepository {
 
@@ -50,6 +54,7 @@ public class ApplicationUserService implements ApplicationUserRepository {
     @Override
     public ApplicationUserDetails getApplicationUserDetailsByIdAndTimestamp(Long userId, MutableDateTime timestamp) {
         timestamp = Optional.ofNullable(timestamp).orElseGet(MutableDateTime::now);
+        log.debug("Application User: Searching: userId: {}, timestamp: {}", userId, timestamp.toString(DEFAULT_DATE_TIME_FORMATTER));
         var user = applicationUserDataSourceRepository.getUserById(userId);
         var roles = roleRepository.getRolesByUserIdAndTimestamp(userId, timestamp);
         var authorities = authorityRepository.getAuthoritiesByUserIdAndTimestamp(userId, timestamp);
@@ -68,16 +73,7 @@ public class ApplicationUserService implements ApplicationUserRepository {
         var applicationUser = saveUser(applicationUserDetails.getApplicationUser());
         var userId = applicationUser.getId();
         savePassword(applicationUserDetails.getPassword(), userId);
-        List<AuthorityModel> authorityModelList;
-        if(applicationUserDetails instanceof ApplicationUserDetailsModel model) {
-            authorityModelList = model.getAuthorityModelList();
-        } else {
-            authorityModelList = applicationUserDetails.getAuthorities()
-                    .stream()
-                    .map(AuthorityModel::new)
-                    .toList();
-        }
-        saveAuthorities(authorityModelList, userId);
+        log.info("Application User: Saved user: {}", applicationUser);
         return new ApplicationUserModel(applicationUser);
     }
 

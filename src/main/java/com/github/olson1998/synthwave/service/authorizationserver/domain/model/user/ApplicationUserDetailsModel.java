@@ -30,10 +30,10 @@ public class ApplicationUserDetailsModel implements ApplicationUserDetails {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private UserPasswordModel userPasswordModel;
 
-    @JsonProperty(value = "AUTH", required = true)
+    @JsonProperty(value = "AUTH")
     private List<AuthorityModel> authorityModelList;
 
-    @JsonProperty(value = "ROLE", required = true)
+    @JsonProperty(value = "ROLE")
     private List<RoleModel> roleModelsList;
 
     @Override

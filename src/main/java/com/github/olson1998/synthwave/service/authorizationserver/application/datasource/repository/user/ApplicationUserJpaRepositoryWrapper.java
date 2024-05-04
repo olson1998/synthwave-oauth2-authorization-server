@@ -60,7 +60,7 @@ public class ApplicationUserJpaRepositoryWrapper implements ApplicationUserDataS
                 applicationUser.getCompanyCode(),
                 applicationUser.getDivision(),
                 applicationUser.getDisplayName(),
-                MutableDateTime.now(),
+                applicationUser.getCreatedOn(),
                 applicationUser.getExpireOn()
         );
     }

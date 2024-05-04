@@ -48,6 +48,8 @@ public class ApplicationUserModel implements ApplicationUser {
     public ApplicationUserModel(ApplicationUser applicationUser) {
         this.id = applicationUser.getId();
         this.username = applicationUser.getUsername();
+        this.companyCode = applicationUser.getCompanyCode();
+        this.division = applicationUser.getDivision();
         this.displayName = applicationUser.getDisplayName();
         this.createdOn = applicationUser.getCreatedOn();
         this.expireOn = applicationUser.getExpireOn();

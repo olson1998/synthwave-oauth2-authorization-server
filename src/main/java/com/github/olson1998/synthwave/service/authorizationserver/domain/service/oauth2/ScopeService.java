@@ -11,6 +11,7 @@ import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oa
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteScopeBindingResponse;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.rest.stereotype.DeleteScopeResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Collection;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ScopeService implements ScopeRepository {
 
@@ -25,6 +27,7 @@ public class ScopeService implements ScopeRepository {
 
     @Override
     public Collection<? extends Scope> getAllScopes() {
+        log.debug("Scope: Listing all values");
         return scopeDataSourceRepository.getAllScopes()
                 .stream()
                 .map(ScopeModel::new)

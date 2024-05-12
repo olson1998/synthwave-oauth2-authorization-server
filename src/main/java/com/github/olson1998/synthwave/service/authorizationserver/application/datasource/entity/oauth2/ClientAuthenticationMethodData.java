@@ -14,7 +14,6 @@ import org.joda.time.MutableDateTime;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.ClientAuthenticationMethodData.CLIENT_AUTHENTICATION_METHOD_ID_SEQUENCE_GENERATOR;
-import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter

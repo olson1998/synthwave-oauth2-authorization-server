@@ -11,7 +11,6 @@ import org.hibernate.type.descriptor.jdbc.TimestampWithTimeZoneJdbcType;
 import org.joda.time.MutableDateTime;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.ApplicationUserData.USER_ID_SEQUENCE_GENERATOR;
-import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter

@@ -1,6 +1,7 @@
 package com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.config;
 
 import com.github.olson1998.synthwave.service.authorizationserver.application.oauth2.props.OAuth2AuthorizationServerProperties;
+import com.github.olson1998.synthwave.service.authorizationserver.domain.port.csrf.repository.ConfigurableCsrfTokenRepository;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.datasource.repository.oauth2.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.port.oauth2.repository.*;
 import com.github.olson1998.synthwave.service.authorizationserver.domain.service.oauth2.OAuth2AuthorizationService;
@@ -29,6 +30,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -109,18 +111,23 @@ public class OAuth2AuthorizationServerConfig {
                 .oidc(Customizer.withDefaults())
                 .registeredClientRepository(oAuth2RegisteredClientRepository)
                 .tokenGenerator(jwtGenerator);
+        httpSecurity.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+            httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(LOGIN_PATH));
+        });
         return httpSecurity.build();
     }
 
     @Bean
     @Order(2)
     public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity httpSecurity,
+                                                              ConfigurableCsrfTokenRepository csrfTokenRepository,
                                                               @Value(OAUTH2_AUTHORIZATION_SERVER_LOGIN_ENDPOINTS_VALUE) OAuth2AuthorizationServerProperties.LoginEndpointsProperties loginEndpointsProperties) throws Exception {
         return httpSecurity
                 .securityMatcher(
                         OAUTH2_REQUEST_PATH + "/**",
                         "/login"
                 ).formLogin(Customizer.withDefaults())
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.csrfTokenRepository(csrfTokenRepository))
                 .build();
     }
 

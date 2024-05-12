@@ -13,7 +13,6 @@ import org.hibernate.type.descriptor.jdbc.TinyIntJdbcType;
 import org.joda.time.MutableDateTime;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.user.UserPasswordData.PASSWORD_ID_SEQUENCE_GENERATOR;
-import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -49,7 +48,6 @@ public class UserPasswordData implements UserPassword {
     @Column(name = "PSCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    @GeneratedValue(generator = MUTABLE_DATETIME_TIMESTAMP_GENERATOR)
     private MutableDateTime createdOn;
 
     @Column(name = "PSETMP")

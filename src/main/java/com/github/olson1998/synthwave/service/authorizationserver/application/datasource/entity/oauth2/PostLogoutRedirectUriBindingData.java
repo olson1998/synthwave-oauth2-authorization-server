@@ -15,8 +15,6 @@ import org.springframework.data.domain.Persistable;
 
 import java.util.Optional;
 
-import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
-
 @Getter
 @Setter
 @ToString

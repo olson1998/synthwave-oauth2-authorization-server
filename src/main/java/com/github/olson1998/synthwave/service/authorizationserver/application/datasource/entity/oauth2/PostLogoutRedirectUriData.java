@@ -14,7 +14,6 @@ import org.joda.time.MutableDateTime;
 import org.springframework.data.domain.Persistable;
 
 import static com.github.olson1998.synthwave.service.authorizationserver.application.datasource.entity.oauth2.PostLogoutRedirectUriData.POST_LOGOUT_REDIRECT_URI_ID_SEQUENCE_GENERATOR;
-import static com.github.olson1998.synthwave.support.jpa.generator.GeneratorConfig.MUTABLE_DATETIME_TIMESTAMP_GENERATOR;
 
 @Getter
 @Setter
@@ -42,7 +41,6 @@ public class PostLogoutRedirectUriData implements Persistable<Long>, RedirectUri
     @Column(name = "LRCTMP")
     @JavaType(MutableDateTimeJavaType.class)
     @JdbcType(TimestampWithTimeZoneJdbcType.class)
-    @GeneratedValue(generator = MUTABLE_DATETIME_TIMESTAMP_GENERATOR)
     private MutableDateTime createdOn;
 
     @Column(name = "LRETMP")
